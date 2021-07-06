@@ -3,10 +3,15 @@ The Q Programming Language
 
 A C-Style programming language for Quantum Computers that compiles down to OpenQASM. 
 
-Description/Paper on ArXiv soon...
+Paper on ArXiv soon...
 
 Simply download code and run make, only for Linux/Unix-based systems (or Cygwin/MinGW)
 For Windows load src folder into MS Visual Studio and hit build.
+
+Run with executable name "qc" (with or without prefixing directory depending on whether or not you have added program to path)
+One compiler option supported, "-t", standing for "tape". Prints out internal instruction tape representation of program (required for unitarity/reversible functions etc).
+
+Example: qc data/program.q
 
 Some notes:
   - Interpreter for classical functions disabled. Check resource estimator since that is where classical instructions are performed. This means no loops/classical stuffs. Enabling gives segmentation fault on Linux systems. Works fine on Windows (32-bit) version. If you're using Windows you can uncomment the line  Strange.
