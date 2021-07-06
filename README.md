@@ -5,3 +5,4 @@ A C-Style programming language for Quantum Computers that compiles down to OpenQ
 
 Description/Paper on ArXiv soon...
 
+Simply download code and run make. Only for Linux/Unix-based systems (or Cygwin/MinGW)
