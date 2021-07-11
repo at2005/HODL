@@ -3,7 +3,7 @@ The Q Programming Language
 
 A C-Style programming language for Quantum Computers that compiles down to OpenQASM. 
 
-Paper on ArXiv soon...
+Language description/guide coming soon...
 
 Simply download code, navigate to directory, and run make - only for Linux/Unix-based systems (or Cygwin/MinGW)
 For Windows load src folder into MS Visual Studio and hit build.
