@@ -5,7 +5,7 @@ A C-Style programming language for Quantum Computers that compiles down to OpenQ
 
 Paper on ArXiv soon...
 
-Simply download code and run make, only for Linux/Unix-based systems (or Cygwin/MinGW)
+Simply download code, navigate to directory, and run make - only for Linux/Unix-based systems (or Cygwin/MinGW)
 For Windows load src folder into MS Visual Studio and hit build.
 
 Run with executable name "qc" (with or without prefixing directory depending on whether or not you have added program to path)
