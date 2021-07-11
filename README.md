@@ -8,7 +8,8 @@ Language description/guide coming soon...
 Simply download code, navigate to directory, and run make - only for Linux/Unix-based systems (or Cygwin/MinGW)
 For Windows load src folder into MS Visual Studio and hit build.
 
-Run with executable name "qc" (with or without prefixing directory depending on whether or not you have added program to path)
+Run the compiler with executable name "qc" (with or without prefixing directory depending on whether or not you have added program to path). This action creates a file named program.qasm within the directory, which can in turn be run on IBM systems/simulators.
+
 One compiler option supported, "-t", standing for "tape". Prints out internal instruction tape representation of program (required for unitarity/reversible functions etc) which is useful for debugging the compiler.
 
 Example: qc data/program.q
