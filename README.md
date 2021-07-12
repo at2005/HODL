@@ -17,5 +17,5 @@ Example: qc data/program.q
 Some notes:
   - Interpreter for classical functions disabled for Linux. Check resource estimator since that is where classical instructions are expanded and evaluated (think of it like macro-expansion time in LISP). Anyways, this means loops/classical computation don't work, since enabling gives a prompt segfault on Linux systems. Works fine on Windows (32-bit) version. If you're using Windows you can uncomment line 44 in Compiler/Resources.h.
   - Bugs exist.
-  - I know some parts don't make sense, and to be honest, I've tried to figure out what they do too, but removing them gives a ton of errors/undefined compiler output.
+  - I know some parts don't make sense, and to be honest, I've forgotten what they do since I poorly documented them, but removing them gives a ton of errors/undefined compiler output.
   - Nested conditionals still in progress. Normal if-else statements work fine.
