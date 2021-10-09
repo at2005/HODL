@@ -1,5 +1,5 @@
 # Q
-The Q Programming Language
+The Quantum Oracle Programming Language
 
 A C-Style programming language for Quantum Computers that compiles down to OpenQASM. Designed to ease the development of quantum oracles by providing a higher-level way of describing them, alongside compiler features such as regiser size tracking and compile-time resizing, which make writing oracles for applications such as Grover Search a breeze. 
 
