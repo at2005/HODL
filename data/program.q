@@ -1,4 +1,4 @@
-# Q program illustrating Grover's algorithm.
+# HODL program illustrating Grover's algorithm.
 
 # oracle takes a superposition as an input
 oracle some_oracle(super var) { 
