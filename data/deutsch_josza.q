@@ -1,5 +1,5 @@
 
-# Q program illustrating Deutsch-Josza Algorithm.
+# HODL program illustrating Deutsch-Josza Algorithm.
 # This algorithm, given a function f, checks if it is constant or balanced. (guaranteed to be either)
 # If f is constant, it return either 0 or 1 for all inputs.
 # If f is balanced, it returns 0 for half of all inputs and 1 for the other half. 
