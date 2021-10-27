@@ -1,4 +1,4 @@
-The HODL Programming Language
+#The HODL Programming Language
 
 A C-Style programming language for Quantum Computers that compiles down to OpenQASM.
 
@@ -12,8 +12,7 @@ One compiler option supported, "-t", standing for "tape". Prints out internal in
 
 Example: qc data/program.q
 
-Some notes:
+Some further dev notes:
 
 - Nested conditionals are buggy as of now
 - Classical while loop doesn't work right now
-- 
