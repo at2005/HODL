@@ -1,4 +1,4 @@
-#The HODL Programming Language
+# The HODL Programming Language
 
 A C-Style programming language for Quantum Computers that compiles down to OpenQASM.
 
