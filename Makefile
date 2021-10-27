@@ -1,11 +1,8 @@
-all: qc
-	g++ src/circuit/Circuit.o src/compiler/Source.o -o qc
 
 CC = $(CXX)
 
-qc: src/circuit/Circuit.o src/compiler/Source.o 
-
-
+qc: src/circuit/Circuit.cpp src/compiler/Source.cpp
+	g++ src/circuit/Circuit.cpp src/compiler/Source.cpp -m32 -o qc
 clean:
 	cd src/circuit
 	rm -rf *.o

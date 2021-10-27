@@ -29,22 +29,22 @@ function deutsch_josza(super inputs) {
 function main() {
 	# initialize superposition to 5 qubits
 	# this should serve as the input for our function
-	super test = 16;
+	super stuff = 4;
 
 	# apply deutsch-josza function
 	# if the function is balanced, i.e, half of all inputs return 1 and the other half return 0,
 	# then half of all functions will be marked with a phase of pi.
 
-	deutsch_josza(test);
+	deutsch_josza(stuff);
 
 	# interference with HADAMARD Gate.
 	# This should reduce the superposition to a single value to be measured.
 	# if the value is non-zero, then the function is balanced.
 	# Else function is constant
-	H(test);
+	H(stuff);
 
 	# measure our result, i.e, store in a classical register
-	measure test;	
+	measure stuff;	
 }
 
 

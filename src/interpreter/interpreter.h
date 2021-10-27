@@ -13,12 +13,12 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 	Node* node = tree->getRoot();
 
 	// if root exists
-	if (node) {
-		SyntaxTree tree_left(node->getLeftChild());
-		SyntaxTree tree_right(node->getRightChild());
+	if (node != (Node*)(0xCCCCCCCC)) {
 		// case for root being an assigmnent
 		if (node->getTToken() == "ASSIGNMENT") {
 
+		SyntaxTree tree_left(node->getLeftChild());
+		SyntaxTree tree_right(node->getRightChild());
 			// if the assignment type is classical, e.g. int
 			if (node->getLeftChild()->getPurpose() == "int") {
 				// get value of right hand side
@@ -38,6 +38,8 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 		// case for operation
 		else if (node->getTToken() == "OPERATOR" || node->getTToken() == "COMPARISON_OPERATOR") {
 			
+		SyntaxTree tree_left(node->getLeftChild());
+		SyntaxTree tree_right(node->getRightChild());
 			// initialize result to zero
 			long result = 0;
 
@@ -185,6 +187,7 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 
 		else if (node->getTToken() == "NUMBER") {
 			return stoi(node->getTValue());
+		
 		}
 
 		else if (node->getTToken() == "IDENTIFIER") {

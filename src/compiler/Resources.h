@@ -11,7 +11,7 @@ inline unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, Q
 	// Root node for expression parsing
 	//cout << tree;
 	Node* node = tree->getRoot();
-
+	
 	//cout << node->getTValue() << ":" << node->getTToken() << endl;
 	// Static variable to hold name of the variable a function returns
 	static string func_return_name = "";
@@ -24,24 +24,12 @@ inline unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, Q
 
 	// total number of resources
 	int total_resources = 0;
-
-	// Check if node is not NULL
-	if (node != (Node*)NULL) {
-		//cout << "node";
-		
-		//cout << node->getTValue() << endl;
-		//cout << node->getTToken() << endl;
-;		//if (node->getLeftChild() != (Node*)0xCCCCCCCC) {
-		//	tree_left = SyntaxTree(node->getLeftChild());
-		//}
 	
-		//if (node->getRightChild() != (Node*)0xCCCCCCCC) {
-		//	tree_right = SyntaxTree(node->getRightChild());
-		//}
-		
-		
+	// Check if node is not NULL
+	if (node != (Node*)NULL) {	
 		// Classical Interpretation on node
-		//interpret(tree, *table);
+		
+		interpret(tree, *table);
 
 		//case where value is classical
 		if (node->getTToken() == "NUMBER" || node->getTToken() == "FLOAT") {
