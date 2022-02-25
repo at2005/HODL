@@ -1,4 +1,4 @@
-# The HODL Programming Language
+# A Higher-Level Oracle Description Language (HODL)
 
 A C-Style programming language for Quantum Computers that compiles down to OpenQASM.
 
