@@ -15,9 +15,9 @@
 
 // command line options and their flag
 unordered_map<string, bool> options = {
-	{"-t", 0}
+	{"-t", 0},
+	{"-o", 0}
 };
-
 
 
 
@@ -28,11 +28,16 @@ int Compile(int num_args, char** args) {
 	
 	// get program source file from CL
 	const char* program_file = args[num_args-1];
-	
+	target_file = "out.qasm";	
 	// iterate over command line args
 	for (int i = 1; i < num_args - 1; i++) {
 		// set flag for corresponding option
 		options[args[i]] = 1;
+		if(!strcmp(args[i], "-o")) {
+			target_file = args[i+1];
+		}
+
+
 	}
 
 		
@@ -40,7 +45,7 @@ int Compile(int num_args, char** args) {
 	vector<Pair> TokenValues = execute_lex(program_file).getLex().dict_output;
 	
 	// get circuit object
-	Circuit* qc = Circuit::get_circuit();
+	Circuit* qc = Circuit::get_circuit(target_file);
 
 	//print_vector(TokenValues);
 	//breaks up into individual expressions
@@ -115,6 +120,7 @@ int Compile(int num_args, char** args) {
 			}
 
 		}
+
 
 	// iterate over each quantum variable
 	for (QuantumVariable*& qvar : qc->get_qvars()) {

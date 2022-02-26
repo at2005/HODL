@@ -10,8 +10,6 @@
 #include <sstream>
 
 
-
-
 struct oracle_data {
 	// holds pointer to function definition
 	Function* func_def;
@@ -293,7 +291,8 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 			create_instructions(instructions, &child_tree_instance, param_map, table, controls);
 		}
 
-		// define current iterator, as in, the position the instruction tape is at
+		// define current iterator, as in, the position the instruction tape is at minus the amount of space the conditional
+		// body takes up
 		vector<INSTRUCTION>::iterator current_iter = instructions.begin() + size_of_instructions2 - 1;
 
 		// define a rollback_to iterator, as in, the position we wish to roll-back to

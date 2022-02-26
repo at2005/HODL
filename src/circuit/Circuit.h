@@ -12,12 +12,12 @@ using namespace std;
 
 
 class Circuit {
-	Circuit(string target_file = "program.qasm");
+	Circuit(string target = "out.qasm");
 	Circuit(Circuit& circ);
 public:
 	
-	static Circuit* get_circuit() { 
-		if (!circuit) circuit = new Circuit();
+	static Circuit* get_circuit(string target="out.qasm") { 
+		if (!circuit) circuit = new Circuit(target);
 		return circuit; 
 	}
 

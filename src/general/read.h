@@ -1,4 +1,5 @@
-#pragma once
+#ifndef READ_H
+#define READ_H
 
 #include <iostream>
 #include <fstream>
@@ -16,8 +17,6 @@ Lex execute_lex(string src_file) {
 	Lex lx;
 	string nameOfFile = src_file;
 
-	
-		target_file = "program.qasm";
 		target_system = "IBM";
 
 		//nameOfFile += ".q";
@@ -54,3 +53,5 @@ void print_vector(vector<T> input) {
 	}
 
 }
+
+#endif
