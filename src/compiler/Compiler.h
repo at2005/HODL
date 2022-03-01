@@ -16,7 +16,8 @@
 // command line options and their flag
 unordered_map<string, bool> options = {
 	{"-t", 0},
-	{"-o", 0}
+	{"-o", 0},
+	{"-n", 0}
 };
 
 
@@ -121,17 +122,20 @@ int Compile(int num_args, char** args) {
 
 		}
 
-
 	// iterate over each quantum variable
 	for (QuantumVariable*& qvar : qc->get_qvars()) {
 		// add quantum register to circuit
 		qc->add_qregister(*qvar);
+		
 	}
 
 
 	// iterate over instructions and compile each instruction
 	compile_instructions(*qc, instructions, &main_table);
 
+	if(options["-n"]) {
+		cout << "logical qubit count: " << qc->total_qubits << endl;
+	}	
 	// delete circuit object
 	qc->~Circuit();
 		

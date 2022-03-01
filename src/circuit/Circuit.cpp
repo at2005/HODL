@@ -9,6 +9,7 @@ Circuit* Circuit::circuit;
 
 Circuit::Circuit(string target_file) : num_qubits_measured(0) {
 	qregs = {};
+	this->total_qubits = 0;
 	this->system = "IBM";
 	this->qubits = 0;
 	//outputQASM.open("program.qasm");
@@ -57,7 +58,8 @@ void Circuit::add_qregister(QuantumVariable& qvar) {
 
 	// else add register to QASM file
 	outputQASM << "qreg " << qvar.get_qreg() << "[" << qvar.get_num_qubits() << "];\n";
-
+	
+	total_qubits += qvar.get_num_qubits();
 	// increment total number of registers
 	total_registers++;
 	

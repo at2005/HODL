@@ -230,7 +230,8 @@ public:
 
 	const void barrier();
 	const void barrier(string qreg);
-
+	
+	unsigned int total_qubits;
 
 private:
 	static Circuit* circuit;
