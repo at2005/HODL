@@ -10,14 +10,19 @@ Run the compiler with executable name "qc" (with or without prefixing directory 
 
 It is also an ongoing effort to create bridges between current frameworks and HODL such that oracles can be written in those frameworks with the support of the HODL compiler. This would eliminate the need for having to write, compile & load a separate HODL program, and would integrate the language into current workflows. For example, a QISKit program may look like:
 
-circ = hodl2circ(""" \n
-super a = 4; \n
-if(a < 2) { \n
-  mark(a,pi); \n
-} \n
-""" \n
+circ = hodl2circ("""
 
-circ.measure_all(); \n
+super a = 4;
+
+if(a < 2) {
+
+  mark(a,pi);
+
+}
+
+"""
+
+circ.measure_all();
 
 # Notes
 
