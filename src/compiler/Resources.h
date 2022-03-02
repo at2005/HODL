@@ -2,7 +2,7 @@
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
-#include "EstimationFuncs.h"
+#include "estimation_funcs.h"
 
 // THIS FUNCTION COMPUTES SIZE OF EACH REGISTER REQUIRED AND CREATES THEM
 

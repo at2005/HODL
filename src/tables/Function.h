@@ -2,7 +2,7 @@
 #define FUNCTION_H
 
 #include "data.h"
-#include "../parser/SyntaxTree.h"
+#include "../parser/ast.h"
 //class for functions
 class Function  {
 public:

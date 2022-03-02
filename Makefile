@@ -1,7 +1,7 @@
 
 
-qc: src/circuit/Circuit.cpp src/compiler/Source.cpp
-	g++ src/circuit/Circuit.cpp src/compiler/Source.cpp -std=c++11 -o bin/qc
+qc: src/circuit/circuit.cpp src/compiler/source.cpp
+	g++ src/circuit/circuit.cpp src/compiler/source.cpp -std=c++11 -o bin/qc
 clean:
 	cd src/circuit
 	rm -rf *.o

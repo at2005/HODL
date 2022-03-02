@@ -1,8 +1,8 @@
 #ifndef QFT_H
 #define QFT_H
 
-#include "../circuit/Circuit.h"
-#include "../compiler/Conditionals.h"
+#include "../circuit/circuit.h"
+#include "../compiler/conditionals.h"
 #include <math.h>
 //implement an n qubit Quantum Fourier Transform and its inverse
 

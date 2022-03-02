@@ -1,7 +1,7 @@
 #ifndef SYNTAXTREE_H
 #define SYNTAXTREE_H
 
-#include "expressions.h"
+#include "expr.h"
 #include "parse_funcs.h"
 
 class SymbolTable;

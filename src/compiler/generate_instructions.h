@@ -3,10 +3,10 @@
 #define GEN_INSTRUCTIONS_H
 
 
-#include "Conditionals.h"
-#include "Instructions.h"
-#include "../lexer/Tokens.h"
-#include "../tables/FunctionTable.h"
+#include "conditionals.h"
+#include "instructions.h"
+#include "../lexer/tokens.h"
+#include "../tables/ftable.h"
 #include <sstream>
 
 

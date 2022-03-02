@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "../lexer/Lexer.h"
+#include "../lexer/lexer.h"
 using namespace std;
 
 static std::string target_system = "IBM";

@@ -3,7 +3,7 @@
 
 #include "qft.h"
 #include "../tables/data.h"
-#include "../general/BaseConversion.h"
+#include "../general/base_conversion.h"
 #include <math.h>
 
 

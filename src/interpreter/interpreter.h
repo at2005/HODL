@@ -1,11 +1,11 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
-#include "../parser/SyntaxTree.h"
-#include "../lexer/Tokens.h"
+#include "../parser/ast.h"
+#include "../lexer/tokens.h"
 #include <string>
-#include "../tables/FunctionTable.h"
-#include "../tables/SymbolTable.h"
+#include "../tables/ftable.h"
+#include "../tables/symtab.h"
 // classical interpreter
 long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 	

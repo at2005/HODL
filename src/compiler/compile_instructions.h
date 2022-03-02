@@ -1,14 +1,14 @@
 #ifndef COMPILE_INSTR_H
 #define COMPILE_INSTR_H
 
-#include "Instructions.h"
-#include "../tables/SymbolTable.h"
+#include "instructions.h"
+#include "../tables/symtab.h"
 #include "../operations/arithmetic.h"
 #include "../operations/grover.h"
-#include "../lexer/Tokens.h"
+#include "../lexer/tokens.h"
 #include "../operations/comparison_operators.h"
 #include <unordered_map>
-#include "EstimationFuncs.h"
+#include "estimation_funcs.h"
 // FUNCTIONS TO PARSE INSTRUCTION TAPE AND COMPILE THE INSTRUCTIONS LISTED ON EACH CELL
 
 // helper function to compile assembly-level instructions

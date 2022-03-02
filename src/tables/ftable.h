@@ -1,7 +1,7 @@
 #ifndef FUNC_TABLE
 #define FUNC_TABLE
 
-#include "Function.h"
+#include "function.h"
 #include <unordered_map>
 //class follows singleton pattern
 

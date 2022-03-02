@@ -3,7 +3,7 @@
 
 #include <string>
 #include "../tables/data.h"
-#include "Conditionals.h"
+#include "conditionals.h"
 using namespace std;
 
 

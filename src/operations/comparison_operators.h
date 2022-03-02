@@ -1,7 +1,7 @@
 #ifndef COMPARISON_OPS_H
 #define COMPARISON_OPS_H
 
-#include "../circuit/Circuit.h"
+#include "../circuit/circuit.h"
 
 
 

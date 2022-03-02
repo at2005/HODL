@@ -1,5 +1,5 @@
 #pragma once
-#include "../circuit/Circuit.h"
+#include "../circuit/circuit.h"
 #include <iostream>
 
 

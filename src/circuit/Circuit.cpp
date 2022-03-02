@@ -1,7 +1,7 @@
 #ifndef CIRCUIT_CPP
 #define CIRCUIT_CPP
 
-#include "Circuit.h"
+#include "circuit.h"
 
 Circuit* Circuit::circuit;
 

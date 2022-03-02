@@ -1,8 +1,8 @@
 #pragma once
-#include "../tables/SymbolTable.h"
+#include "../tables/symtab.h"
 #include "../interpreter/interpreter.h"
-#include "../circuit/Circuit.h"
-#include "../general/BaseConversion.h"
+#include "../circuit/circuit.h"
+#include "../general/base_conversion.h"
 #include <map>
 
 

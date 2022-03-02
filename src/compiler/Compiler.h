@@ -1,16 +1,15 @@
 #ifndef COMPILER_H
 #define COMPILER_H
 
-#include "Resources.h"
 #include "../general/read.h"
-#include "../parser/SyntaxTree.h"
-#include "Resources.h"
-#include "../circuit/Circuit.h"
+#include "../parser/ast.h"
+#include "resources.h"
+#include "../circuit/circuit.h"
 #include "../operations/arithmetic.h"
 #include "../operations/comparison_operators.h"
-#include "../tables/FunctionTable.h"
-#include "GenerateInstructions.h"
-#include "CompileInstructions.h"
+#include "../tables/ftable.h"
+#include "generate_instructions.h"
+#include "compile_instructions.h"
 
 
 // command line options and their flag

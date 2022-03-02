@@ -1,5 +1,5 @@
 
-#include "Compiler.h"
+#include "compiler.h"
 
 int main(int argc, char** argv) {
 	//try {

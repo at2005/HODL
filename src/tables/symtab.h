@@ -1,10 +1,10 @@
 #ifndef SYMBOL_TABLE_H
 #define SYMBOL_TABLE_H
 
-#include "../compiler/Garbage.h"
+#include "../compiler/garbage.h"
 #include <string>
 #include <unordered_map>
-#include "../circuit/Circuit.h"
+#include "../circuit/circuit.h"
 
 
 class SymbolTable {

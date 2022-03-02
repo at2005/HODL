@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../tables/SymbolTable.h"
+#include "../tables/symtab.h"
 #include <vector>
 
 // class to hold information about conditionals
