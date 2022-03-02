@@ -11,23 +11,25 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 	
 	// get root of expression tree
 	Node* node = tree->getRoot();
+
 	// if root exists
 	if (node != (Node*)(0xCCCCCCCC)) {
 		// case for root being an assigmnent
 		if (node->getTToken() == "ASSIGNMENT") {
+
 		SyntaxTree tree_left(node->getLeftChild());
 		SyntaxTree tree_right(node->getRightChild());
 			// if the assignment type is classical, e.g. int
 			if (node->getLeftChild()->getPurpose() == "int") {
 				// get value of right hand side
-				long value = interpret(&tree_right, table);
+				long value = interpret(&tree_left, table);
 
 				// create classical variable
 				ClassicalVariable* variable = new ClassicalVariable(node->getLeftChild()->getTValue());
 
 				// set value of variable to interpreted value of right-hand-side
 				variable->set_value(value);
-				cout << value;
+
 				// add classical variable in table
 				table.push_classical_var(variable);
 			}
@@ -36,8 +38,8 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 		// case for operation
 		else if (node->getTToken() == "OPERATOR" || node->getTToken() == "COMPARISON_OPERATOR") {
 			
-			SyntaxTree tree_left(node->getLeftChild());
-			SyntaxTree tree_right(node->getRightChild());
+		SyntaxTree tree_left(node->getLeftChild());
+		SyntaxTree tree_right(node->getRightChild());
 			// initialize result to zero
 			long result = 0;
 
@@ -46,14 +48,12 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 
 			// right is the right-hand-child
 			string right = node->getRightChild()->getTValue();
-			cout << left << right << endl;
+
 			// if right node is an identifier
 			if (node->getRightChild()->getTToken() == "IDENTIFIER") {
 				// check if right node is a classical variable
-				if (table.cvar_exists(right)) {
+				if (table.cvar_exists(node->getRightChild()->getTValue())) {
 					// set flag to classical if so
-					cout << "hellofsdfs\n\n";
-					cout << table.search_ctable(right)->get_value();
 					node->getRightChild()->set_classical();
 				}
 			}
@@ -61,8 +61,7 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 			// if left node is an identifier
 			if (node->getLeftChild()->getTToken() == "IDENTIFIER") {
 				// check if left node is a classical node
-				if (table.cvar_exists(left)) {
-
+				if (table.cvar_exists(node->getLeftChild()->getTValue())) {
 					// set flag to classical if so
 					node->getLeftChild()->set_classical();
 				}
@@ -224,12 +223,11 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 
 		
 		else if(node->getTValue() == "while") {
+			cout << "hellodfskdfjs";
 			vector<SyntaxTree> child_trees = {};
-			SyntaxTree* cond = new SyntaxTree(node->getLeftChild());
-			cout << cond << endl;
-			
-			while(interpret(cond, table, true)) {
-				
+			SyntaxTree* cond = &tree->get_function_parameters()[0];
+			while(!interpret(cond, table, true)) {
+				cout << 123 << endl;
 				for(int i = 0; i < tree->get_child_trees().size(); i++) {					
 					interpret(&tree->get_child_trees()[i], table,true);
 					child_trees.push_back(tree->get_child_trees()[i]);

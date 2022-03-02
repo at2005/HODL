@@ -44,7 +44,10 @@ int Compile(int num_args, char** args) {
 		
 	//lexical analysis -> stored in vector of token-values
 	vector<Pair> TokenValues = execute_lex(program_file).getLex().dict_output;
-	
+	for(auto& i : TokenValues) {
+//		cout << i.getValue() << i.getToken() <<  endl;
+	}	
+		
 	// get circuit object
 	Circuit* qc = Circuit::get_circuit(target_file);
 

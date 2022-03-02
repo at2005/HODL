@@ -1,6 +1,6 @@
 # A Higher-Level Oracle Description Language (HODL)
 
-A C-Style programming language for Quantum Computers that compiles down to OpenQASM.
+A C-Style programming language for Quantum Computers that currently compiles down to OpenQASM 2.0, although efforts are underway to change the target to a quantum intermediate representation (QIR) format.
 
 Language description can be found: https://arxiv.org/abs/2110.12487
 
