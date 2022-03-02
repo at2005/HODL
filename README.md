@@ -12,10 +12,10 @@ It is also an ongoing effort to create bridges between current frameworks and HO
     
     from qiskit.HODL import hodl2circ
     circ = hodl2circ("""
-    super a = 4;
-    if(a < 2) {
-        mark(a,pi);
-    }
+        super a = 4;
+        if(a < 2) {
+            mark(a,pi);
+        }
     """
     circ.measure_all();
 
