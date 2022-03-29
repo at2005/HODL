@@ -1,3 +1,5 @@
+[![Unitary Fund](https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge)](http://unitary.fund)
+
 # A Higher-Level Oracle Description Language (HODL)
 
 A C-Style programming language for Quantum Computers that currently compiles down to OpenQASM 2.0, although efforts are underway to change the target to a quantum intermediate representation (QIR) format.
