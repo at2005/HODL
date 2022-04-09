@@ -6,31 +6,6 @@
 #include <math.h>
 //implement an n qubit Quantum Fourier Transform and its inverse
 
-void swapQFT(Circuit& qc, int begin, int end) {
-	int beg = begin;
-	int fin = end;
-	while (beg < fin) {
-		qc.swap(beg, fin);
-		beg++;
-		fin--;
-	}
-
-}
-
-void swapQFT(Circuit& qc, vector<unsigned int> indices) {
-	int begin = 0;
-	int end = indices.size() - 1;
-	while (begin < end) {
-		qc.swap(indices[begin], indices[end]);
-		begin++;
-		end--;
-	}
-}
-
-
-
-
-
 
 
 void QFT(Circuit& qc, QuantumVariable qvar1, bool do_swaps = true) {
@@ -62,7 +37,7 @@ void QFT(Circuit& qc, QuantumVariable qvar1, bool do_swaps = true) {
 	}
 
 	if (do_swaps) {
-		swapQFT(qc, 0, qvar1.get_num_qubits());
+//		swapQFT(qc, 0, qvar1.get_num_qubits());
 	}
 }
 
@@ -104,12 +79,12 @@ void QFT(Circuit& qc, QuantumVariable qvar1, vector<Conditional> controls, bool 
 	}
 
 	if (do_swaps) {
-		swapQFT(qc, 0, qvar1.get_num_qubits());
+//		swapQFT(qc, 0, qvar1.get_num_qubits());
 	}
 }
 
 
-
+// partial QFT
 void QFT(Circuit& qc, QuantumVariable qvar1, int start, int end, bool do_swaps = true) {
 
 
@@ -138,7 +113,7 @@ void QFT(Circuit& qc, QuantumVariable qvar1, int start, int end, bool do_swaps =
 	}
 
 	if (do_swaps) {
-		swapQFT(qc, start, end);
+	//	swapQFT(qc, start, end);
 	}
 }
 
@@ -157,7 +132,7 @@ void qft_multiplication(Circuit& qc, QuantumVariable qvar, int number) {
 
 void InvQFT(Circuit& qc, QuantumVariable qvar, bool do_swaps = true) {
 	if (do_swaps) {
-		swapQFT(qc, 0, qvar.get_num_qubits());
+	//	swapQFT(qc, 0, qvar.get_num_qubits());
 	}
 
 	int counter = 2;
@@ -186,7 +161,7 @@ void InvQFT(Circuit& qc, QuantumVariable qvar, bool do_swaps = true) {
 
 void InvQFT(Circuit& qc, QuantumVariable qvar, vector<Conditional> controls, bool do_swaps = true) {
 	if (do_swaps) {
-		swapQFT(qc, 0, qvar.get_num_qubits());
+	//	swapQFT(qc, 0, qvar.get_num_qubits());
 	}
 
 	int counter = 2;
@@ -218,10 +193,10 @@ void InvQFT(Circuit& qc, QuantumVariable qvar, vector<Conditional> controls, boo
 }
 
 
-
+// partial qft_dg
 void InvQFT(Circuit& qc, QuantumVariable qvar, int start, int end, bool do_swaps = true) {
 	if (do_swaps) {
-		swapQFT(qc, start, end);
+		//swapQFT(qc, start, end);
 	}
 
 	int counter = 2;

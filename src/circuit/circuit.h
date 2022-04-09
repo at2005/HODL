@@ -38,7 +38,6 @@ public:
 	const int get_num_qubits();
 	void inc_num_qubits();
 	//ID GATE FOR SINGLE QUBIT
-	const void id(unsigned int qubit_index);
 
 	const void id(string qreg, unsigned int qubit_index);
 	//ID GATE FOR MULTIPLE QUBITS
@@ -64,59 +63,49 @@ public:
 
 	~Circuit();
 	//HADAMARD GATE FOR SINGLE QUBIT
-	const void h(unsigned int qubit_index);
 	const void h(string qreg, unsigned int qubit_index);
 	//HADAMARD GATE FOR MULTIPLE QUBITS
 	const void h(string qreg);
 
 
 	//X GATE FOR SINGLE QUBIT
-	const void x(unsigned int qubit_index);
 	const void x(string qreg, unsigned int qubit_index);
 	//X GATE FOR MULTIPLE QUBITS
 	const void x(string qreg);
 
 
 	//Y GATE FOR SINGLE QUBIT
-	const void y(unsigned int qubit_index);
 	const void y(string qreg, unsigned int qubit_index);
 	//Y GATE FOR MULTIPLE QUBITS
 	const void y(string qreg);
 
 	//Z GATE FOR SINGLE QUBIT
-	const void z(unsigned int qubit_index);
 	const void z(string qreg, unsigned int qubit_index);
 	//Z GATE FOR MULTIPLE QUBITS
 	const void z(string qreg);
 
 
 	//S GATE FOR SINGLE QUBIT
-	const void s(unsigned int qubit_index);
 	const void s(string qreg,unsigned int qubit_index);
 	//S GATE FOR MULTIPLE QUBITS
 	const void s(string qreg);
 
 	//SDG GATE FOR SINGLE QUBIT
-	const void sdg(unsigned int qubit_index);
 	const void sdg(string qreg, unsigned int qubit_index);
 	//SDG GATE FOR MULTIPLE QUBITS
 	const void sdg(string qreg);
 
 	//T GATE FOR SINGLE QUBIT
-	const void t(unsigned int qubit_index);
 	const void t(string qreg, unsigned int qubit_index);
 	//T GATE FOR MULTIPLE QUBITS
 	const void t(string qreg);
 
 	//ROTATE X GATE FOR SINGLE QUBIT
-	const void rx(unsigned int qubit_index, double angle_in_radians);
 	const void rx(string qreg, unsigned int qubit_index, double angle_in_radians);
 	//ROTATE X GATE FOR MULTIPLE QUBITS
 	const void rx(string qreg,double angle_in_radians);
 
 
-	//ROTATE Y GATE FOR SINGLE QUBIT
-	const void ry(unsigned int qubit_index, double angle_in_radians);
 	const void ry(string qreg,unsigned int qubit_index, double angle_in_radians);
 
 	//ROTATE Y GATE FOR MULTIPLE QUBITS
@@ -124,7 +113,6 @@ public:
 
 
 	//ROTATE Z GATE FOR SINGLE QUBIT
-	const void rz(unsigned int qubit_index, double angle_in_radians);
 	const void rz(string qreg, unsigned int qubit_index, double angle_in_radians);
 
 	//ROTATE Z GATE FOR MULTIPLE QUBITS
@@ -133,8 +121,6 @@ public:
 
 	//UNITARY OPERATION CORRESPONDING TO THE FOLLOWING MATRIX REPRESENTATION: M00 -> 1, M01 -> 0, M10 -> 0, M11 -> e^2*pi*theta (theta = angle_in_radians)
 	
-	//default quantum register with angle of type double
-	const void u(unsigned int qubit_index, double angle_in_radians);
 
 	//for part of quantum register with angle of type double
 	const void u(string qreg,unsigned int qubit_index, double angle_in_radians);
@@ -142,8 +128,6 @@ public:
 	//for entire quantum register with angle of type double
 	const void u(string qreg, double angle_in_radians);
 
-	//for default quantum register
-	const void u(unsigned int qubit_index, string theta);
 
 	//for part of quantum register
 	const void u(string qreg,unsigned int qubit_index, string theta);
@@ -156,21 +140,17 @@ public:
 
 	//CONTROLLED UNITARY OPERATION
 
-	//cu for default quantum register
-	const void cu(unsigned int control, unsigned int target, double angle_in_radians);
 	//cu for part of quantum register
 	const void cu(string qreg,unsigned int control, unsigned int target, double angle_in_radians);
 	const void cu(string qreg1, unsigned int control, string qreg2, unsigned int target, double angle_in_radians);
 
 
 	//cu for fourier transform
-	const void cu(unsigned int control, unsigned int target, string init, unsigned long long int arg);
 	//cu for fourier transform of part of quantum register
 	const void cu(string qreg,unsigned int control, unsigned int target, string init, unsigned long long int arg);
 	const void cu(string qreg1, unsigned int control, string qreg2, unsigned int target, string init, unsigned long long int arg);
 	
 	//cu for fourier transform
-	const void cu(unsigned int control, unsigned int target, string theta);
 	const void cu(string qreg, unsigned int control, unsigned int target, string theta);
 	const void cu(string qreg1, unsigned int control, string qreg2, unsigned int target, string theta);
 
@@ -179,33 +159,28 @@ public:
 
 
 	//CONTROLLED-X GATE FOR SINGLE PAIR OF QUBITS
-	void cx(unsigned int control, unsigned int target);
 	void cx(string qreg,unsigned int control, unsigned int target);
 	void cx(string qreg1,unsigned int control,string qreg2, unsigned int target);
 	void cx(string qreg1, string qreg2);
 	
 
 	//CONTROLLED-Z GATE FOR SINGLE PAIR OF QUBITS
-	void cz(unsigned int control, unsigned int target);
 	void cz(string qreg,unsigned int control, unsigned int target);
 	void cz(string qreg1,unsigned int control,string qreg2, unsigned int target);
 	void cz(string qreg1, string qreg2);
 
 
 	//CONTROLLED-HADAMARD GATE FOR SINGLE PAIR OF QUBITS
-	void ch(unsigned int control, unsigned int target);
 	void ch(string qreg,unsigned int control, unsigned int target);
 	void ch(string qreg1,unsigned int control, string qreg2,unsigned int target);
 
 
 	//TOFFOLI GATE FOR SINGLE TRIPLET OF QUBITS
-	void ccx(unsigned int control1, unsigned int control2, unsigned int target);
 
 	void ccx(string qreg,unsigned int control1, unsigned int control2, unsigned int target);
 	void ccx(string qreg1, unsigned int control1, string qreg2, unsigned int control2,string qreg3, unsigned int target);
 
 	//MULTIPLE-CONTROLLED CCU1 GATE
-	void ccu1(unsigned int control1, unsigned int control2, unsigned int target, string theta);
 	void ccu1(string qreg,unsigned int control1, unsigned int control2, unsigned int target, string theta);
 	void ccu1(string qreg1, unsigned int control1,string qreg2, unsigned int control2,string qreg3, unsigned int target, string theta);
 
@@ -223,7 +198,6 @@ public:
 
 
 	//SWAP GATE FOR SINGLE PAIR OF QUBITS
-	void swap(unsigned int index1, unsigned int index2);
 	void swap(string qreg,unsigned int index1, unsigned int index2);
 	void swap(string qreg1,unsigned int index1, string qreg2,unsigned int index2);
 	void swap(string qreg1, string qreg2);

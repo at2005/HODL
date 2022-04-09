@@ -22,7 +22,7 @@ unordered_map<string, bool> options = {
 
 
 // compile main function
-int Compile(int num_args, char** args) {
+int compile(int num_args, char** args) {
 	// get function table -> for storing function pointers
 	FunctionTable* function_table = FunctionTable::get_func_table();
 	
@@ -42,7 +42,7 @@ int Compile(int num_args, char** args) {
 
 		
 	//lexical analysis -> stored in vector of token-values
-	vector<Pair> TokenValues = execute_lex(program_file).getLex().dict_output;
+	vector<Pair> TokenValues = execute_lex(program_file).get_lex().dict_output;
 	for(auto& i : TokenValues) {
 //		cout << i.getValue() << i.getToken() <<  endl;
 	}	

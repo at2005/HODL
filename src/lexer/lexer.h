@@ -107,7 +107,7 @@ public:
 	}
 	
 	//gets lexed output 
-	const Dict getLex() {
+	const Dict get_lex() {
 		return outputLex;
 	}
 

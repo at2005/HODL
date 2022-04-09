@@ -3,7 +3,7 @@
 
 int main(int argc, char** argv) {
 	//try {
-		Compile(argc,argv);
+		compile(argc,argv);
 	//}
 
 	//catch (...) {

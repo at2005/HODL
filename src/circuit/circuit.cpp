@@ -80,17 +80,6 @@ void Circuit::add_cregister(string creg, int measurable_qubits) {
 }
 
 
-// ID GATE for default register
-const void Circuit::id(unsigned int qubit_index) {
-	// if system is IBM
-	if (system == "IBM") {
-		// write ID gate to file -> fixed is due to large numbers being represented in scientific notation
-		outputQASM << fixed << QASM::ID << " qr[" << qubit_index << "];\n";
-	}
-
-}
-
-
 // ID GATE for custom register
 const void Circuit::id(string qreg, unsigned int qubit_index) {
 	// if system is IBM
@@ -113,15 +102,6 @@ const void Circuit::id(string qreg) {
 
 
 
-// H GATE on qubit index for default register
-const void Circuit::h(unsigned int qubit_index) {
-	// if system is IBM
-	if (system == "IBM") {
-		// write H gate to file -> fixed is due to large numbers being represented in scientific notation
-		outputQASM << fixed << QASM::HADAMARD << " qr[" << qubit_index << "];\n";
-	}
-}
-
 
 // H GATE on qubit index for custom register
 const void Circuit::h(string qreg, unsigned int qubit_index) {
@@ -143,14 +123,6 @@ const void Circuit::h(string qreg) {
 }
 
 
-// X GATE on qubit index for default register
-const void Circuit::x(unsigned int qubit_index) {
-	// if system is IBM
-	if (system == "IBM") {
-		// write X gate to file -> fixed is due to large numbers being represented in scientific notation
-		outputQASM << fixed << QASM::X << " qr[" << qubit_index << "];\n";
-	}
-}
 
 
 // X GATE on qubit index for custom register
@@ -174,11 +146,6 @@ const void Circuit::x(string qreg) {
 
 // JUST REPEAT THE ABOVE FOR THE FOLLOWING, AND REPLACE THE GATE NAME. TOO LAZY TO BE REPETITIVE
 
-const void Circuit::y(unsigned int qubit_index) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::Y << " qr[" << qubit_index << "];\n";
-	}
-}
 
 const void Circuit::y(string qreg, unsigned int qubit_index) {
 	if (system == "IBM") {
@@ -198,11 +165,6 @@ const void Circuit::y(string qreg) {
 
 //Z
 
-const void Circuit::z(unsigned int qubit_index) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::Z << " qr[" << qubit_index << "];\n";
-	}
-}
 
 const void Circuit::z(string qreg, unsigned int qubit_index) {
 	if (system == "IBM") {
@@ -221,12 +183,6 @@ const void Circuit::z(string qreg) {
 
 
 //S
-const void Circuit::s(unsigned int qubit_index) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::S << " qr[" << qubit_index << "];\n";
-	}
-}
-
 const void Circuit::s(string qreg, unsigned int qubit_index) {
 	if (system == "IBM") {
 		outputQASM << fixed << QASM::S << qreg << " [" << qubit_index << "];\n";
@@ -245,11 +201,6 @@ const void Circuit::s(string qreg) {
 
 
 //SDG
-const void Circuit::sdg(unsigned int qubit_index) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::SDG << " qr[" << qubit_index << "];\n";
-	}
-}
 
 const void Circuit::sdg(string qreg, unsigned int qubit_index) {
 	if (system == "IBM") {
@@ -267,11 +218,6 @@ const void Circuit::sdg(string qreg) {
 
 
 //T
-const void Circuit::t(unsigned int qubit_index) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::T << " qr[" << qubit_index << "];\n";
-	}
-}
 
 const void Circuit::t(string qreg, unsigned int qubit_index) {
 	if (system == "IBM") {
@@ -288,11 +234,6 @@ const void Circuit::t(string qreg) {
 
 
 //RX
-const void Circuit::rx(unsigned int qubit_index, double angle_in_radians) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::ROTATE_X << "(" << angle_in_radians << ") qr[" << qubit_index << "];\n";
-	}
-}
 
 const void Circuit::rx(string qreg, unsigned int qubit_index, double angle_in_radians) {
 	if (system == "IBM") {
@@ -311,11 +252,6 @@ const void Circuit::rx(string qreg, double angle_in_radians) {
 
 
 //RY
-const void Circuit::ry(unsigned int qubit_index, double angle_in_radians) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::ROTATE_Y << "(" << angle_in_radians << ") qr[" << qubit_index << "];\n";
-	}
-}
 
 const void Circuit::ry(string qreg, unsigned int qubit_index, double angle_in_radians) {
 	if (system == "IBM") {
@@ -333,11 +269,6 @@ const void Circuit::ry(string qreg, double angle_in_radians) {
 
 
 //RZ
-const void Circuit::rz(unsigned int qubit_index, double angle_in_radians) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::ROTATE_Z << "(" << angle_in_radians << ") qr[" << qubit_index << "];\n";
-	}
-}
 
 const void Circuit::rz(string qreg, unsigned int qubit_index, double angle_in_radians) {
 	if (system == "IBM") {
@@ -359,11 +290,6 @@ const void Circuit::rz(string qreg, double angle_in_radians) {
 //U
 
 //WITH DOUBLE AS THETA
-const void Circuit::u(unsigned int qubit_index, double angle_in_radians) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::U1 << "(" << angle_in_radians << ") qr[" << qubit_index << "];\n";
-	}
-}
 
 const void Circuit::u(string qreg, unsigned int qubit_index, double angle_in_radians) {
 	if (system == "IBM") {
@@ -381,11 +307,6 @@ const void Circuit::u(string qreg, double angle_in_radians) {
 
 
 //WITH STRING AS THETA
-const void Circuit::u(unsigned int qubit_index, string theta) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::U1 << "(" << theta << ") qr[" << qubit_index << "];\n";
-	}
-}
 
 const void Circuit::u(string qreg, unsigned int qubit_index, string theta) {
 	if (system == "IBM") {
@@ -404,11 +325,6 @@ const void Circuit::u(string qreg, string theta) {
 
 
 //CU
-const void Circuit::cu(unsigned int control, unsigned int target, double angle_in_radians) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::CU1 << "(" << angle_in_radians << ") qr[" << control << "], qr[" << target << "];\n";
-	}
-}
 
 const void Circuit::cu(string qreg, unsigned int control, unsigned int target, double angle_in_radians) {
 	if (system == "IBM") {
@@ -425,11 +341,6 @@ const void Circuit::cu(string qreg1, unsigned int control, string qreg2, unsigne
 
 
 
-const void Circuit::cu(unsigned int control, unsigned int target, string init, unsigned long long int arg) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::CU1 << "(" << init << arg << ") qr[" << control << "], qr[" << target << "];\n";
-	}
-}
 
 const void Circuit::cu(string qreg, unsigned int control, unsigned int target, string init, unsigned long long int arg) {
 	if (system == "IBM") {
@@ -446,12 +357,6 @@ const void Circuit::cu(string qreg1, unsigned int control, string qreg2, unsigne
 
 
 
-
-const void Circuit::cu(unsigned int control, unsigned int target, string theta) {
-	if (system == "IBM") {
-		outputQASM << fixed << QASM::CU1 << "(" << theta << ") qr[" << control << "], qr[" << target << "];\n";
-	}
-}
 
 
 const void Circuit::cu(string qreg, unsigned int control, unsigned int target, string theta) {
@@ -477,11 +382,6 @@ const void Circuit::cu(string qreg1, unsigned int control, string qreg2, unsigne
 
 
 //CX
-void Circuit::cx(unsigned int control, unsigned int target) {
-	if (system == "IBM") {
-		outputQASM << QASM::CONTROLLED_NOT << " qr[" << control << "]" << " , qr[" << target << "];\n";
-	}
-}
 
 
 void Circuit::cx(string qreg, unsigned int control, unsigned int target) {
@@ -505,13 +405,6 @@ void Circuit::cx(string qreg1, string qreg2) {
 
 
 //CZ
-void Circuit::cz(unsigned int control, unsigned int target) {
-	if (system == "IBM") {
-		outputQASM << QASM::CONTROLLED_Z << " qr[" << control << "]" << " , qr[" << target << "];\n";
-	}
-}
-
-
 
 void Circuit::cz(string qreg, unsigned int control, unsigned int target) {
 	if (system == "IBM") {
@@ -533,13 +426,6 @@ void Circuit::cz(string qreg1, string qreg2) {
 
 
 //CH
-void Circuit::ch(unsigned int control, unsigned int target) {
-	if (system == "IBM") {
-		outputQASM << QASM::CONTROLLED_HADAMARD << " qr[" << control << "]" << " , qr[" << target << "];\n";
-	}
-}
-
-
 
 void Circuit::ch(string qreg, unsigned int control, unsigned int target) {
 	if (system == "IBM") {
@@ -556,12 +442,6 @@ void Circuit::ch(string qreg1, unsigned int control, string qreg2, unsigned int 
 
 
 //CCX
-void Circuit::ccx(unsigned int control, unsigned int target1, unsigned int target2) {
-	if (system == "IBM") {
-		outputQASM << QASM::TOFFOLI << " qr[" << control << "]," << " qr[" << target1 << "],"  "qr[" << target2 << "];\n";
-	}
-
-}
 
 void Circuit::ccx(string qreg, unsigned int control, unsigned int target1, unsigned int target2) {
 	if (system == "IBM") {
@@ -583,15 +463,6 @@ void Circuit::ccx(string qreg1, unsigned int control, string qreg2, unsigned int
 
 
 //CCU1
-void Circuit::ccu1(unsigned int control1, unsigned int control2, unsigned int target, string theta) {
-	if (system == "IBM") {
-		this->cu(control2, target, theta + "/2");
-		this->cx(control1, control2);
-		this->cu(control2, target, "-" + theta + "/2");
-		this->cx(control1, control2);
-		this->cu(control1, target, theta + "/2");
-	}
-}
 
 
 void Circuit::ccu1(string qreg, unsigned int control1, unsigned int control2, unsigned int target, string theta) {
@@ -683,11 +554,6 @@ void Circuit::ccgate(string qreg, unsigned int control1, unsigned int control2, 
 
 
 //SWAP
-void Circuit::swap(unsigned int control, unsigned int target) {
-	if (system == "IBM") {
-		outputQASM << QASM::SWAP << " qr[" << control << "]" << " , qr[" << target << "];\n";
-	}
-}
 
 
 //barrier
