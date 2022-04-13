@@ -365,16 +365,10 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 		// throw error if number of parameters required for function call are incorrect
 		if (func_tree->get_function_parameters().size() != tree->getRoot()->get_func_params().size()) {
 			// change color to red
-			cout << "\u001b[31m";
 
-			// throw error
 			cout << "FUNCTION " << func_tree->getRoot()->getTValue() << " DOES NOT TAKE " << tree->getRoot()->get_func_params().size() << " PARAMETERS";
 			
-			// change color to red
-			cout << "\u001b[37m";
-
-			// exit
-			exit(0);
+			exit(1);
 		}
 
 		// iterate over each parameter in function parameters

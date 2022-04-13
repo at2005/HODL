@@ -1,2 +1,3 @@
-define @o1 { 
+define @o1(%Pauli x ,double idk ,i64 stuff ) {
+__qir_hadamard__
 }
