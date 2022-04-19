@@ -19,7 +19,7 @@ It is an ongoing effort to shift the compilation target from OpenQASM 2.0 to a m
         if(a < 2) {
             mark(a,pi);
         }
-    """
+    """)
 	
 	circ = oracle_instance.to_circ([inputs_go_here])
 	circ.draw(output="mlp")
