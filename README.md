@@ -12,16 +12,18 @@ Run the compiler with executable name "qc" (with or without prefixing directory 
 
 # Ongoing Efforts
 
-It is a goal to create bridges between current frameworks and HODL such that oracles can be written in those frameworks with the support of the HODL compiler. This would eliminate the need for having to write, compile & load a separate HODL program, and would integrate the language into current workflows. For example, a QISKit program incorporating HODL may look like:
-    
-    from qiskit.HODL import hodl2circ
-    circ = hodl2circ("""
+It is an ongoing effort to shift the compilation target from OpenQASM 2.0 to a more general Quantum Intermediate Representation (QIR) format, and to build interfaces between current frameworks and HODL. This work has been started and is in its early stages for QISKit:
+     
+    oracle_instance = init_hodl("""
         super a = 4;
         if(a < 2) {
             mark(a,pi);
         }
     """
-    circ.measure_all();
+	
+	circ = oracle_instance.to_circ([inputs_go_here])
+	circ.draw(output="mlp")
+	
 
 # Notes
 
