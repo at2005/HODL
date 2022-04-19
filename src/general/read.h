@@ -34,9 +34,7 @@ Lex execute_lex(string src_file) {
 		else {
 
 			FileIn.close();
-			system("Color 04");
 			cout << "FILE DOES NOT EXIST!\n\n";
-			system("Color 0F");
 			exit(0);
 		}
 
@@ -45,13 +43,17 @@ Lex execute_lex(string src_file) {
 }
 
 
-template<typename T>
+void print_help_menu() {
+	cout << "\nNice. Thanks for installing HODL:)\nAnyways, here are all the functions:\n\n";
+	cout << "\t-o option: specify output file\n";
+	cout << "\t-t option: print instruction tape representation of program\n";
+	cout << "\t-n option: print number of logical qubits used by program\n";
+	cout << "\t-h option: this!\n";
+	cout << "See if you can find any Easter Eggs :)\n";
 
-void print_vector(vector<T> input) {
-	for (int i = 0; i < input.size(); i++) {
-		cout << input[i].getToken() << " : " << input[i].getValue() << endl;
-	}
 
 }
+
+
 
 #endif

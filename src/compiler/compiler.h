@@ -2,6 +2,7 @@
 #define COMPILER_H
 
 #include "../general/read.h"
+#include "../general/debug.h"
 #include "../parser/ast.h"
 #include "resources.h"
 #include "../circuit/circuit.h"
@@ -16,7 +17,9 @@
 unordered_map<string, bool> options = {
 	{"-t", 0},
 	{"-o", 0},
-	{"-n", 0}
+	{"-n", 0},
+	{"--ayush", 0},
+	{"-h",0}
 };
 
 
@@ -30,11 +33,22 @@ int compile(int num_args, char** args) {
 	const char* program_file = args[num_args-1];
 	target_file = "out.qasm";	
 	// iterate over command line args
-	for (int i = 1; i < num_args - 1; i++) {
+	for (int i = 1; i < num_args; i++) {
 		// set flag for corresponding option
 		options[args[i]] = 1;
 		if(!strcmp(args[i], "-o")) {
 			target_file = args[i+1];
+		}
+
+		if(!strcmp(args[i],"-h")) {
+			
+			print_help_menu();
+			exit(0);
+		}
+
+		else if(!strcmp(args[i], "--ayush")) {
+			print_debug_info();
+			exit(0);
 		}
 
 
