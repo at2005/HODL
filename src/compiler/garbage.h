@@ -25,9 +25,9 @@ public:
 	QuantumVariable* get_garbage_register(int register_size) {
 		
 		for (int reg = 0; reg < garbage_registers.size(); reg++) {
-			/*if (garbage_registers[reg]->get_num_qubits() == register_size) {
+			if (garbage_registers[reg]->get_num_qubits() == register_size) {
 				return garbage_registers[reg];
-			}*/
+			}
 		}
 
 		return NULL;

@@ -24,10 +24,8 @@ public:
 
 	const std::string getValue() {
 		// if not NULL get value component
-		if (this) {
-			if (&this->value != NULL) {
+		if (&this->value != NULL) {
 				return this->value;
-			}
 		}
 
 		else {
@@ -38,7 +36,6 @@ public:
 
 	const std::string getToken() {
 		// get token component
-		if (this) {
 			if (&this->token != NULL) {
 				// return token
 				return this->token;
@@ -48,7 +45,6 @@ public:
 				// else return TOKEN_NDEF
 				return "TOKEN_NDEF";
 			}
-		}
 
 		// default return NULL string
 		return "";
