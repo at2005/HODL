@@ -15,7 +15,7 @@ oracle some_oracle(super var) { ### takes a superposition as an input
 
 function main() {
 	#declare a uniform superposition of 3 qubits, e.g. |0>+|1>+|2>...|7> / sqrt(8)
-	super variable = 16;
+	super variable = 8;
 	
 	### "filter" function is Grover's algorithm  - e.g. Quantum search
 	### oracles are not first class objects

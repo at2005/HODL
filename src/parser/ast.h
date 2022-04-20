@@ -13,6 +13,7 @@ public:
 	}
 
 	SyntaxTree(Node* node) {
+		this->parent = nullptr;
 		this->type = "NULL";
 		this->root_of_tree = node;
 		this->name = "ID";
@@ -31,6 +32,7 @@ public:
 	SyntaxTree(vector<Pair> inputExpr) {
 		//cout << "hello\n";
 		this->type = "NULL";
+		this->parent = nullptr;
 		this->expression_type = rtnExprType(inputExpr);
 		//cout << expression_type;
 		this->root_of_tree = new Node();
@@ -129,14 +131,17 @@ public:
 	}
 
 	
+	SyntaxTree* get_parent() {
+		return this->parent;
 
+	}
 
 	string getName() {
 		return this->name;
 	}
 
 
-	vector<SyntaxTree> get_child_trees() {
+	vector<SyntaxTree>& get_child_trees() {
 		return this->child_trees;
 	}
 	
@@ -149,6 +154,16 @@ public:
 	
 	vector<SyntaxTree> get_function_parameters() {
 		return this->function_parameters;
+	}
+
+	void setcf() {
+		this->cond_flag = true;
+
+	}
+
+	bool getcf() {
+		return this->cond_flag;
+
 	}
 
 	void set_table(SymbolTable* table) {
@@ -164,6 +179,7 @@ public:
 
 private:
 	bool check = false;
+	bool cond_flag;
 	//expression type
 	string expression_type;
 	string name;
@@ -173,7 +189,7 @@ private:
 	SymbolTable* current_scope;
 	vector<SyntaxTree> child_trees = {};
 	vector<SyntaxTree> function_parameters = {};
-
+	SyntaxTree* parent;
 	
 	
 	//parse body of code block
@@ -184,6 +200,7 @@ private:
 
 		for (int i = 0; i < vec.size(); i++) {
 			SyntaxTree* st = new SyntaxTree(vec[i]);
+			st->parent = this;
 			this->child_trees.push_back(*st);
 		}
 	}

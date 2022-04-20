@@ -27,15 +27,15 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 
 				// set value of variable to interpreted value of right-hand-side
 				variable->set_value(value);
-				cout << value;
 				// add classical variable in table
 				table.push_classical_var(variable);
 			}
 		}
 
+			
+
 		// case for operation
 		else if (node->getTToken() == "OPERATOR" || node->getTToken() == "COMPARISON_OPERATOR") {
-			
 			SyntaxTree tree_left(node->getLeftChild());
 			SyntaxTree tree_right(node->getRightChild());
 			// initialize result to zero
@@ -46,14 +46,11 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 
 			// right is the right-hand-child
 			string right = node->getRightChild()->getTValue();
-			cout << left << right << endl;
 			// if right node is an identifier
 			if (node->getRightChild()->getTToken() == "IDENTIFIER") {
 				// check if right node is a classical variable
 				if (table.cvar_exists(right)) {
 					// set flag to classical if so
-					cout << "hellofsdfs\n\n";
-					cout << table.search_ctable(right)->get_value();
 					node->getRightChild()->set_classical();
 				}
 			}
@@ -201,24 +198,33 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 			}
 		}
 
+
+		else if(node->getTValue() == "if") {
+			SyntaxTree* st = new SyntaxTree(node->getLeftChild());
+			if(st->getRoot()->is_classical()) {
+				if(interpret(st, table, false)) {
+					tree->setcf();
+
+				}
+			}
+
+		}
+
 		else if (node->getTValue() == "for") {
 			interpret(&tree->get_function_parameters()[0], table,true);
-			//cout << interpret(tree.get_function_parameters()[1], table, true);
 			vector<SyntaxTree> child_trees = {};
 			while (interpret(&tree->get_function_parameters()[1], table, true)) {
 				for (int i = 0; i < tree->get_child_trees().size(); i++) {
-					//cout << "hi";
 					interpret(&tree->get_child_trees()[i], table,true);
 					child_trees.push_back(tree->get_child_trees()[i]);
 
 				}
-
+				
 				interpret(&tree->get_function_parameters()[2], table, true);
 				
 			}
 			
 			tree->set_child_trees(child_trees);
-			cout << &tree << endl;;
 
 		}
 
@@ -226,7 +232,6 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false) {
 		else if(node->getTValue() == "while") {
 			vector<SyntaxTree> child_trees = {};
 			SyntaxTree* cond = new SyntaxTree(node->getLeftChild());
-			cout << cond << endl;
 			
 			while(interpret(cond, table, true)) {
 				

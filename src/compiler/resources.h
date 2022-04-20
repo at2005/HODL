@@ -7,7 +7,7 @@
 // THIS FUNCTION COMPUTES SIZE OF EACH REGISTER REQUIRED AND CREATES THEM
 
 
-inline unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumVariable* dependency, Node* expr_node, bool is_right_child, map<string, string> parameter_map) {
+unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumVariable* dependency, Node* expr_node, bool is_right_child, map<string, string> parameter_map) {
 	// Root node for expression parsing
 	//cout << tree;
 	Node* node = tree->getRoot();
@@ -81,7 +81,7 @@ inline unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, Q
 			Function* func = func_table->search_global_func_stack(node->getTValue());
 
 			// create child trees
-			vector<SyntaxTree> child_trees = func->get_syntax_tree()->get_child_trees();
+			vector<SyntaxTree>& child_trees = func->get_syntax_tree()->get_child_trees();
 
 			// create new parameter map - initialized to input parameter map
 			// This creates maps all input values to their position in the function definition
@@ -315,6 +315,19 @@ inline unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, Q
 
 		// for conditionals
 		else if (node->getTValue() == "if" || node->getTValue() == "elsif") {
+
+			if(node->getLeftChild()->is_classical()) {
+				if(tree->getcf()) {
+					for(auto& child: tree->get_child_trees()) {
+						eval_resources(&child, table, nullptr, nullptr, false, parameter_map);
+
+					}
+				}
+
+				return 0;
+
+			}
+
 			SyntaxTree tree_left(node->getLeftChild());
 
 			// evaluate resources for condition
@@ -324,7 +337,10 @@ inline unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, Q
 
 			// set result register
 			node->getLeftChild()->set_result_register(table->GET_CMP_REGISTER());
+			for(auto& child: tree->get_child_trees()) {
+				eval_resources(&child, table, nullptr, nullptr, false, parameter_map);
 
+			} 
 		}
 
 

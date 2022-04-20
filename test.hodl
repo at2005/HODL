@@ -1,0 +1,14 @@
+
+function test() {	
+	super var = 2;
+	if(1 == 0) {
+		var += 20;
+
+	}
+
+}
+
+
+function main() {
+	test();
+}

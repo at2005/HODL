@@ -111,13 +111,12 @@ int compile(int num_args, char** args) {
 	for (int statement = 0; statement < statements.size(); statement++) {
 		// temporary var to store AST
 		SyntaxTree& st_ref = statements[statement];
-		//cout << st_ref.getRoot()->getTValue();
-	//	// evaluate resources on AST
+		// evaluate resources on AST
 		eval_resources(&st_ref, &main_table);
-		//cout << "hi\n";
-
-	//	// iterate over each child tree and evaluate resources for it
-	//	// NOTE -> THIS MUST BE CHANGED. IT DOESN'T WORK FOR NESTED EXPRESSIONS!!!!!
+		
+		
+		// iterate over each child tree and evaluate resources for it
+		// NOTE -> THIS MUST BE CHANGED. IT DOESN'T WORK FOR NESTED EXPRESSIONS!!!!!
 		for (int child_statement = 0; child_statement < st_ref.get_child_trees().size(); child_statement++) {
 	
 			eval_resources(&st_ref.get_child_trees()[child_statement], &main_table);

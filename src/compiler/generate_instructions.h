@@ -80,8 +80,6 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 		// case for the filter function which performs the Diffusion operator
 		if (root->getTValue() == "filter") {
 			// get oracle data
-			//cout << stoi(params[0]);
-			//cout << stoi(params[0],0,16);
 			struct oracle_data* info_oracle = ptr_to_orac;
 			// get pointer to function definition
 			Function* ptr = info_oracle->func_def;
@@ -261,7 +259,21 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 
 	// case for if statement
 	else if (tree->get_expr_type() == "IF_STATEMENT" || tree->get_expr_type() == "ELSE_IF_STATEMENT") {
-		
+		// case for classical conditionals which are to be executed
+		if(tree->getRoot()->getLeftChild()->is_classical()) {
+			if(tree->getcf()) {
+				for(auto& child: tree->get_child_trees()) {
+					create_instructions(instructions, &child, param_map, table);
+
+				}
+
+			}
+			
+			return "";
+
+		}
+
+
 		// get size of instructions at first stage
 		unsigned int size_of_instructions = instructions.size();
 		SyntaxTree lltree = (SyntaxTree)tree->getRoot()->getLeftChild()->getLeftChild();
@@ -387,7 +399,6 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 
 			// create oracle data structure
 			oracle_data* o_data = new oracle_data;
-			cout << o_data;
 			// set function definition pointer
 			o_data->func_def = func;
 
@@ -408,7 +419,7 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 
 		// iterate over each child tree in function tree
 		for (int child_tree = 0; child_tree < func_tree->get_child_trees().size(); child_tree++ ) {
-			SyntaxTree func_child_tree = (SyntaxTree)func_tree->get_child_trees()[child_tree];
+			SyntaxTree& func_child_tree = func_tree->get_child_trees()[child_tree];
 			// create each instruction
 			create_instructions(instructions, &func_child_tree, *parameter_map, func_tree->get_table() , controls);
 		}
