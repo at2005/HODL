@@ -31,7 +31,8 @@ struct
 	unordered_map<string, int> bool_expr = {
 		{"&" , 1},
 		{"|", 1},
-		{"!", 1}
+		{"!", 1},
+		{"^",1}
 	};
 
 

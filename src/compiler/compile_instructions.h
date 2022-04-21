@@ -229,6 +229,12 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 					qc.cx(qvar2->get_qreg(), 0, result_reg->get_qreg(), 0);
 				}
 
+				else if(type == "^") {
+					qc.cx(qvar1->get_qreg(), 0, result_reg->get_qreg(),0);
+					qc.cx(qvar2->get_qreg(), 0, result_reg->get_qreg(),0);
+
+				}
+
 	
 				
 			}

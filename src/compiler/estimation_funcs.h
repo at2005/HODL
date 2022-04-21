@@ -6,9 +6,9 @@
 #include <map>
 
 
-inline unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumVariable* dependency = nullptr, Node* expr_node = nullptr, bool is_right_child = false, map<string, string> parameter_map = {});
+ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumVariable* dependency = nullptr, Node* expr_node = nullptr, bool is_right_child = false, map<string, string> parameter_map = {});
 
-inline std::map<string, string> number_to_word() {
+ std::map<string, string> number_to_word() {
 	std::map<std::string, std::string> numbers;
 	numbers.insert({ "0", "zero" });
 	numbers.insert({ "1", "one" });
@@ -29,7 +29,7 @@ inline std::map<string, string> number_to_word() {
 
 
 
-inline string get_num_to_words(string number) {
+ string get_num_to_words(string number) {
 	string output = "";
 	std::map<string, string> number_map = number_to_word();
 	for (int i = 0; i < number.size(); i++) {
@@ -42,27 +42,27 @@ inline string get_num_to_words(string number) {
 }
 
 
-inline QuantumVariable max_var(QuantumVariable a, QuantumVariable b) {
+ QuantumVariable max_var(QuantumVariable a, QuantumVariable b) {
 	return a.get_num_qubits() > b.get_num_qubits() ? a : b;
 }
 
 
-inline string getIdentifier(string left, string right) {
+ string getIdentifier(string left, string right) {
 	return isIdentifier(left) ? left : right;
 }
 
-inline string getNumeric(string left, string right) {
+ string getNumeric(string left, string right) {
 	return isNumeric(left) ? left : right;
 }
 
 
 
-inline int estimate_addition(QuantumVariable qvar1, QuantumVariable qvar2) {
+ int estimate_addition(QuantumVariable qvar1, QuantumVariable qvar2) {
 	return max_var(qvar1, qvar2).get_num_qubits() + 1;
 }
 
 
-inline int estimate_addition(QuantumVariable qvar, int number) {
+ int estimate_addition(QuantumVariable qvar, int number) {
 	int num_qubits = floor(log2(number)) + 1;
 	if (num_qubits > qvar.get_num_qubits()) {
 		return num_qubits + 1;
@@ -72,31 +72,31 @@ inline int estimate_addition(QuantumVariable qvar, int number) {
 }
 
 
-inline int estimate_addition(int num_qubits1, int num_qubits2) {
+ int estimate_addition(int num_qubits1, int num_qubits2) {
 	return max(num_qubits1, num_qubits2) + 1;
 }
 
 
 
 
-inline void estimate_addition_append(QuantumVariable& qvar1, QuantumVariable qvar2) {
+ void estimate_addition_append(QuantumVariable& qvar1, QuantumVariable qvar2) {
 	qvar1.set_num_qubits(max_var(qvar1, qvar2).get_num_qubits() + 1);
 
 }
 
-inline void estimate_addition_append(QuantumVariable& qvar, int num) {
+ void estimate_addition_append(QuantumVariable& qvar, int num) {
 	unsigned int num_qubits = floor(log2(num)) + 1;
 	qvar.set_num_qubits(max<int>(num_qubits, num) + 1);
 }
 
-inline int estimate_addition_append(int num_qubits1, int num_qubits2) {
+ int estimate_addition_append(int num_qubits1, int num_qubits2) {
 
 	return (max<int>(num_qubits1, num_qubits2) + 1);
 }
 
 
 
-inline int estimate_subtraction(QuantumVariable& qvar1, QuantumVariable qvar2) {
+ int estimate_subtraction(QuantumVariable& qvar1, QuantumVariable qvar2) {
 	if (qvar2.get_num_qubits() > qvar1.get_num_qubits()) {
 		qvar1.set_num_qubits(qvar2.get_num_qubits());
 	}
@@ -104,16 +104,16 @@ inline int estimate_subtraction(QuantumVariable& qvar1, QuantumVariable qvar2) {
 	return max_var(qvar1, qvar2).get_num_qubits();
 }
 
-inline int estimate_subtraction(QuantumVariable& qvar, int num) {
+ int estimate_subtraction(QuantumVariable& qvar, int num) {
 	return qvar.get_num_qubits();
 }
 
-inline int estimate_subtraction(int num_qubits1, int num_qubits2) {
+ int estimate_subtraction(int num_qubits1, int num_qubits2) {
 	return max<int>(num_qubits1, num_qubits2);
 }
 
 
-inline int estimate_subtraction_append(QuantumVariable& qvar1, QuantumVariable qvar2) {
+ int estimate_subtraction_append(QuantumVariable& qvar1, QuantumVariable qvar2) {
 	if (qvar2.get_num_qubits() > qvar1.get_num_qubits()) {
 		qvar1.set_num_qubits(qvar2.get_num_qubits());
 	}
@@ -122,7 +122,7 @@ inline int estimate_subtraction_append(QuantumVariable& qvar1, QuantumVariable q
 
 }
 
-inline int estimate_subtraction_append(QuantumVariable& qvar1, int num) {
+ int estimate_subtraction_append(QuantumVariable& qvar1, int num) {
 	int num_qubits = floor(log2(num)) + 1;
 	if (num_qubits > qvar1.get_num_qubits()) {
 		qvar1.set_num_qubits(num_qubits);
@@ -131,33 +131,33 @@ inline int estimate_subtraction_append(QuantumVariable& qvar1, int num) {
 	return qvar1.get_num_qubits();
 }
 
-inline int estimate_subtraction_append(int num_qubits1, int num_qubits2) {
+ int estimate_subtraction_append(int num_qubits1, int num_qubits2) {
 	return max<int>(num_qubits1, num_qubits2);
 }
 
 
-inline int estimate_multiplication(QuantumVariable qvar1, QuantumVariable qvar2) {
+ int estimate_multiplication(QuantumVariable qvar1, QuantumVariable qvar2) {
 	return qvar1.get_num_qubits() * 2;//(qvar1.get_num_qubits() + qvar2.get_num_qubits());
 }
 
 
 
-inline int estimate_multiplication(int num_qubits1, int num_qubits2) {
+ int estimate_multiplication(int num_qubits1, int num_qubits2) {
 	return ((num_qubits1 + num_qubits2) + 1);
 }
 
-inline int estimate_int_mult(QuantumVariable qvar, int multiplier) {
+ int estimate_int_mult(QuantumVariable qvar, int multiplier) {
 	int number_of_bits = floor(log2(multiplier) + 1);
 	return ((qvar.get_num_qubits() + number_of_bits));
 }
 
 
-inline void estimate_int_mult_append(QuantumVariable& qvar, int multiplier) {
+ void estimate_int_mult_append(QuantumVariable& qvar, int multiplier) {
 	int number_of_bits = floor(log2(multiplier) + 1);
 	qvar.set_num_qubits((qvar.get_num_qubits() + number_of_bits) - 1);
 }
 
-inline int estimate_range(int upper_bound) {
+ int estimate_range(int upper_bound) {
 	return floor(log2(upper_bound - 1)) + 1;
 }
 

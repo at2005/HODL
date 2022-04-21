@@ -104,18 +104,21 @@ inline vector<Pair> parse_between(string a, string b, vector<Pair> input) {
 }
 
 
-inline map<string, int> get_precedence_map() {
+ map<string, int> get_precedence_map() {
 	map<string, int> precedence_map;
-	precedence_map.insert({ "&" , -10});
-	precedence_map.insert({ ":" , 0 });
-	precedence_map.insert({ ">" , 0 });
-	precedence_map.insert({ "<" , 0 });
-	precedence_map.insert({ "==" , 0 });
-	precedence_map.insert({ ">=" , 0 });
-	precedence_map.insert({ "<=" , 0 });
-	precedence_map.insert({ "+=" , 0 });
-	precedence_map.insert({ "-=" , 0 });
-	precedence_map.insert({ "*=" , 0 });
+
+	precedence_map.insert({"^", 2});
+	precedence_map.insert({"|", 2});
+	precedence_map.insert({ "&" , 2});
+	precedence_map.insert({ ":" , 5 });
+	precedence_map.insert({ ">" , 5 });
+	precedence_map.insert({ "<" , 5 });
+	precedence_map.insert({ "==" , 5 });
+	precedence_map.insert({ ">=" , 5 });
+	precedence_map.insert({ "<=" , 5 });
+	precedence_map.insert({ "+=" , 5 });
+	precedence_map.insert({ "-=" , 5 });
+	precedence_map.insert({ "*=" , 5 });
 	precedence_map.insert({ "+" , 10 });
 	precedence_map.insert({ "-" , 10 });
 	precedence_map.insert({ "|" , 10 });
@@ -247,6 +250,7 @@ inline Node* parse_maths(vector<Pair> input) {
 					currentParent->setPurpose(input[i].getValue());
 				}
 
+				
 				else if (has_seen_op) {
 					Node* np = new Node(input[i], input[i].getValue());
 					//checks for higher precedence
@@ -263,7 +267,6 @@ inline Node* parse_maths(vector<Pair> input) {
 						tempParent = currentParent;
 						currentParent = np;
 						switchParent = true;
-						prev_op = input[i];
 					}
 
 					else if (!currentParent->hasRightChild()) {
@@ -285,6 +288,7 @@ inline Node* parse_maths(vector<Pair> input) {
 					}
 
 
+					prev_op = input[i];
 
 				}
 
@@ -292,6 +296,8 @@ inline Node* parse_maths(vector<Pair> input) {
 
 
 			}
+			
+
 			//case for expression in parantheses
 			else if (input[i].getToken() == "COMMENCE_PARANTHESES") {
 				if (has_seen_id) {
