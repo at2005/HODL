@@ -11,6 +11,7 @@ using namespace std;
 
 //utility function for returning separated values
 
+
 inline vector<vector<Pair>> returnSep(vector<Pair> inputExpr) {
 	vector<vector<Pair>> tempVec = {};
 	vector<Pair> i_stmnts = {};
@@ -123,8 +124,7 @@ inline vector<Pair> parse_between(string a, string b, vector<Pair> input) {
 	precedence_map.insert({ "-" , 10 });
 	precedence_map.insert({ "|" , 10 });
 	precedence_map.insert({ "*" , 20 });
-	precedence_map.insert({ "/" , 20 });
-	
+	precedence_map.insert({ "/" , 20 });	
 
 	return precedence_map;
 }

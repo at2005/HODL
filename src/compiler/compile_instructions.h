@@ -26,6 +26,8 @@ void create_assembly(Circuit& qc, INSTRUCTION assembly) {
 		// case for HADAMARD Gate
 		if (type == "H") {
 			qc.h(func_params[0]);
+		
+
 		}
 
 		// case for X/NOT Gate
@@ -67,12 +69,12 @@ void create_assembly(Circuit& qc, INSTRUCTION assembly) {
 		else if (type == "CCX") {
 			qc.ccx(func_params[0],0, func_params[1],0, func_params[2],0);
 		}
+
+		
 	}
 
 	// catch incorrect parameters exception
 	catch (const char*) {
-		// change font color to red
-		system("Color 4");
 		// print error message
 		cerr << "INCORRECT_PARAMS_ERROR";
 		// exit program
@@ -169,18 +171,26 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 					
 				}
 
+			
 
 				// check if our operation is relational (comparison)
 				if (isCompOp(type)) {
 					// get size of ancillary register. It is the size of the largest input
 					int num_qubits_ancilla = qvar1->get_num_qubits() > qvar2->get_num_qubits() ? qvar1->get_num_qubits() : qvar2->get_num_qubits();
 					
-					// create ancillary register
-					table->ADD_ANCILLA_REGISTER(num_qubits_ancilla);
 					
-					// get ancillary register
-					QuantumVariable* ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());
-					
+					// reuse garbage register
+					QuantumVariable* ancilla = Garbage::get_garbage()->get_garbage_register(num_qubits_ancilla);
+
+					if(ancilla == nullptr) {
+						// create ancillary register
+						table->ADD_ANCILLA_REGISTER(num_qubits_ancilla);
+						// get ancillary register
+						QuantumVariable* ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());
+					}
+
+
+
 					// add ancillary register to circuit
 					qc.add_qregister(*ancilla);
 					
@@ -235,11 +245,8 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 				}
 
-	
-				
+
 			}
-
-
 			// case where one operand is a number
 
 			else {
@@ -454,7 +461,10 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 						AmplitudeAmplify(qc, *input, *target, *ancilla);
 					}
 
+
+					// compile Quantum Fourier Transform
 					else if (func_name == "Fourier") {
+
 
 					}
 				}
@@ -462,5 +472,6 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 		}
 	}
 }
+
 
 #endif

@@ -12,7 +12,6 @@
 #include "generate_instructions.h"
 #include "compile_instructions.h"
 
-
 // command line options and their flag
 unordered_map<string, bool> options = {
 	{"-t", 0},
@@ -24,11 +23,13 @@ unordered_map<string, bool> options = {
 
 
 
+
+// this function compiles the instructions and generates the output file
 // compile main function
 int compile(int num_args, char** args) {
 	// get function table -> for storing function pointers
 	FunctionTable* function_table = FunctionTable::get_func_table();
-	
+
 	// get program source file from CL
 	const char* program_file = args[num_args-1];
 	target_file = "out.qasm";	
@@ -124,7 +125,6 @@ int compile(int num_args, char** args) {
 
 		
 		// create AST 
-
 		create_instructions(instructions, &st_ref, {}, &main_table);
 	}
 		// If -t (tape) option true,
@@ -137,16 +137,32 @@ int compile(int num_args, char** args) {
 
 		}
 
-	// iterate over each quantum variable
+
+	// iterate over each quantum variable - gets rid of duplicates
+	int tqubits = 0;
 	for (QuantumVariable*& qvar : qc->get_qvars()) {
 		// add quantum register to circuit
 		qc->add_qregister(*qvar);
-		
+		if(target_system == "QIR") {
+			qvar->set_phys_start(tqubits);
+			tqubits += qvar->get_num_qubits();
+		}
 	}
 
+	
+	
 
 	// iterate over instructions and compile each instruction
 	compile_instructions(*qc, instructions, &main_table);
+
+//	target_system = "QIR";
+	if(target_system == "QIR") {
+		qc->qirc.llvm_fterm();
+		qc->qirc.qgate_decl();
+
+	}
+
+
 
 	if(options["-n"]) {
 		cout << "logical qubit count: " << qc->total_qubits << endl;

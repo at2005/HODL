@@ -23,7 +23,6 @@ function deutsch_josza(super inputs) {
 }
 
 
-
 # main function, i.e., body of program
 
 function main() {

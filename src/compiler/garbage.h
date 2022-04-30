@@ -4,6 +4,7 @@
 #include "../tables/data.h"
 using namespace std;
 
+
 class Garbage {
 	 Garbage() {}
 	 static Garbage* garbage;
@@ -23,14 +24,13 @@ public:
 	}
 
 	QuantumVariable* get_garbage_register(int register_size) {
-		
 		for (int reg = 0; reg < garbage_registers.size(); reg++) {
 			if (garbage_registers[reg]->get_num_qubits() == register_size) {
 				return garbage_registers[reg];
 			}
 		}
 
-		return NULL;
+		return nullptr;
 	}
 
 

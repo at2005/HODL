@@ -103,9 +103,9 @@ private:
 //class for quantum data
 class QuantumVariable : public Data {
 public:
-	QuantumVariable(string q_variable) : Data(q_variable), qreg(q_variable), references_in({}), references_out({}), flag(0) {}
+	QuantumVariable(string q_variable) : Data(q_variable), qreg(q_variable), references_in({}), references_out({}), flag(0), phys_start(0) {}
 	
-	QuantumVariable() : Data(), references_in({}), references_out({}), flag(0) {}
+	QuantumVariable() : Data(), references_in({}), references_out({}), flag(0), phys_start(0) {}
 	
 	void set_name(string new_name) {
 		this->name = new_name;
@@ -121,6 +121,7 @@ public:
 	string get_qreg() {
 		return this->qreg;
 	}
+	
 
 	std::map<QuantumVariable*, Node*> get_dependency_map() {
 		return this->dependency_map;
@@ -149,12 +150,26 @@ public:
 
 	bool flag;
 
+	unsigned int get_phys_start() {
+		return this->phys_start;
+	
+
+	}
+
+	void set_phys_start(unsigned int phys) {
+		this->phys_start = phys;
+
+	}
+
 private:
 	std::map<QuantumVariable*, Node*> dependency_map;
 	vector<QuantumVariable*> references_in;
 	vector<QuantumVariable*> references_out;
 	string qreg;
-	
+	unsigned int phys_start;
+
+
+
 };
 
 

@@ -54,13 +54,15 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 			if (dependency != nullptr) {
 				table->search_qtable(node->getTValue())->set_dependency(dependency, expr_node);
 			}
-
+			
+			// case where identifier is not used within a function
 			if (!func_call) {
 				node->set_result_register(node->getTValue());
 				return table->search_qtable(node->getTValue())->get_num_qubits();
 			}
 
 
+			// if in a function, then search parameter map and return the mapped variable name
 			node->set_result_register(parameter_map.find(node->getTValue())->second);
 			return table->search_qtable(parameter_map.find(node->getTValue())->second)->get_num_qubits();
 		}
@@ -190,8 +192,11 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 						node->set_result_register(table->GET_AX_REGISTER());
 					}
 				}
-			}
 
+
+			}
+			
+			// case where left child is a quantum variable
 			else {
 
 				if (node->getParent()) {

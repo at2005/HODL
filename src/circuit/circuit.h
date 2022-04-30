@@ -6,13 +6,14 @@
 #include <vector>
 #include "gates.h"
 #include "../tables/data.h"
-
+#include "qir.h"
+#include <unordered_map>
 
 using namespace std;
 
 
 class Circuit {
-	Circuit(string target = "out.qasm");
+	Circuit(string target = "out.qasm", string target_system="IBM");
 	Circuit(Circuit& circ);
 public:
 	
@@ -46,22 +47,27 @@ public:
 
 	const void measure_all() {
 		for (int i = 0; i < qubits; i++) {
-			outputQASM << "measure qr[" << i << "] -> cr[" << i << "];\n";
+			output_file << "measure qr[" << i << "] -> cr[" << i << "];\n";
 		}
 	}
 
 	const void measure(int qreg, int creg) {
-		outputQASM << "measure qr[" << qreg << "] -> cr[" << creg << "];\n";
+		output_file << "measure qr[" << qreg << "] -> cr[" << creg << "];\n";
 	}
 
 	const void measure(string qreg, string creg) {
-		outputQASM << "measure " << qreg << " -> " << creg << ";\n";
+		output_file << "measure " << qreg << " -> " << creg << ";\n";
 	}
 
 	void add_qregister(QuantumVariable& qvar);
 	void add_cregister(string creg, int measurable_qubits);
 
 	~Circuit();
+unsigned int true_index(string qreg, unsigned int qubit_offset/*, SymbolTable* table*/);
+		
+	
+
+
 	//HADAMARD GATE FOR SINGLE QUBIT
 	const void h(string qreg, unsigned int qubit_index);
 	//HADAMARD GATE FOR MULTIPLE QUBITS
@@ -207,14 +213,17 @@ public:
 	
 	unsigned int total_qubits;
 
+	QIRCirc qirc;
 private:
 	static Circuit* circuit;
 	unsigned int qubits;
 	unsigned int num_qubits_measured;
 	string system;
-	ofstream outputQASM;
+	ofstream output_file;
 	vector<QuantumVariable*> qregs;
 	vector<string> current_qregs;
+	
+	unordered_map<string, QuantumVariable*> qreg_map; 
 	int total_registers;
 };
 

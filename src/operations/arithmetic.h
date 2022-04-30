@@ -12,9 +12,10 @@
 
 //FUNCTION ALLOWS ADDITION OF NUMBER AND QUANTUM REGISTER WITHOUT STORING NUMBER IN MEMORY
 
+const double pi = 3.14159265358979323846;
+
 void apply_addition_phases(Circuit& qc, unsigned long long num, QuantumVariable output, bool is_sub = false, vector<Conditional> controls = {}) {
 	// define pi
-	const double pi = 3.14159265358979323846;
 
 	// get number of qubits required to store number in binary
 	int num_qubits = floor(log2(num)) + 1;
@@ -80,23 +81,21 @@ void u_rotations_addition_append(Circuit& qc, QuantumVariable qvar1, QuantumVari
 		int pi_divisor_cpy = pi_divisor;
 
 		// string which holds phase
-		string phase = "";
+		double long phase = pi;
 
 		// if we wish to perform subtraction, negate the phase to get its inverse
-		if (inverse) phase += "-";
+		if (inverse) phase *= -1;
 
-		// the phase should take the form of pi/n for some n
-		phase += "pi / ";
 		
 		// for each qubit in the first register, we wish to iterate over all qubits in second register, applying their cumulative phases
 		for (int j = i; j < qvar2.get_num_qubits() + difference /*we assume that both registers are of the same size*/; j++) {
 			// should the qubit index in the second register be within-bounds
 			if(j > difference-1) {
 				// case for no-control addition
-				if (controls.empty()) qc.cu(qvar2.get_qreg(), j - difference, qvar1.get_qreg(), i, to_string(multiplier) + "*" + phase + to_string(pow(2, pi_divisor)));
+				if (controls.empty()) qc.cu(qvar2.get_qreg(), j - difference, qvar1.get_qreg(), i, multiplier *  (phase/(pow(2, pi_divisor))));
 
 				// case for single-control addition
-				else if (controls.size() == 1) qc.ccu1(qvar2.get_qreg(), j - difference, qvar1.get_qreg(), i, controls[0].get_control(), 0, to_string(multiplier) + "*" + phase + to_string(pow(2, pi_divisor)));
+				else if (controls.size() == 1) qc.ccu1(qvar2.get_qreg(), j - difference, qvar1.get_qreg(), i, controls[0].get_control(), 0, multiplier * (phase/(pow(2, pi_divisor))));
 			}
 
 			// increase our pi_divisor by 1
@@ -233,10 +232,14 @@ void subtract_append(Circuit& qc, QuantumVariable qvar, unsigned long long numbe
 
 //MULTIPLICATION UNIT
 
+// this function is used to multiply a register by a number
 void multiply_by_int(Circuit& qc, QuantumVariable qvar1, unsigned int number, QuantumVariable output, bool inverse = false, vector<Conditional> controls = {}) {
+	
+	// if not inverse, apply QFT
 	if (!inverse) qc.h(output.get_qreg());
 	else QFT(qc, output, false);
 	
+	// apply multiplication phases through repeated addition
 	u_rotations_addition_append(qc, output, qvar1, inverse, number, controls);
 	InvQFT(qc, output, false);
 	
@@ -245,11 +248,19 @@ void multiply_by_int(Circuit& qc, QuantumVariable qvar1, unsigned int number, Qu
 
 
 
+// this function multiplies a quantum register by a number and stores it within the same register, ie it performs the operation: REG *= NUM
 void multiply_append_by_int(Circuit& qc, QuantumVariable qvar, int number, bool is_inverse = false, vector<Conditional> controls = {}) {
-	QFT(qc, qvar);
 	
+	// apply QFT
+	QFT(qc, qvar, false);
+	
+	// apply multiplication phases through repeated addition
+	u_rotations_addition_append(qc, qvar, qvar, is_inverse, number, controls);
+	
+	// apply InvQFT
 	InvQFT(qc, qvar, false);
 	
+
 }
 
 
@@ -274,27 +285,28 @@ void multiplication_rotations(Circuit& qc, QuantumVariable qvar1, QuantumVariabl
 
 
 
-
+// this function is used to multiply two quantum variables
 void multiply_reg_by_reg(Circuit& qc, QuantumVariable qvar1, QuantumVariable qvar2, QuantumVariable output) {
-	
-	//unsigned int shift = output.get_num_qubits() - (qvar1.get_num_qubits() + qvar2.get_num_qubits());
 
-	
+	// initialise the output register
 	for (int i = 0; i < output.get_num_qubits(); i++) {
 		qc.h(output.get_qreg(), i);
 	}
 
 
-
+	// perform the multiplication
 	int num_iterations = 1;
+	// iterate through each qubit of the output register
 	for (int output_qubit = 0; output_qubit < output.get_num_qubits(); output_qubit++) {
-
+		
+		// apply the multiplication rotations
 		multiplication_rotations(qc, qvar1, qvar2, output.get_qreg(), output_qubit, num_iterations);
 
 
 		num_iterations *= 2;
 	}
-
+	
+	// apply the inverse QFT
 	InvQFT(qc, output,  false);
 
 }
