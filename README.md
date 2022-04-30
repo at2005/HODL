@@ -6,7 +6,7 @@ A C-Style programming language for Quantum Computers that currently compiles dow
 
 Language description can be found: https://arxiv.org/abs/2110.12487
 
-Simply download code, navigate to directory, and run make - only for Linux/Unix-based systems (or Cygwin/MinGW) For Windows load src folder into MS Visual Studio and hit build.
+After downloading the source code, navigate to the HODL directory and run "make". This should create an output binary in the bin sub-directory.
 
 Run the compiler with executable name "qc" (with or without prefixing directory depending on whether or not you have added program to path), followed by any compiler options, followed by the file name. This action creates a file named out.qasm (or other, depending on whether it has been specified with "-o") within the directory, which can be run on IBM systems/simulators.
 
