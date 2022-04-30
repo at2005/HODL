@@ -177,8 +177,12 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 				if (isCompOp(type)) {
 					// get size of ancillary register. It is the size of the largest input
 					int num_qubits_ancilla = qvar1->get_num_qubits() > qvar2->get_num_qubits() ? qvar1->get_num_qubits() : qvar2->get_num_qubits();
-					
-					
+					// create ancillary register
+					table->ADD_ANCILLA_REGISTER(num_qubits_ancilla);
+
+					// get ancillary register
+					QuantumVariable* ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());				
+				/*	
 					// reuse garbage register
 					QuantumVariable* ancilla = Garbage::get_garbage()->get_garbage_register(num_qubits_ancilla);
 
@@ -189,7 +193,7 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 						QuantumVariable* ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());
 					}
 
-
+*/
 
 					// add ancillary register to circuit
 					qc.add_qregister(*ancilla);

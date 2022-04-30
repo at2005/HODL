@@ -67,21 +67,16 @@ unsigned int Circuit::true_index(string qreg, unsigned int qubit_offset/*, Symbo
 // add quantum register 
 void Circuit::add_qregister(QuantumVariable& qvar) {
 	// iterate over each quantum register
-	for (int i = 0; i < current_qregs.size(); i++) {
-		// if qvar exists already
-		if (qvar.get_qreg() == current_qregs[i]) {
-			// return
-			return;
-		}
-	}
+	if(qreg_map.find(qvar.get_qreg()) != qreg_map.end()) {
+		return;
 
+	}
 	// else add register to QASM file
 	output_file << "qreg " << qvar.get_qreg() << "[" << qvar.get_num_qubits() << "];\n";
 	
 	total_qubits += qvar.get_num_qubits();
 	// increment total number of registers
 	total_registers++;
-	
 	// add register to circuit object
 	qreg_map.insert({qvar.get_qreg(), &qvar});
 	

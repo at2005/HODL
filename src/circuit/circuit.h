@@ -221,7 +221,6 @@ private:
 	string system;
 	ofstream output_file;
 	vector<QuantumVariable*> qregs;
-	vector<string> current_qregs;
 	
 	unordered_map<string, QuantumVariable*> qreg_map; 
 	int total_registers;

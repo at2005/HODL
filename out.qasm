@@ -102,7 +102,6 @@ qreg cmp2[1];
 x cmp2;
 cu1(pi) cmp1[0],cmp2[0];
 x cmp2;
-qreg ancilla0[6];
 x ax0[0];
 cx ax0 [0] , ancilla0[0];
 x ax0[0];

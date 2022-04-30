@@ -143,11 +143,11 @@ int compile(int num_args, char** args) {
 	for (QuantumVariable*& qvar : qc->get_qvars()) {
 		// add quantum register to circuit
 		qc->add_qregister(*qvar);
-		if(target_system == "QIR") {
+/*		if(target_system == "QIR") {
 			qvar->set_phys_start(tqubits);
 			tqubits += qvar->get_num_qubits();
 		}
-	}
+*/	}
 
 	
 	
