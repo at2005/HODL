@@ -13,7 +13,7 @@ Circuit::Circuit(string target_file, string target_system) {
 	qregs = {};
 	this->total_qubits = 0;
 	this->qreg_map = {}; 
-	if(true/*target_system == "qasm"*/) {
+	if(target_system == "qasm") {
 
 		this->system = "IBM";
 		this->qubits = 0;
@@ -457,7 +457,8 @@ const void Circuit::u(string qreg, unsigned int qubit_index, string theta) {
 	if (system == "IBM") {
 		output_file << fixed << QASM::U1 << "(" << theta << ") " << qreg << "[" << qubit_index << "];\n";
 	}
-	else if(system == "QIR") {	
+	else if(system == "QIR") {
+		cout << "okay" << endl;
 		qirc.phase_gate(true_index(qreg, qubit_index), stod(theta));
 
 	}
@@ -470,6 +471,7 @@ const void Circuit::u(string qreg, string theta) {
 	}
 	else if(system == "QIR") {
 		for(int i = 0; i < qreg_map[qreg]->get_num_qubits(); i++) {	
+		cout << "okay" << endl;
 			qirc.phase_gate(qreg_map[qreg]->get_phys_start() + i, stod(theta));
 		}
 
@@ -532,25 +534,27 @@ const void Circuit::cu(string qreg1, unsigned int control, string qreg2, unsigne
 
 
 const void Circuit::cu(string qreg, unsigned int control, unsigned int target, string theta) {
+	cout << theta << endl;
 	if (system == "IBM") {
 		output_file << fixed << QASM::CU1 << "(" << theta << ") " << qreg << "[" << control << "]," << qreg << "[" << target << "];\n";
 	}
 
 	else if(system == "QIR") {
+		cout << "okay" << endl;
 		qirc.cp_gate(true_index(qreg, control), true_index(qreg, target), stod(theta));
 
 	}
 }
 
 const void Circuit::cu(string qreg1, unsigned int control, string qreg2, unsigned int target, string theta) {
-	cout << theta << endl;
-
-if (system == "IBM") {
-		output_file << fixed << QASM::CU1 << "(" << theta << ") " << qreg1 << "[" << control << "]," << qreg2 << "[" << target << "];\n";
-	}
+	
+	if (system == "IBM") {
+			output_file << fixed << QASM::CU1 << "(" << theta << ") " << qreg1 << "[" << control << "]," << qreg2 << "[" << target << "];\n";
+		}
 
 
 	else if(system == "QIR") {
+	cout << qreg1 << qreg2 << endl;
 		qirc.cp_gate(true_index(qreg1, control), true_index(qreg2, target), stod(theta));
 
 	}
@@ -570,6 +574,7 @@ if (system == "IBM") {
 
 
 void Circuit::cx(string qreg, unsigned int control, unsigned int target) {
+
 	if (system == "IBM") {
 		output_file << QASM::CONTROLLED_NOT << " " << qreg << " [" << control << "]" << " , " << qreg << "[" << target << "];\n";
 	}
@@ -705,6 +710,21 @@ void Circuit::ccu1(string qreg, unsigned int control1, unsigned int control2, un
 }
 
 
+void Circuit::ccu1(string qreg, unsigned int control1, unsigned int control2, unsigned int target, double theta) {
+	if (system == "IBM") {
+		this->cu(qreg, control2, target, theta/2);
+		this->cx(qreg, control1, control2);
+		this->cu(qreg, control2, target, -1*theta/2);
+		this->cx(qreg, control1, control2);
+		this->cu(qreg, control1, target, theta/2);
+		
+
+	}
+	else if(system == "QIR") {
+	}
+
+}
+
 void Circuit::ccu1(string qreg1, unsigned int control1, string qreg2, unsigned int control2, string qreg3, unsigned int target, string theta) {
 	if (system == "IBM") {
 		this->cu(qreg2, control2, qreg3, target, theta + "/2");
@@ -718,6 +738,7 @@ void Circuit::ccu1(string qreg1, unsigned int control1, string qreg2, unsigned i
 
 	}
 }
+
 
 
 void Circuit::ccu1(string qreg1, unsigned int control1, string qreg2, unsigned int control2, string qreg3, unsigned int target, double theta) {

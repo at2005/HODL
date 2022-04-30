@@ -58,9 +58,6 @@ int compile(int num_args, char** args) {
 		
 	//lexical analysis -> stored in vector of token-values
 	vector<Pair> TokenValues = execute_lex(program_file).get_lex().dict_output;
-	for(auto& i : TokenValues) {
-//		cout << i.getValue() << i.getToken() <<  endl;
-	}	
 		
 	// get circuit object
 	Circuit* qc = Circuit::get_circuit(target_file);
@@ -68,7 +65,6 @@ int compile(int num_args, char** args) {
 	//print_vector(TokenValues);
 	//breaks up into individual expressions
 	vector<vector<Pair>> expressions = getEachExpression(TokenValues);
-	
 	
 	// main function symbol table
 	SymbolTable main_table;
@@ -143,11 +139,11 @@ int compile(int num_args, char** args) {
 	for (QuantumVariable*& qvar : qc->get_qvars()) {
 		// add quantum register to circuit
 		qc->add_qregister(*qvar);
-/*		if(target_system == "QIR") {
+		if(target_system == "QIR") {
 			qvar->set_phys_start(tqubits);
 			tqubits += qvar->get_num_qubits();
 		}
-*/	}
+	}
 
 	
 	
@@ -155,7 +151,7 @@ int compile(int num_args, char** args) {
 	// iterate over instructions and compile each instruction
 	compile_instructions(*qc, instructions, &main_table);
 
-//	target_system = "QIR";
+	target_system = "QIR";
 	if(target_system == "QIR") {
 		qc->qirc.llvm_fterm();
 		qc->qirc.qgate_decl();

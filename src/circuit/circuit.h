@@ -13,7 +13,7 @@ using namespace std;
 
 
 class Circuit {
-	Circuit(string target = "out.qasm", string target_system="IBM");
+	Circuit(string target = "out.qir", string target_system="QIR");
 	Circuit(Circuit& circ);
 public:
 	
@@ -188,10 +188,9 @@ unsigned int true_index(string qreg, unsigned int qubit_offset/*, SymbolTable* t
 
 	//MULTIPLE-CONTROLLED CCU1 GATE
 	void ccu1(string qreg,unsigned int control1, unsigned int control2, unsigned int target, string theta);
+	void ccu1(string qreg,unsigned int control1, unsigned int control2, unsigned int target, double theta);
 	void ccu1(string qreg1, unsigned int control1,string qreg2, unsigned int control2,string qreg3, unsigned int target, string theta);
-
-	void ccu1(string qreg1, unsigned int control1, string qreg2, unsigned int control2, string qreg3, unsigned int target, double theta);
-
+	void ccu1(string qreg1, unsigned int control1,string qreg2, unsigned int control2,string qreg3, unsigned int target, double theta);
 
 
 	//MULTIPLE-CONTROLLED CC-GATE

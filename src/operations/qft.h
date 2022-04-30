@@ -7,6 +7,7 @@
 //implement an n qubit Quantum Fourier Transform and its inverse
 
 
+const double pi = 3.14159265358979323846;
 
 void QFT(Circuit& qc, QuantumVariable qvar1, bool do_swaps = true) {
 
@@ -25,7 +26,7 @@ void QFT(Circuit& qc, QuantumVariable qvar1, bool do_swaps = true) {
 					break;
 				}
 				
-					qc.cu(qvar1.get_qreg(), j, i, "pi/", pow(2, counter));
+					qc.cu(qvar1.get_qreg(), j, i, pi /  pow(2, counter));
 				
 				counter++;
 			}
@@ -67,7 +68,7 @@ void QFT(Circuit& qc, QuantumVariable qvar1, vector<Conditional> controls, bool 
 				}
 
 				if (controls.size() == 1) {
-					qc.ccu1(controls[0].get_control(), 0 ,qvar1.get_qreg(), j, qvar1.get_qreg(), i, "pi/" + to_string(pow(2, counter)));
+					qc.ccu1(controls[0].get_control(), 0 ,qvar1.get_qreg(), j, qvar1.get_qreg(), i, pi/(pow(2, counter)));
 				}
 				counter++;
 			}
@@ -102,7 +103,7 @@ void QFT(Circuit& qc, QuantumVariable qvar1, int start, int end, bool do_swaps =
 				if (j == i) {
 					break;
 				}
-				qc.cu(qvar1.get_qreg(), j, i, "pi/", pow(2, counter));
+				qc.cu(qvar1.get_qreg(), j, i, pi/pow(2, counter));
 				counter++;
 			}
 
@@ -147,7 +148,7 @@ void InvQFT(Circuit& qc, QuantumVariable qvar, bool do_swaps = true) {
 				if (i == j) {
 					break;
 				}
-				qc.cu(qvar.get_qreg(), j, qvar.get_qreg(), i, "-pi/", pow(2, temp - 2));
+				qc.cu(qvar.get_qreg(), j, qvar.get_qreg(), i, -1*pi/pow(2, temp - 2));
 				temp--;
 			}
 
@@ -178,7 +179,7 @@ void InvQFT(Circuit& qc, QuantumVariable qvar, vector<Conditional> controls, boo
 				}
 
 				if (controls.size() == 1) {
-					qc.ccu1(controls[0].get_control(), 0, qvar.get_qreg(), j, qvar.get_qreg(), i, "-pi/" + to_string(pow(2, temp - 2)));
+					qc.ccu1(controls[0].get_control(), 0, qvar.get_qreg(), j, qvar.get_qreg(), i, -1*pi/(pow(2, temp - 2)));
 				}
 				temp--;
 			}
@@ -211,7 +212,7 @@ void InvQFT(Circuit& qc, QuantumVariable qvar, int start, int end, bool do_swaps
 				if (i == j) {
 					break;
 				}
-				qc.cu(qvar.get_qreg(), j, qvar.get_qreg(), i, "-pi/", pow(2, temp - 2));
+				qc.cu(qvar.get_qreg(), j, qvar.get_qreg(), i, -1*pi/ pow(2, temp - 2));
 				temp--;
 			}
 			//qc.barrier();

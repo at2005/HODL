@@ -8,15 +8,6 @@ using namespace std;
 #include <fstream>
 #include <iostream>
 #include <map>
-static struct {
-	string qir_int;
-	string qir_double;
-	string qir_bool;
-	string qir_pauli;
-	string qir_range;	
-
-
-} QIRTypes;
 
 
 
@@ -25,6 +16,17 @@ static struct {
 class QIRCirc {
 	private:
 		ofstream out;
+		struct {
+			string qir_int;
+			string qir_double;
+			string qir_bool;
+			string qir_pauli;
+			string qir_range;	
+
+
+		} QIRTypes;
+
+
 	public:
 		QIRCirc() {
 			out.open("out.qir");
@@ -77,7 +79,7 @@ class QIRCirc {
 
 
 		string get_inttoptr(string type, unsigned int qubit_index) {
-			return "inttoptr (" + type + " " + to_string(qubit_index) + "to %Qubit)";
+			return "inttoptr (" + type + " " + to_string(qubit_index) + " to %Qubit)";
 
 		}
 
@@ -147,7 +149,17 @@ class QIRCirc {
 		}
 
 		void qgate_decl() {
+
 			out << "declare void @__quantum__qis__h__body(%Qubit*)\ndeclare void @__quantum__qis__z__body(%Qubit*)\ndeclare void @__quantum__qis__cnot__body(%Qubit*, %Qubit*)\ndeclare %Result* @__quantum__qis__m__body(%Qubit*)\n";
+		
+			out << "declare void @__quantum__qis__x__body(%Qubit*)" << endl;
+			out << "declare void @__quantum__qis__y__body(%Qubit*)" << endl;
+			out << "declare void @__quantum__qis__s__body(%Qubit*)" << endl;
+			out << "declare void @__quantum__qis__sdg__body(%Qubit*)" << endl;
+			out << "declare void @__quantum__qis__t__body(%Qubit*)" << endl;
+			out << "declare void @__quantum__qis__p__body(%Qubit*, " << QIRTypes.qir_double << ")" << endl;
+			out << "declare void @__quantum__qis__cp__body(%Qubit*, %Qubit*, " << QIRTypes.qir_double << ")" << endl;
+			out << "declare void @__quantum__qis__cz__body(%Qubit*, %Qubit*)" << endl;
 		}
 };
 

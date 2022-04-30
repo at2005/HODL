@@ -437,7 +437,10 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 						// Phase-Kickback
 						// Kick-back phase of pi (3.14159...)
 						qc.x(table->GET_CMP_REGISTER());
-						qc.cu(instruction.get_controls()[0].get_control(), 0, table->GET_CMP_REGISTER(), 0, values[val + 1]);
+						long double phase;
+						if(values[val+1] == "pi") phase = pi;
+						else phase = stod(values[val+1]);
+						qc.cu(instruction.get_controls()[0].get_control(), 0, table->GET_CMP_REGISTER(), 0, phase);
 						qc.x(table->GET_CMP_REGISTER());
 
 						// we need not iterate over remaining values, therefore we must break the loop

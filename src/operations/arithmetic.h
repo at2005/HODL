@@ -12,7 +12,6 @@
 
 //FUNCTION ALLOWS ADDITION OF NUMBER AND QUANTUM REGISTER WITHOUT STORING NUMBER IN MEMORY
 
-const double pi = 3.14159265358979323846;
 
 void apply_addition_phases(Circuit& qc, unsigned long long num, QuantumVariable output, bool is_sub = false, vector<Conditional> controls = {}) {
 	// define pi
