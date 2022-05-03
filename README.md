@@ -2,13 +2,13 @@
 
 # A Higher-Level Oracle Description Language (HODL)
 
-A C-Style programming language for Quantum Computers that currently compiles down to OpenQASM 2.0, although efforts are underway to change the target to a quantum intermediate representation (QIR) format.
+A C-Style programming language for Quantum Computers designed for writing oracles containing arithmetic and logical operations. It currently compiles down to either OpenQASM 2.0 or the Quantum Intermediate Representation (QIR) format, although the latter is in its beta phase. 
 
 Language description can be found: https://arxiv.org/abs/2110.12487
 
 After downloading the source code, navigate to the HODL directory and run "make". This should create an output binary in the bin sub-directory.
 
-Run the compiler with executable name "qc" (with or without prefixing directory depending on whether or not you have added program to path), followed by any compiler options, followed by the file name. This action creates a file named out.qasm (or other, depending on whether it has been specified with "-o") within the directory, which can be run on IBM systems/simulators.
+To use the compiler, create a new "bin" directory and run make from the root directory. After compilation this should create an executable named "qc", which can be appended to PATH. To run the compiler, specify the --target system (qir/qasm) and the output file (-o).
 
 # Ongoing Efforts
 

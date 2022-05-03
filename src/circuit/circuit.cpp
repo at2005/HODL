@@ -23,7 +23,7 @@ Circuit::Circuit(string target_file, string target_system) {
 		output_file << "include " << QASM::DEPENDENCY << ";" << endl;
 	}
 
-	else if(target_system == "QIR") {
+	else if(target_system == "qir") {
 		this->system = "QIR";
 		qirc.init_circ();
 		//this->output_file = qirc.get_output(); 	

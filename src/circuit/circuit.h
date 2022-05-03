@@ -13,12 +13,12 @@ using namespace std;
 
 
 class Circuit {
-	Circuit(string target = "out.qir", string target_system="QIR");
+	Circuit(string target, string target_system);
 	Circuit(Circuit& circ);
 public:
 	
-	static Circuit* get_circuit(string target="out.qasm") { 
-		if (!circuit) circuit = new Circuit(target);
+	static Circuit* get_circuit(string target="out.qir", string system="qir") { 
+		if (!circuit) circuit = new Circuit(target, system);
 		return circuit; 
 	}
 
@@ -52,11 +52,25 @@ public:
 	}
 
 	const void measure(int qreg, int creg) {
-		output_file << "measure qr[" << qreg << "] -> cr[" << creg << "];\n";
+//		if(system == "IBM") {
+			output_file << "measure qr[" << qreg << "] -> cr[" << creg << "];\n";
+			
+//		}
+
+		
+
 	}
 
 	const void measure(string qreg, string creg) {
-		output_file << "measure " << qreg << " -> " << creg << ";\n";
+//		if(system == "IBM") {
+			output_file << "measure " << qreg << " -> " << creg << ";\n";
+	
+
+//		}
+
+//		else if(system == "QIR") {
+			//qirc.measure(
+
 	}
 
 	void add_qregister(QuantumVariable& qvar);
@@ -202,10 +216,6 @@ unsigned int true_index(string qreg, unsigned int qubit_offset/*, SymbolTable* t
 
 
 
-	//SWAP GATE FOR SINGLE PAIR OF QUBITS
-	void swap(string qreg,unsigned int index1, unsigned int index2);
-	void swap(string qreg1,unsigned int index1, string qreg2,unsigned int index2);
-	void swap(string qreg1, string qreg2);
 
 	const void barrier();
 	const void barrier(string qreg);

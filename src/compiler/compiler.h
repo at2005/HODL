@@ -18,7 +18,8 @@ unordered_map<string, bool> options = {
 	{"-o", 0},
 	{"-n", 0},
 	{"--ayush", 0},
-	{"-h",0}
+	{"-h",0},
+	{"--target",0}
 };
 
 
@@ -32,7 +33,7 @@ int compile(int num_args, char** args) {
 
 	// get program source file from CL
 	const char* program_file = args[num_args-1];
-	target_file = "out.qasm";	
+	target_file = "out";	
 	// iterate over command line args
 	for (int i = 1; i < num_args; i++) {
 		// set flag for corresponding option
@@ -52,6 +53,11 @@ int compile(int num_args, char** args) {
 			exit(0);
 		}
 
+		else if(!strcmp(args[i], "--target")) {
+			cout << "okay there" << endl;
+			target_system = args[i+1];
+
+		}
 
 	}
 
@@ -60,7 +66,8 @@ int compile(int num_args, char** args) {
 	vector<Pair> TokenValues = execute_lex(program_file).get_lex().dict_output;
 		
 	// get circuit object
-	Circuit* qc = Circuit::get_circuit(target_file);
+	Circuit* qc = Circuit::get_circuit(target_file, target_system);
+	
 
 	//print_vector(TokenValues);
 	//breaks up into individual expressions
@@ -139,7 +146,7 @@ int compile(int num_args, char** args) {
 	for (QuantumVariable*& qvar : qc->get_qvars()) {
 		// add quantum register to circuit
 		qc->add_qregister(*qvar);
-		if(target_system == "QIR") {
+		if(target_system == "qir") {
 			qvar->set_phys_start(tqubits);
 			tqubits += qvar->get_num_qubits();
 		}
@@ -151,8 +158,7 @@ int compile(int num_args, char** args) {
 	// iterate over instructions and compile each instruction
 	compile_instructions(*qc, instructions, &main_table);
 
-	target_system = "QIR";
-	if(target_system == "QIR") {
+	if(target_system == "qir") {
 		qc->qirc.llvm_fterm();
 		qc->qirc.qgate_decl();
 

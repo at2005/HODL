@@ -6,7 +6,7 @@
 #include "../lexer/lexer.h"
 using namespace std;
 
-static std::string target_system = "IBM";
+static std::string target_system;
 static string target_file;
 static string input_file;
 
@@ -17,7 +17,6 @@ Lex execute_lex(string src_file) {
 	Lex lx;
 	string nameOfFile = src_file;
 
-		target_system = "IBM";
 
 		//nameOfFile += ".q";
 		ifstream FileIn(nameOfFile);
