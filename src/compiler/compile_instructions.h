@@ -9,6 +9,7 @@
 #include "../operations/comparison_operators.h"
 #include <unordered_map>
 #include "estimation_funcs.h"
+#include "garbage.h"
 // FUNCTIONS TO PARSE INSTRUCTION TAPE AND COMPILE THE INSTRUCTIONS LISTED ON EACH CELL
 
 // helper function to compile assembly-level instructions
@@ -227,7 +228,7 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 					
 					// add ancillary register to recycling bin
-					table->add_to_garbage(table->search_qtable(table->GET_ANCILLA_REGISTER()));
+					//table->add_to_garbage(table->search_qtable(table->GET_ANCILLA_REGISTER()));
 
 				}
 
@@ -349,7 +350,7 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 					}
 
 					// add ancillary register to recycling bin
-					table->add_to_garbage(table->search_qtable(table->GET_ANCILLA_REGISTER()));
+				//	table->add_to_garbage(table->search_qtable(table->GET_ANCILLA_REGISTER()));
 
 				}
 

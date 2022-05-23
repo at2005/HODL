@@ -12,6 +12,7 @@
 #include "generate_instructions.h"
 #include "compile_instructions.h"
 
+
 // command line options and their flag
 unordered_map<string, bool> options = {
 	{"-t", 0},

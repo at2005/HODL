@@ -55,6 +55,8 @@
 	numbers.insert({ "100000000000000000000000000000000000000000", "tredecillion" });
 	numbers.insert({ "100000000000000000000000000000000000000000000", "quattuordecillion" });
 	numbers.insert({ "100000000000000000000000000000000000000000000000", "quindecillion" });
+	numbers.insert({ "1000000000000000000000000000000000000000000000000", "sexdecillion" });
+	numbers.insert({ "100000000000000000000000000000000000000000000000000", "septendecillion" });
 
 	return numbers;
 }
@@ -62,7 +64,7 @@
 
 
 
-
+// the function get_num_to_words converts a number to its word representation
  string get_num_to_words(string number) {
 	string output = "";
 	std::map<string, string> number_map = number_to_word();

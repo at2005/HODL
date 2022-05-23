@@ -57,9 +57,15 @@ void Circuit::inc_num_qubits() {
 
 
 unsigned int Circuit::true_index(string qreg, unsigned int qubit_offset/*, SymbolTable* table*/) {
-	return this->qreg_map[qreg]->get_phys_start() + qubit_offset;		
-	
+	QuantumVariable* qreg_in = this->qreg_map[qreg];
+	if(qreg_in->is_composite()) {
+		pair<string,int> new_val = qreg_in->search_composite(qubit_offset);
+		qreg_in = this->qreg_map[new_val.first];
+		qubit_offset = new_val.second;
+		
+	}
 
+	return qreg_in->get_phys_start() + qubit_offset;		
 
 }
 

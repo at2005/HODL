@@ -1,7 +1,7 @@
 #ifndef SYMBOL_TABLE_H
 #define SYMBOL_TABLE_H
 
-#include "../compiler/garbage.h"
+//#include "../compiler/garbage.h"
 #include <string>
 #include <unordered_map>
 #include "../circuit/circuit.h"
@@ -19,20 +19,20 @@ public:
 
 	//adds quantum variable to quantum stack of current scope
 	void push_quantum_var(QuantumVariable* qvar) {
-		QuantumVariable* garbage_reg = Garbage::get_garbage()->get_garbage_register(qvar->get_num_qubits());
+/*		QuantumVariable* garbage_reg = Garbage::get_garbage()->get_garbage_register(qvar->get_num_qubits());
 		if (garbage_reg != NULL) {
 			qvar->set_qreg(garbage_reg->get_qreg());
 		}
-
+*/
 		this->hash_table.insert({qvar->get_name(), qvar});
 		Circuit::get_circuit()->add_qreg_list(qvar);
 		
 	}
 
-	void add_to_garbage(QuantumVariable* qvar) {
+/*	void add_to_garbage(QuantumVariable* qvar) {
 		Garbage::get_garbage()->add_garbage(qvar);
 	}
-	
+*/	
 
 	//allows data in nested scopes to be referenced to in current scope
 	void add_existing_table(SymbolTable* parent) {

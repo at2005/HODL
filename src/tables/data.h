@@ -103,7 +103,7 @@ private:
 //class for quantum data
 class QuantumVariable : public Data {
 public:
-	QuantumVariable(string q_variable) : Data(q_variable), qreg(q_variable), references_in({}), references_out({}), flag(0), phys_start(0) {}
+	QuantumVariable(string q_variable, vector<pair<string,int>> vec={}) : Data(q_variable), qreg(q_variable), composite(vec.size()), references_in({}), references_out({}), flag(0), phys_start(0), reg_vec(vec) {}
 	
 	QuantumVariable() : Data(), references_in({}), references_out({}), flag(0), phys_start(0) {}
 	
@@ -117,7 +117,10 @@ public:
 	}
 
 
-
+	bool is_composite() {
+		return this->composite;
+	}
+	
 	string get_qreg() {
 		return this->qreg;
 	}
@@ -161,16 +164,25 @@ public:
 
 	}
 
+	pair<string, int> search_composite(unsigned int index) {
+		return this->reg_vec[index];
+	}
+
+
+
+
 private:
 	std::map<QuantumVariable*, Node*> dependency_map;
 	vector<QuantumVariable*> references_in;
 	vector<QuantumVariable*> references_out;
 	string qreg;
 	unsigned int phys_start;
-
+	vector<pair<string,int>> reg_vec;
+	bool composite;
 
 
 };
+
 
 
 
