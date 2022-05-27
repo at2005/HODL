@@ -131,10 +131,12 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 			// look up result register in symbol table
 			QuantumVariable* result_reg = table->search_qtable(result);
 			
+			// check if x= operator
 			if ((reg0 == result or reg1 == result) and op_map.find(type) != op_map.end()) {
 				type = op_map.find(type)->second;
 			}
 				
+			
 
 			// if both operands are identifiers
 			if (isIdentifier(reg0) && isIdentifier(reg1)) {
@@ -162,7 +164,7 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 				// compile addition-append
 				else if (type == "+=") {
-						add_append(qc, *qvar1, *qvar2, instruction.is_inverted(),instruction.get_controls());
+					add_append(qc, *qvar1, *qvar2, instruction.is_inverted(),instruction.get_controls());
 					
 				}
 
@@ -178,11 +180,20 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 				if (isCompOp(type)) {
 					// get size of ancillary register. It is the size of the largest input
 					int num_qubits_ancilla = qvar1->get_num_qubits() > qvar2->get_num_qubits() ? qvar1->get_num_qubits() : qvar2->get_num_qubits();
-					// create ancillary register
-					table->ADD_ANCILLA_REGISTER(num_qubits_ancilla);
+				
 
-					// get ancillary register
-					QuantumVariable* ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());				
+					QuantumVariable* ancilla = Garbage::get_garbage()->get_recycled(num_qubits_ancilla, table);
+					if(ancilla == nullptr) {
+						// create ancillary register
+						table->ADD_ANCILLA_REGISTER(num_qubits_ancilla);
+						// get ancillary register
+						ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());				
+					
+					}
+
+					qc.add_qregister(*ancilla);
+					
+
 				/*	
 					// reuse garbage register
 					QuantumVariable* ancilla = Garbage::get_garbage()->get_garbage_register(num_qubits_ancilla);
@@ -197,7 +208,6 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 */
 
 					// add ancillary register to circuit
-					qc.add_qregister(*ancilla);
 					
 					// compile equality operator
 					if (type == "==") {
@@ -228,7 +238,7 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 					
 					// add ancillary register to recycling bin
-					//table->add_to_garbage(table->search_qtable(table->GET_ANCILLA_REGISTER()));
+					Garbage::get_garbage()->add_garbage(table->search_qtable(table->GET_ANCILLA_REGISTER()));
 
 				}
 
@@ -252,7 +262,6 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 
 			}
-			// case where one operand is a number
 
 			else {
 				
@@ -310,15 +319,18 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 					// get number of qubits for ancillary register. It is the size of the largest register
 					int num_qubits_ancilla = qvar->get_num_qubits() > qvar2->get_num_qubits() ? qvar->get_num_qubits() : qvar2->get_num_qubits();
+				
 					
-					// create ancillary register
-					table->ADD_ANCILLA_REGISTER(num_qubits_ancilla);
+					QuantumVariable* ancilla = Garbage::get_garbage()->get_recycled(num_qubits_ancilla, table);
+					if(ancilla == nullptr) {
+						// create ancillary register
+						table->ADD_ANCILLA_REGISTER(num_qubits_ancilla);
 
-					// get ancillary register
-					QuantumVariable* ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());
+						// get ancillary register
+						ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());				
 
-					// add ancillary register to circuit
-					qc.add_qregister(*ancilla);
+					}
+						qc.add_qregister(*ancilla);
 					
 					// compile equality operator
 					 if (type == "==") {
@@ -350,7 +362,7 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 					}
 
 					// add ancillary register to recycling bin
-				//	table->add_to_garbage(table->search_qtable(table->GET_ANCILLA_REGISTER()));
+					Garbage::get_garbage()->add_garbage(table->search_qtable(table->GET_ANCILLA_REGISTER()));
 
 				}
 
@@ -391,7 +403,7 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 		// For built-in-function or assembly operator
 		else if(instruction.get_value() == "PREDEF_FUNC") {
-			
+						
 			// get name of function
 			string func_name = instruction.GET_PF().get_func_name();
 

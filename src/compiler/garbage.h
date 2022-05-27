@@ -26,7 +26,7 @@ public:
 		total_size += qvar->get_num_qubits();
 	}
 
-	QuantumVariable* get_garbage_register(int register_size) {
+	/*QuantumVariable* get_garbage_register(int register_size) {
 		for (int reg = 0; reg < garbage_registers.size(); reg++) {
 			if (garbage_registers[reg]->get_num_qubits() == register_size) {
 				return garbage_registers[reg];
@@ -35,9 +35,13 @@ public:
 
 		return nullptr;
 	}
+*/
 
+
+		
 	
 	QuantumVariable* get_recycled(unsigned int size, SymbolTable* table) {
+		// check register reuse bin has sufficient size
 		if(total_size >= size) {
 			vector<pair<string,int>> pair_vec = {}; 
 			int temp_counter = 0;
@@ -51,6 +55,8 @@ public:
 	
 				}
 
+				if(temp_counter > num_qubits) break;
+
 			}
 
 			QuantumVariable* qvar_recycled = new QuantumVariable("recycled_var",pair_vec);
@@ -59,8 +65,9 @@ public:
 			table->push_quantum_var(qvar_recycled);
 			return qvar_recycled;
 
-
 		}
+
+		return nullptr;
 
 	}
 

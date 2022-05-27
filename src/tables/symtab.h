@@ -110,7 +110,6 @@ public:
 	}
 
 	void ADD_ANCILLA_REGISTER(int num_qubits) {
-		
 		string var_name = "ancilla" + to_string(ancilla_counter);
 		QuantumVariable* ancilla = new QuantumVariable(var_name);
 		ancilla->set_num_qubits(num_qubits);
@@ -137,7 +136,7 @@ private:
 	unsigned int cmp_counter;
 	unsigned int ancilla_counter;
 	SymbolTable* parent_scope;
-	
+
 };
 
 #endif
