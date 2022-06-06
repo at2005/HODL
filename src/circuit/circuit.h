@@ -145,15 +145,6 @@ public:
 	const void cu(string qreg1, unsigned int control, string qreg2, unsigned int target, double angle_in_radians);
 
 
-	//cu for fourier transform
-	//cu for fourier transform of part of quantum register
-	const void cu(string qreg,unsigned int control, unsigned int target, string init, unsigned long long int arg);
-	const void cu(string qreg1, unsigned int control, string qreg2, unsigned int target, string init, unsigned long long int arg);
-	
-
-
-
-
 
 	//CONTROLLED-X GATE FOR SINGLE PAIR OF QUBITS
 	void cx(string qreg,unsigned int control, unsigned int target);

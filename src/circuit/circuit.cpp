@@ -488,7 +488,10 @@ const void Circuit::u(string qreg, double angle_in_radians) {
 // case where both qubits are in the same register
 const void Circuit::cu(string qreg, unsigned int control, unsigned int target, double angle_in_radians) {
 	if (system == "IBM") {
-		output_file << fixed << QASM::CU1 << "(" << angle_in_radians << ") " << qreg <<"[" << control << "], " << qreg <<"[" << target << "];\n";
+		pair<string,int> real_control, real_target;
+		real_control = true_reg_index(qreg, control);
+		real_target = true_reg_index(qreg, target);
+		output_file << fixed << QASM::CU1 << "(" << angle_in_radians << ") " << real_control.first <<"[" << real_control.second << "], " << real_target.first <<"[" << real_target.second << "];\n";
 	}
 	else if(system == "QIR") {
 		qirc.cp_gate(true_index(qreg, control), true_index(qreg, target), angle_in_radians);
@@ -499,35 +502,15 @@ const void Circuit::cu(string qreg, unsigned int control, unsigned int target, d
 
 const void Circuit::cu(string qreg1, unsigned int control, string qreg2, unsigned int target, double angle_in_radians) {
 	if (system == "IBM") {
-		output_file << fixed << QASM::CU1 << "(" << angle_in_radians << ") " << qreg1 << "[" << control << "], " << qreg2 << "[" << target << "];\n";
+		pair<string,int> real_control, real_target;
+		real_control = true_reg_index(qreg1, control);
+		real_target = true_reg_index(qreg2, target);
+				
+		output_file << fixed << QASM::CU1 << "(" << angle_in_radians << ") " << real_control.first << "[" << real_control.second << "], " << real_target.first << "[" << real_target.second << "];\n";
 	}
 	else if(system == "QIR") {
 		qirc.cp_gate(true_index(qreg1, control), true_index(qreg2, target), angle_in_radians);
 
-	}
-}
-
-
-
-
-const void Circuit::cu(string qreg, unsigned int control, unsigned int target, string init, unsigned long long int arg) {
-	if (system == "IBM") {
-		output_file << fixed << QASM::CU1 << "(" << init << arg << ") " << qreg <<"[" << control << "], " << qreg <<"[" << target << "];\n";
-	}
-	else if(system == "QIR") {
-//		qirc.cp_gate(true_index(qreg, control), true_index(qreg, target), stod(init + to_string(arg)));
-		
-
-	}
-}
-
-
-const void Circuit::cu(string qreg1, unsigned int control, string qreg2, unsigned int target, string init, unsigned long long int arg) {
-	if (system == "IBM") {
-		output_file << fixed << QASM::CU1 << "(" << init << arg << ") " << qreg1 << "[" << control << "], " << qreg2 << "[" << target << "];\n";
-	}
-	else if(system == "QIR") {
-//		qirc.cp_gate(true_index(qreg1, control), true_index(qreg2, target), stod(init + to_string(arg)));
 	}
 }
 
@@ -539,7 +522,11 @@ const void Circuit::cu(string qreg1, unsigned int control, string qreg2, unsigne
 void Circuit::cx(string qreg, unsigned int control, unsigned int target) {
 
 	if (system == "IBM") {
-		output_file << QASM::CONTROLLED_NOT << " " << qreg <<" [" << control << "]" << " , " << qreg <<"[" << target << "];\n";
+		pair<string,int> real_control, real_target;
+		real_control = true_reg_index(qreg, control);
+		real_target = true_reg_index(qreg, target);
+
+		output_file << QASM::CONTROLLED_NOT << " " << real_control.first <<" [" << real_control.second << "]" << " , " << real_target.first <<"[" << real_target.second << "];\n";
 	}
 	else if(system == "QIR") {
 		qirc.cnot_gate(true_index(qreg, control), true_index(qreg, target));
@@ -549,7 +536,10 @@ void Circuit::cx(string qreg, unsigned int control, unsigned int target) {
 
 void Circuit::cx(string qreg1, unsigned int control, string qreg2, unsigned int target) {
 	if (system == "IBM") {
-		output_file << QASM::CONTROLLED_NOT << " " << qreg1 << " [" << control << "]" << " , " << qreg2 << "[" << target << "];\n";
+		pair<string,int> real_control, real_target;
+		real_control = true_reg_index(qreg1, control);
+		real_target = true_reg_index(qreg2, target);
+		output_file << QASM::CONTROLLED_NOT << " " << real_control.first << " [" << real_control.second << "]" << " , " << real_target.first << "[" << real_target.second << "];\n";
 	}
 	else if(system == "QIR") {
 		qirc.cnot_gate(true_index(qreg1, control), true_index(qreg2, target));
@@ -572,7 +562,10 @@ void Circuit::cx(string qreg1, string qreg2) {
 
 void Circuit::cz(string qreg, unsigned int control, unsigned int target) {
 	if (system == "IBM") {
-		output_file << QASM::CONTROLLED_Z << " " << qreg << "[" << control << "]" << " , " << qreg << "[" << target << "];\n";
+		pair<string,int> real_control, real_target;
+		real_control = true_reg_index(qreg, control);
+		real_target = true_reg_index(qreg, target);
+		output_file << QASM::CONTROLLED_Z << " " << real_control.first << "[" << real_control.second << "]" << " , " << real_target.first << "[" << real_target.second << "];\n";
 	}
 	else if(system == "QIR") {
 		qirc.cz_gate(true_index(qreg, control), true_index(qreg, target));
@@ -580,9 +573,13 @@ void Circuit::cz(string qreg, unsigned int control, unsigned int target) {
 	}
 }
 
+
 void Circuit::cz(string qreg1, unsigned int control, string qreg2, unsigned int target) {
 	if (system == "IBM") {
-		output_file << QASM::CONTROLLED_Z << " " << qreg1 << "[" << control << "]" << " , " << qreg2 << "[" << target << "];\n";
+		pair<string,int> real_control, real_target;
+		real_control = true_reg_index(qreg1, control);
+		real_target = true_reg_index(qreg2, target);
+		output_file << QASM::CONTROLLED_Z << " " << real_control.first << "[" << real_control.second << "]" << " , " << real_target.first << "[" << real_target.second << "];\n";
 	}
 	else if(system == "QIR") {
 		qirc.cz_gate(true_index(qreg1, control), true_index(qreg2, target));
@@ -628,23 +625,32 @@ void Circuit::ch(string qreg1, unsigned int control, string qreg2, unsigned int 
 
 //CCX
 
-void Circuit::ccx(string qreg, unsigned int control, unsigned int target1, unsigned int target2) {
+void Circuit::ccx(string qreg, unsigned int control1, unsigned int control2, unsigned int target) {
 	if (system == "IBM") {
-		output_file << QASM::TOFFOLI << " " << qreg << "[" << control << "]," << qreg << "[" << target1 << "]," << qreg << "[" << target2 << "];\n";
+		pair<string,int> real_control1, real_control2, real_target;
+		real_control1 = true_reg_index(qreg, control1);
+		real_control2 = true_reg_index(qreg, control2);
+		real_target = true_reg_index(qreg, target);
+
+		output_file << QASM::TOFFOLI << " " << real_control1.first << "[" << real_control1.second << "]," << real_control2.first << "[" << real_control2.second << "]," << real_target.first << "[" << real_target.second << "];\n";
 	}
 	else if(system == "QIR") {
-		qirc.ccx_gate(true_index(qreg, control), true_index(qreg, target1), true_index(qreg, target2));
+		qirc.ccx_gate(true_index(qreg, control1), true_index(qreg, control2), true_index(qreg, target));
 
 	}
 
 }
 
-void Circuit::ccx(string qreg1, unsigned int control, string qreg2, unsigned int target1, string qreg3, unsigned int target2) {
+void Circuit::ccx(string qreg1, unsigned int control1, string qreg2, unsigned int control2, string qreg3, unsigned int target) {
 	if (system == "IBM") {
-		output_file << QASM::TOFFOLI << " " << qreg1 << "[" << control << "]," << qreg2 << "[" << target1 << "]," << qreg3 << "[" << target2 << "];\n";
+		pair<string,int> real_control1, real_control2, real_target;
+		real_control1 = true_reg_index(qreg1, control1);
+		real_control2 = true_reg_index(qreg2, control2);
+		real_target = true_reg_index(qreg3, target);
+		output_file << QASM::TOFFOLI << " " << real_control1.first << "[" << real_control1.second << "]," << real_control2.first << "[" << real_control2.second << "]," << real_target.first << "[" << real_target.second << "];\n";
 	}
 	else if(system == "QIR") {
-		qirc.ccx_gate(true_index(qreg1, control), true_index(qreg2, target1), true_index(qreg3, target2));
+		qirc.ccx_gate(true_index(qreg1, control1), true_index(qreg2, control2), true_index(qreg3, target));
 
 	}
 
@@ -659,11 +665,11 @@ void Circuit::ccx(string qreg1, unsigned int control, string qreg2, unsigned int
 
 
 void Circuit::ccu1(string qreg, unsigned int control1, unsigned int control2, unsigned int target, double theta) {
-		this->cu(qreg, control2, target, theta/2);
-		this->cx(qreg, control1, control2);
-		this->cu(qreg, control2, target, -1*theta/2);
-		this->cx(qreg, control1, control2);
-		this->cu(qreg, control1, target, theta/2);
+	this->cu(qreg, control2, target, theta/2);
+	this->cx(qreg, control1, control2);
+	this->cu(qreg, control2, target, -1*theta/2);
+	this->cx(qreg, control1, control2);
+	this->cu(qreg, control1, target, theta/2);
 		
 
 
