@@ -4,7 +4,7 @@
 #include <string.h>
 #include "node.h"
 
-inline string rtnExprType(vector<Pair> input) {
+string rtnExprType(vector<Pair> input) {
 
 	if (input.size() == 0) {
 		return "INVALID";
@@ -90,11 +90,11 @@ inline string rtnExprType(vector<Pair> input) {
 
 	//ELSE RETURNS SYNTAX ERROR
 
-	else {
-		return "SYNTAX_ERROR";
-	}
+	
+	return "SYNTAX_ERROR";
+	
 
-
+	
 
 
 }
@@ -105,7 +105,7 @@ inline string rtnExprType(vector<Pair> input) {
 
 //gets each individual expression
 
-inline vector<vector<Pair>> getEachExpression(vector<Pair> input) {
+vector<vector<Pair>> getEachExpression(vector<Pair> input) {
 	int num_paran = 0;
 
 	vector<Pair> tempVec = {};
@@ -148,14 +148,12 @@ inline vector<vector<Pair>> getEachExpression(vector<Pair> input) {
 
 
 //check if valid expression
-inline bool checkIfValidExpr(Pair input) {
+bool checkIfValidExpr(Pair input) {
 	if (input.getToken() == "NUMBER" || input.getToken() == "IDENTIFIER") {
 		return true;
 	}
-
-	else {
-		return false;
-	}
+	
+	return false;
 }
 
 #endif

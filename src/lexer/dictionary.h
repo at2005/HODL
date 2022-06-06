@@ -24,27 +24,14 @@ public:
 
 	const std::string getValue() {
 		// if not NULL get value component
-		if (&this->value != NULL) {
-				return this->value;
-		}
+		return this->value;
 
-		else {
-			// if NULL then return VALUE_NDEF
-			return "VALUE_NDEF";
-		}
 	}
 
 	const std::string getToken() {
 		// get token component
-			if (&this->token != NULL) {
-				// return token
-				return this->token;
-			}
+		return this->token;
 
-			else {
-				// else return TOKEN_NDEF
-				return "TOKEN_NDEF";
-			}
 
 		// default return NULL string
 		return "";

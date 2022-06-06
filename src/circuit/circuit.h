@@ -51,25 +51,12 @@ public:
 		}
 	}
 
-	const void measure(int qreg, int creg) {
-//		if(system == "IBM") {
-			output_file << "measure qr[" << qreg << "] -> cr[" << creg << "];\n";
-			
-//		}
-
-		
-
-	}
 
 	const void measure(string qreg, string creg) {
-//		if(system == "IBM") {
-			output_file << "measure " << qreg << " -> " << creg << ";\n";
+		output_file << "measure " << qreg << " -> " << creg << ";\n";
 	
 
-//		}
 
-//		else if(system == "QIR") {
-			//qirc.measure(
 
 	}
 
@@ -77,8 +64,8 @@ public:
 	void add_cregister(string creg, int measurable_qubits);
 
 	~Circuit();
-unsigned int true_index(string qreg, unsigned int qubit_offset/*, SymbolTable* table*/);
-		
+	unsigned int true_index(string qreg, unsigned int qubit_offset/*, SymbolTable* table*/);
+	pair<string,int> true_reg_index(string qreg, unsigned int qubit_offset);	
 	
 
 
@@ -149,13 +136,6 @@ unsigned int true_index(string qreg, unsigned int qubit_offset/*, SymbolTable* t
 	const void u(string qreg, double angle_in_radians);
 
 
-	//for part of quantum register
-	const void u(string qreg,unsigned int qubit_index, string theta);
-
-	//for entire quantum register
-	const void u(string qreg, string theta);
-
-
 
 
 	//CONTROLLED UNITARY OPERATION
@@ -170,9 +150,6 @@ unsigned int true_index(string qreg, unsigned int qubit_offset/*, SymbolTable* t
 	const void cu(string qreg,unsigned int control, unsigned int target, string init, unsigned long long int arg);
 	const void cu(string qreg1, unsigned int control, string qreg2, unsigned int target, string init, unsigned long long int arg);
 	
-	//cu for fourier transform
-	const void cu(string qreg, unsigned int control, unsigned int target, string theta);
-	const void cu(string qreg1, unsigned int control, string qreg2, unsigned int target, string theta);
 
 
 
@@ -201,9 +178,7 @@ unsigned int true_index(string qreg, unsigned int qubit_offset/*, SymbolTable* t
 	void ccx(string qreg1, unsigned int control1, string qreg2, unsigned int control2,string qreg3, unsigned int target);
 
 	//MULTIPLE-CONTROLLED CCU1 GATE
-	void ccu1(string qreg,unsigned int control1, unsigned int control2, unsigned int target, string theta);
 	void ccu1(string qreg,unsigned int control1, unsigned int control2, unsigned int target, double theta);
-	void ccu1(string qreg1, unsigned int control1,string qreg2, unsigned int control2,string qreg3, unsigned int target, string theta);
 	void ccu1(string qreg1, unsigned int control1,string qreg2, unsigned int control2,string qreg3, unsigned int target, double theta);
 
 

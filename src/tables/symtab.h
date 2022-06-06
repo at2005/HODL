@@ -95,6 +95,7 @@ public:
 
 	string GET_AX_REGISTER() {
 		if (ax_counter != 0) return "ax" + to_string(ax_counter - 1);
+		return "";
 	}
 
 	void ADD_CMP_REGISTER() {
@@ -107,6 +108,7 @@ public:
 
 	string GET_CMP_REGISTER() {
 		if (cmp_counter != 0) return "cmp" + to_string(cmp_counter - 1);
+		return "";
 	}
 
 	void ADD_ANCILLA_REGISTER(int num_qubits) {
@@ -119,6 +121,7 @@ public:
 
 	string GET_ANCILLA_REGISTER() {
 		if (ancilla_counter != 0) return "ancilla" + to_string(ancilla_counter - 1);
+		return "";
 
 	}
 

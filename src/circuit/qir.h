@@ -9,10 +9,6 @@ using namespace std;
 #include <iostream>
 #include <map>
 
-
-
-
-
 class QIRCirc {
 	private:
 		ofstream out;
@@ -79,6 +75,7 @@ class QIRCirc {
 
 
 		string get_inttoptr(string type, unsigned int qubit_index) {
+			if(qubit_index == 0) return "null";
 			return "inttoptr (" + type + " " + to_string(qubit_index) + " to %Qubit)";
 
 		}
@@ -134,15 +131,23 @@ class QIRCirc {
 		}
 
 		void cz_gate(unsigned int control_index, unsigned int target_index) {
-			out << "call void @__quantum__qis__cz__body( " << index_to_qtype(control_index) << "," << index_to_qtype(target_index) << ")\n";
+			out << "call void @__quantum__qis__z_ctl_body( " << index_to_qtype(control_index) << "," << index_to_qtype(target_index) << ")\n";
 		}
 
 
 		void cp_gate(unsigned int control_index, unsigned int target_index, double theta) {
-			out << "call void @__quantum__qis__cp__body( " << index_to_qtype(control_index) << "," << index_to_qtype(target_index) << "," << QIRTypes.qir_double << " " << to_string(theta) <<  ")\n";
+			out << "call void @__quantum__qis__p_ctl__body( " << index_to_qtype(control_index) << "," << index_to_qtype(target_index) << "," << QIRTypes.qir_double << " " << to_string(theta) <<  ")\n";
 
 		}
+	
 		
+		void ccx_gate(unsigned int control_index, unsigned int target1_index, unsigned int target2_index) {
+			out << "call void @__quantum__qis__toffoli__body( " << index_to_qtype(control_index) << "," << index_to_qtype(target1_index) << "," << index_to_qtype(target2_index) << ")\n";
+
+
+		}
+
+
 		void measure(string res,unsigned int qubit_index) {
 			out << res << "= call %Result* @__quantum__qis__m__body( " << index_to_qtype(qubit_index) << ")\n"; 
 
@@ -150,8 +155,10 @@ class QIRCirc {
 
 		void qgate_decl() {
 
-			out << "declare void @__quantum__qis__h__body(%Qubit*)\ndeclare void @__quantum__qis__z__body(%Qubit*)\ndeclare void @__quantum__qis__cnot__body(%Qubit*, %Qubit*)\ndeclare %Result* @__quantum__qis__m__body(%Qubit*)\n";
-		
+			out << "declare void @__quantum__qis__h__body(%Qubit*)" << endl;
+			out << "declare void @__quantum__qis__z__body(%Qubit*)" << endl;
+			out << "declare void @__quantum__qis__cnot__body(%Qubit*, %Qubit*)" << endl;
+			out << "declare %Result* @__quantum__qis__m__body(%Qubit*)" << endl;
 			out << "declare void @__quantum__qis__x__body(%Qubit*)" << endl;
 			out << "declare void @__quantum__qis__y__body(%Qubit*)" << endl;
 			out << "declare void @__quantum__qis__s__body(%Qubit*)" << endl;
@@ -160,6 +167,9 @@ class QIRCirc {
 			out << "declare void @__quantum__qis__p__body(%Qubit*, " << QIRTypes.qir_double << ")" << endl;
 			out << "declare void @__quantum__qis__cp__body(%Qubit*, %Qubit*, " << QIRTypes.qir_double << ")" << endl;
 			out << "declare void @__quantum__qis__cz__body(%Qubit*, %Qubit*)" << endl;
+			out << "declare void @__quantum__qis__toffoli_body(%Qubit*, %Qubit*, %Qubit*)";			
+			
+
 		}
 };
 
