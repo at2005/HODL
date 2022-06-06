@@ -77,7 +77,9 @@ public:
 		if (parent_scope) {
 			return parent_scope->search_qtable(qvar_name);
 		}
-		return NULL;
+
+
+		return nullptr;
 	}
 
 	bool is_searchable(string name) {

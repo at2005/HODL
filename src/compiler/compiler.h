@@ -64,7 +64,6 @@ int compile(int num_args, char** args) {
 		
 	//lexical analysis -> stored in vector of token-values
 	vector<Pair> TokenValues = execute_lex(program_file).get_lex().dict_output;
-	cout << "Lexed\n";		
 	// get circuit object
 	Circuit* qc = Circuit::get_circuit(target_file, target_system);
 
@@ -104,7 +103,6 @@ int compile(int num_args, char** args) {
 
 	}
 
-	cout << "Parsed\n";
 
 	// vector of child trees for main function
 	vector<SyntaxTree> statements = MAIN.get_syntax_tree()->get_child_trees();
@@ -123,12 +121,12 @@ int compile(int num_args, char** args) {
 		// NOTE -> THIS MUST BE CHANGED. IT DOESN'T WORK FOR NESTED EXPRESSIONS!!!!!
 		for (int child_statement = 0; child_statement < st_ref.get_child_trees().size(); child_statement++) {
 	
-		//	eval_resources(&st_ref.get_child_trees()[child_statement], &main_table);
+			eval_resources(&st_ref.get_child_trees()[child_statement], &main_table);
 		}
 
 		
 		// create AST 
-		//create_instructions(instructions, &st_ref, {}, &main_table);
+		create_instructions(instructions, &st_ref, {}, &main_table);
 	}
 		// If -t (tape) option true,
 		// print instruction tape -> debugging tool

@@ -58,13 +58,19 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 			// case where identifier is not used within a function
 			if (!func_call) {
 				node->set_result_register(node->getTValue());
-				return table->search_qtable(node->getTValue())->get_num_qubits();
+				QuantumVariable* qvar =  table->search_qtable(node->getTValue());
+				
+				if(qvar) return qvar->get_num_qubits();
+				return 0;
 			}
 
 
 			// if in a function, then search parameter map and return the mapped variable name
-			node->set_result_register(parameter_map.find(node->getTValue())->second);
-			return table->search_qtable(parameter_map.find(node->getTValue())->second)->get_num_qubits();
+			string param_value = parameter_map.find(node->getTValue())->second;
+			node->set_result_register(param_value);
+			QuantumVariable* qvar = table->search_qtable(param_value);
+			if(qvar) return qvar->get_num_qubits();
+			return 0;	
 		}
 
 
@@ -381,10 +387,9 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 
 				// evaluate resources
 				int resources = eval_resources(tree_right, table, qvar, node, false, parameter_map);
-												//if(node->getTValue() == "=") cout << left;
 				// set number of qubits register requires
 				qvar->set_num_qubits(resources);
-
+				
 				// for assigning results of function calls
 				if (func_return_name != "") {
 					// share a pointer (for the number of resources) with the returned value
