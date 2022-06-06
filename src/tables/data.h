@@ -38,12 +38,18 @@ public:
 
 	//returns number of qubits required
 	int get_num_qubits() {
-		return *this->num_qubits_required;
+		if (this) {
+			return *this->num_qubits_required;
+		}
+
+		return 0;
 	}
 
 	// get pointer to number of qubits so that resources can be shared upon reassignment
 	int* get_num_pointer() {
-		return this->num_qubits_required;
+		if (this) {
+			return this->num_qubits_required;
+		}
 	}
 
 	// set pointer

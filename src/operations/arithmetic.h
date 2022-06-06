@@ -273,7 +273,7 @@ void multiplication_rotations(Circuit& qc, QuantumVariable qvar1, QuantumVariabl
 	for (int index1 = 0; index1 < qvar1.get_num_qubits(); index1++) {
 		int current_power = power_of_two;
 		for (int index2 = 0; index2 < qvar2.get_num_qubits(); index2++) {
-			qc.ccu1(qvar1.get_qreg(), index1, qvar2.get_qreg(), index2, qreg_output, output_qubit, 2*pi* (power/pow(2, current_power)));
+			qc.ccu1(qvar1.get_qreg(), index1, qvar2.get_qreg(), index2, qreg_output, output_qubit, "2*pi*" + to_string(power) + "/" + to_string(pow(2, current_power)));
 			current_power++;
 		}
 		

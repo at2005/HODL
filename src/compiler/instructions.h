@@ -131,8 +131,9 @@ public:
 			return OP;
 		}
 
-		cerr << "NOT AN OP";
-		exit(1);
+		else {
+			cerr << "NOT AN OP";
+		}
 
 	}
 
@@ -141,8 +142,9 @@ public:
 			return PF;
 		}
 
-		cerr << "NOT A PREDEF_FUNC";
-		exit(1);
+		else {
+			cerr << "NOT A PREDEF_FUNC";
+		}
 	}
 
 	SymbolTable* get_table() {

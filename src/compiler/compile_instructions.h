@@ -464,29 +464,21 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 					else if (func_name == "Diffuse") {
 						// get input to apply amplitude amplification
 						QuantumVariable* input = table->search_qtable(parameter);
-						QuantumVariable* ancilla = nullptr;
-						// add ancillary register to symbol-table
-						if(input->get_num_qubits() > 3) {
-							ancilla = Garbage::get_garbage()->get_recycled(input->get_num_qubits()-1, table);
-							
-							if(ancilla == nullptr) {
-								table->ADD_ANCILLA_REGISTER(input->get_num_qubits() - 1);
-								// store ancillary register
-								ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());
-								// add circuit
-							}
-							
-							
-							qc.add_qregister(*ancilla);
 
-						}
+						// add ancillary register to symbol-table
+						table->ADD_ANCILLA_REGISTER(input->get_num_qubits() - 1);
+
+						// store ancillary register
+						QuantumVariable* ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());
+
+						// add circuit
+						qc.add_qregister(*ancilla);
 
 						table->ADD_CMP_REGISTER();
 						QuantumVariable* target = table->search_qtable(table->GET_CMP_REGISTER());
 						qc.add_qregister(*target);
 						qc.x(target->get_qreg());
-						AmplitudeAmplify(qc, input, target, ancilla);
-
+						AmplitudeAmplify(qc, *input, *target, *ancilla);
 					}
 
 
