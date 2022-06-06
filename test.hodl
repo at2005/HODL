@@ -1,0 +1,18 @@
+
+
+function cool(super a) {
+	if(a > 5) {
+		mark(a,pi);
+
+	}
+
+
+}
+
+
+function main() {
+	super var = 8;
+	cool(var);
+	measure var;
+
+}

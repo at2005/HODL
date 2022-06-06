@@ -91,15 +91,19 @@ void Circuit::add_qregister(QuantumVariable& qvar) {
 		return;
 
 	}
-	// else add register to QASM file
-	output_file << "qreg " << qvar.get_qreg() << "[" << qvar.get_num_qubits() << "];\n";
-	
-	total_qubits += qvar.get_num_qubits();
-	// increment total number of registers
-	total_registers++;
-	// add register to circuit object
-	qreg_map.insert({qvar.get_qreg(), &qvar});
 
+	if(!(qvar.is_composite())) {	
+		// else add register to QASM file
+		output_file << "qreg " << qvar.get_qreg() << "[" << qvar.get_num_qubits() << "];\n";
+		
+		total_qubits += qvar.get_num_qubits();
+		// increment total number of registers
+		total_registers++;
+		// add register to circuit object
+	}
+
+	
+	qreg_map.insert({qvar.get_qreg(), &qvar});
 
 }
 
@@ -183,7 +187,7 @@ const void Circuit::x(string qreg, unsigned int qubit_index) {
 
 		pair<string,int> qreg_index = true_reg_index(qreg,qubit_index);
 		// write X gate to file -> fixed is due to large numbers being represented in scientific notation
-		output_file << fixed << QASM::X << " " << qreg << "[" << qreg_index.second << "];\n";
+		output_file << fixed << QASM::X << " " << qreg_index.first << "[" << qreg_index.second << "];\n";
 	}
 	else if(system == "QIR") {
 		
