@@ -184,9 +184,7 @@ public:
 
 	//gets parental memory address
 	Node* getParent() {
-		if (!(this == nullptr)) {
-			return Parent;
-		}
+		return Parent;
 	}
 
 	//changes the parental memory address
@@ -252,11 +250,8 @@ public:
 
 
 	bool is_classical() {
-		if (this) {
-			return this->is_classical_var;
-		}
+		return this->is_classical_var;
 
-		return false;
 	}
 
 	void set_classical() {

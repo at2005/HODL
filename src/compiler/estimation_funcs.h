@@ -271,6 +271,8 @@ unsigned int long long eval_id_resources(Node* node, string left, string right, 
 		qvar1.set_dependency(&qvar2, node);
 		return 0;
 	}
+
+	return 0;
 }
 
 
@@ -301,6 +303,8 @@ unsigned long long eval_id_num_resources(Node* node, string left, string right, 
 		estimate_subtraction_append(qvar, number);
 		return 0;
 	}
+
+	return 0;
 }
 
 

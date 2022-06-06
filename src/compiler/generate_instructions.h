@@ -314,7 +314,7 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 		vector<INSTRUCTION> temp_tape= {};
 
 		// iteratre backwards from current iterator to the iterator we wish to roll-back to
-		for (current_iter; current_iter > rollback_to; current_iter--) {
+		for (;current_iter > rollback_to; current_iter--) {
 				// get the inverse of each instruction
 				INSTRUCTION instruction = current_iter->inverse();
 				// punch the inverted instruction into our temporary instruction tape
