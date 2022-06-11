@@ -12,11 +12,15 @@ using namespace std;
 //utility function for returning separated values
 
 
-inline vector<vector<Pair>> returnSep(vector<Pair> inputExpr) {
+vector<vector<Pair>> returnSep(vector<Pair> inputExpr) {
 	vector<vector<Pair>> tempVec = {};
 	vector<Pair> i_stmnts = {};
+	unsigned int paren_counter = 0;
 	for (int i = 0; i < inputExpr.size(); i++) {
-		if (inputExpr[i].getToken() == "SEPERATOR") {
+		if(inputExpr[i].getValue() == "(") paren_counter++;
+		else if(inputExpr[i].getValue() == ")") paren_counter--; 
+		
+		if (inputExpr[i].getToken() == "SEPERATOR" && paren_counter == 0) {
 			tempVec.push_back(i_stmnts);
 			i_stmnts.clear();
 		}
@@ -38,7 +42,7 @@ inline vector<vector<Pair>> returnSep(vector<Pair> inputExpr) {
 
 
 //utility function for parsing between two values of strings
-inline vector<Pair> parse_between(string a, string b, vector<Pair> input) {
+vector<Pair> parse_between(string a, string b, vector<Pair> input) {
 
 	//results stored in temporary vector
 	vector<Pair> tempVec = {};
@@ -132,7 +136,7 @@ inline vector<Pair> parse_between(string a, string b, vector<Pair> input) {
 
 //checks for higher precedence between two operators
 
-inline bool has_higher_precedence(Pair operator1, Pair operator2) {
+bool has_higher_precedence(Pair operator1, Pair operator2) {
 
 
 	if (get_precedence_map().find(operator1.getValue())->second > get_precedence_map().find(operator2.getValue())->second) {

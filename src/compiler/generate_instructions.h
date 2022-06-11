@@ -79,32 +79,10 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 
 		// case for the filter function which performs the Diffusion operator
 		if (root->getTValue() == "filter") {
-			// get oracle data
-			struct oracle_data* info_oracle = ptr_to_orac;
-			// get pointer to function definition
-			Function* ptr = info_oracle->func_def;
-			// get parameter map for the function, mapping paramters to their repsective instances
-			map<string, string>* parameter_map = info_oracle->param_map;
-			// get function table aka symbol table / scope
-			SymbolTable* func_scope = info_oracle->st;
-			
-			// get body of function
-			vector<SyntaxTree> child_trees = ptr->get_syntax_tree()->get_child_trees();
 
-			// iterate over each expression in body
-			for (auto& expr : child_trees) {
-				// create the instructions for each expression in body
-				create_instructions(instructions, &expr, *parameter_map, func_scope, controls, invert);
-			}
-	
 			// apply diffusion operation
-			instructions.push_back(INSTRUCTION("Diffuse", parameter_map->begin()->second));
-
-			// end scope
-			instructions.push_back(INSTRUCTION(func_scope, "END"));
-
-			// delete parameter map
-			delete parameter_map;
+			instructions.push_back(INSTRUCTION("Diffuse", tree->get_function_parameters()[0].getRoot()->getTValue()));
+	
 			
 			// delete root node
 			delete root;
@@ -373,11 +351,13 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 
 		// initialize parameter map
 		map<string, string>* parameter_map = new map<string,string>;
-		
 		// throw error if number of parameters required for function call are incorrect
-		if (func_tree->get_function_parameters().size() != tree->getRoot()->get_func_params().size()) {
+		if (func_tree->get_function_parameters().size() != tree->get_function_parameters().size()) {
 			// change color to red
+			for(int i = 0; i < tree->getRoot()->get_func_params().size(); i++) {
+				
 
+			}
 			cout << "FUNCTION " << func_tree->getRoot()->getTValue() << " DOES NOT TAKE " << tree->getRoot()->get_func_params().size() << " PARAMETERS";
 			
 			exit(1);
@@ -393,30 +373,7 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 		// punch BEGIN instruction
 		instructions.push_back(INSTRUCTION(func_tree->get_table(), "BEGIN"));
 
-		
-		// if function is oracle                                                            
-		if (func->is_oracle()) {
-
-			// create oracle data structure
-			oracle_data* o_data = new oracle_data;
-			// set function definition pointer
-			o_data->func_def = func;
-
-			// set parameter map
-			o_data->param_map = parameter_map;
-
-			// set function symbol table
-			o_data->st = func_tree->get_table();
-
-			// stringstream to hold the memory address as a string
-			ostringstream out;
-			out << o_data;
-			ptr_to_orac = o_data;
-			// return memory address string
-			return out.str();
-
-		}
-
+	
 		// iterate over each child tree in function tree
 		for (int child_tree = 0; child_tree < func_tree->get_child_trees().size(); child_tree++ ) {
 			SyntaxTree& func_child_tree = func_tree->get_child_trees()[child_tree];

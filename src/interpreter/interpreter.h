@@ -240,7 +240,6 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false, map<str
 
 			// parameters of function call
 			vector<SyntaxTree> params = tree->get_function_parameters();
-			
 			// add values to parameter map
 			for (int parameter = 0; parameter < params.size(); parameter++) {
 				// Insert values into the parameter map
