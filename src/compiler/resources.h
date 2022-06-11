@@ -95,7 +95,6 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 
 			// parameters of function call
 			vector<SyntaxTree> params = tree->get_function_parameters();
-			cout << node->getTValue() << " : " << parameter_map.size() << endl;
 			// create a new symbol table
 			SymbolTable* func_scope_table = new SymbolTable();
 

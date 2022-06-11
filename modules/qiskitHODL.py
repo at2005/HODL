@@ -22,23 +22,28 @@ class HODLOracle:
         ### iterate over each parameter and if a quantum register then declare it as
         ### a |0>^n register. This initialization is such so that the circuit can be concatenated
         ## with any desired input register
+        param_lst = []
         for q in params:
             if isinstance(q, QuantumRegister):
                 main += f"\nsuper {q.name} = {2**(q.size)};\nH({q.name});"
+                param_lst.append(q.name)
+            else:
+                param_lst.append(str(q))
+            
         
-        main += f"\n{self.fname}({','.join([p.name for p in params])});"
+        main += f"\n{self.fname}({','.join(param_lst)});"
         result = self.program + main + "\n}"
         f = open("program.hodl", "w")
         f.write(result)
         f.close()
         os.system("qc --target qasm -o out.qasm program.hodl")
-        circ = QuantumCircuit.from_qasm_file("./out.qasm")
+        circ = QuantumCircuit.from_qasm_file("out.qasm")
         os.remove("program.hodl")
         os.remove("out.qasm")
         return circ
         
 ### takes an oracle and outputs a HODL object      
-def init_hodl(code):
+def compile_oracle(code):
     fname = re.search("function (.*)\(", code).group(1)
     params = re.search("\((.*)\)",code).group(1)
     params = params.split(",")
@@ -50,4 +55,5 @@ def init_hodl(code):
     
     oracle = HODLOracle(fname, param_dict, code)
     return oracle
+
     

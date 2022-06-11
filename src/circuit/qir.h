@@ -148,9 +148,11 @@ class QIRCirc {
 		}
 
 
-		void measure(string res,unsigned int qubit_index) {
-			out << res << "= call %Result* @__quantum__qis__m__body( " << index_to_qtype(qubit_index) << ")\n"; 
+		void measure(unsigned int start, unsigned int end) {
+			for(int i = start; i < end; i++) {
+				out << "%result" << i << " = call %Result* @__quantum__qis__m__body( " << index_to_qtype(i) << ")\n"; 
 
+			}
 		}
 
 		void qgate_decl() {

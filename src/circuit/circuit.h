@@ -52,13 +52,7 @@ public:
 	}
 
 
-	const void measure(string qreg, string creg) {
-		output_file << "measure " << qreg << " -> " << creg << ";\n";
-	
-
-
-
-	}
+	void measure(string qreg, string creg);
 
 	void add_qregister(QuantumVariable& qvar);
 	void add_cregister(string creg, int measurable_qubits);

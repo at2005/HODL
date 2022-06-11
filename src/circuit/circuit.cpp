@@ -737,6 +737,19 @@ void Circuit::ccgate(string qreg, unsigned int control1, unsigned int control2, 
 }
 
 
+void Circuit::measure(string qreg, string creg) {
+	
+	if(system == "IBM") output_file << "measure " << qreg << " -> " << creg << ";\n";
+	
+	else {
+		QuantumVariable* qvar = qreg_map[qreg];
+		qirc.measure(qvar->get_phys_start(),qvar->get_phys_start()+qvar->get_num_qubits());
+
+	}
+
+
+
+}
 
 //barrier
 const void Circuit::barrier(string qreg) {

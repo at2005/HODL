@@ -339,7 +339,6 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 
 	// for custom function calls
 	else if (root->getTToken() == "FCALL" && !(isBuiltInFunction(root->getTValue()) || isAssembly(root->getTValue()))) {
-
 		// get function table
 		FunctionTable* func_table = FunctionTable::get_func_table();
 

@@ -229,7 +229,7 @@ long interpret(SyntaxTree* tree, SymbolTable& table, bool in_loop=false, map<str
 
 
 
-		else if(node->getTToken() == "FCALL" && !isBuiltInFunction(node->getTValue())) {
+		else if(node->getTToken() == "FCALL" && !isAssembly(node->getTValue()) && !isBuiltInFunction(node->getTValue())) {
 			Function* func = func_table->search_global_func_stack(node->getTValue());
 			// create child trees
 			vector<SyntaxTree>& child_trees = func->get_syntax_tree()->get_child_trees();

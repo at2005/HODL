@@ -2,7 +2,7 @@
 
 # A Higher-Level Oracle Description Language (HODL)
 
-A C-Style programming language for Quantum Computers designed for writing oracles containing arithmetic and logical operations. It currently compiles down to either OpenQASM 2.0 or the Quantum Intermediate Representation (QIR) format, although the latter's development is still in its beta phase. 
+A C-Style programming language for Quantum Computers designed for writing oracles containing arithmetic and logical operations. It currently compiles down to either OpenQASM 2.0 or the Quantum Intermediate Representation (QIR) format. 
 
 Language description can be found: https://arxiv.org/abs/2110.12487
 
@@ -13,7 +13,7 @@ To use the compiler, create a new "bin" directory from the root directory and ru
 One can also use HODL within QISKit, provided that the executable is in PATH and the necessary library (in "modules" sub-directory) has been imported: 
 
      
-    oracle_instance = init_hodl("""
+    oracle_instance = compile_oracle("""
 	function foo(a) {
         	if(a < 2) {
             		mark(a,pi);
@@ -26,13 +26,9 @@ One can also use HODL within QISKit, provided that the executable is in PATH and
 	circ.draw(output="mlp")
 	
 
-# Notes
 
-Another compiler option supported, "-t", standing for "tape". Prints out internal instruction tape representation of program to view how program is compiled, and which is useful for debugging the program as well as the compiler.
-
-Example: qc data/grover.hodl
 
 Some further dev notes:
 
-- Nested conditionals are buggy as of now
-- Classical while loop doesn't work right now
+- Nested conditionals give segmentation faults
+- Classical while loop always runs to infinity
