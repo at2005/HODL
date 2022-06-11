@@ -14,17 +14,11 @@ function some_oracle(super var, int num) { ### takes a superposition as an input
 function main() {
 	#declare a uniform superposition of 3 qubits, e.g. |0>+|1>+|2>...|7> / sqrt(8)
 	super variable = 8;
-	### "filter" function is Grover's algorithm  - e.g. Quantum search
-	### oracles are not first class objects
-	### when they're passed as inputs it is their memory address
-	### that is passed in. This is similar to function pointers in C.
-	
-	### "filter" increases probability of measuring a value that fits the condition specified in the oracle
-	
+	# apply oracle once	
 	some_oracle(variable,4);
-	filter(variable);
+	# apply diffusion operator once
+	diffuse(variable);
 
-	
 	### measurement
 	### we should expect to measure the value "0" with high probability since it is the only state that fits the constraint x*4 < 4.
 	measure variable;

@@ -461,7 +461,7 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 					}
 
 					// compile "Diffuse" function
-					else if (func_name == "Diffuse") {
+					else if (func_name == "DIFFUSE") {
 						// get input to apply amplitude amplification
 						QuantumVariable* input = table->search_qtable(parameter);
 						QuantumVariable* ancilla = nullptr;

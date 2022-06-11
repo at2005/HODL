@@ -78,10 +78,10 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 		}
 
 		// case for the filter function which performs the Diffusion operator
-		if (root->getTValue() == "filter") {
+		if (root->getTValue() == "diffuse") {
 
 			// apply diffusion operation
-			instructions.push_back(INSTRUCTION("Diffuse", tree->get_function_parameters()[0].getRoot()->getTValue()));
+			instructions.push_back(INSTRUCTION("DIFFUSE", tree->get_function_parameters()[0].getRoot()->getTValue()));
 	
 			
 			// delete root node
