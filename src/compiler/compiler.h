@@ -103,6 +103,7 @@ int compile(int num_args, char** args) {
 
 	}
 
+	
 
 	// vector of child trees for main function
 	vector<SyntaxTree> statements = MAIN.get_syntax_tree()->get_child_trees();

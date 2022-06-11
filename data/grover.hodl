@@ -1,5 +1,10 @@
 ### this is a comment
 
+super function cool(int size) {
+	super b = size*2;
+	return b;
+
+}
 
 ### Below is an oracle
 oracle some_oracle(super var) { ### takes a superposition as an input
@@ -14,7 +19,7 @@ oracle some_oracle(super var) { ### takes a superposition as an input
 
 function main() {
 	#declare a uniform superposition of 3 qubits, e.g. |0>+|1>+|2>...|7> / sqrt(8)
-	super variable = 8;
+	super variable = cool(64);
 	### "filter" function is Grover's algorithm  - e.g. Quantum search
 	### oracles are not first class objects
 	### when they're passed as inputs it is their memory address

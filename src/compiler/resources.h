@@ -27,10 +27,8 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 	
 	// Check if node is not NULL
 	if (node != (Node*)NULL) {	
-		// Classical Interpretation on node
-		
+		// Classical Interpretation on node		
 		interpret(tree, *table);
-
 		//case where value is classical
 		if (node->getTToken() == "NUMBER" || node->getTToken() == "FLOAT") {
 			// check if this value is for assignment
@@ -38,11 +36,10 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 				// get number of qubits of value
 				return log2(stoi(node->getTValue()));
 			}
-
+			
 			// if not assignment
 			node->set_result_register(node->getTValue());
 			
-
 			// return resources
 			return eval_classical_resources(node);
 			
@@ -52,7 +49,8 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 		// case where value is an identifier
 		else if (node->getTToken() == "IDENTIFIER") {
 			if (dependency != nullptr) {
-				table->search_qtable(node->getTValue())->set_dependency(dependency, expr_node);
+				QuantumVariable* qparam = table->search_qtable(node->getTValue()); 
+				if(qparam) qparam->set_dependency(dependency, expr_node);
 			}
 			
 			// case where identifier is not used within a function
@@ -116,6 +114,7 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 				new_param_map.insert({ func->get_syntax_tree()->get_function_parameters()[parameter].getRoot()->getTValue(),tree->get_function_parameters()[parameter].getRoot()->getTValue() });
 			}
 
+			
 			//estimate resources of child trees and set return register
 			// iterate over all child trees
 			for (int i = 0; i < child_trees.size(); i++) {
