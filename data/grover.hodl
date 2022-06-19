@@ -2,7 +2,7 @@
 
 ### Below is an oracle
 function some_oracle(super var, int num) { ### takes a superposition as an input
-	if(var * 4 < 4) {
+	if(var * num <= num) {
 	### apply a phase of pi to var if var *  4 < 4. Corresponds to "marking" the term that fits this condition
 		mark(var,pi); 
 	}
@@ -13,9 +13,9 @@ function some_oracle(super var, int num) { ### takes a superposition as an input
 
 function main() {
 	#declare a uniform superposition of 3 qubits, e.g. |0>+|1>+|2>...|7> / sqrt(8)
-	super variable = 8;
+	super variable = 64;
 	# apply oracle once	
-	some_oracle(variable,4);
+	some_oracle(variable,6);
 	# apply diffusion operator once
 	diffuse(variable);
 
@@ -23,4 +23,7 @@ function main() {
 	### we should expect to measure the value "0" with high probability since it is the only state that fits the constraint x*4 < 4.
 	measure variable;
 }
+
+
+
 
