@@ -65,7 +65,16 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 	
 			
 			// if in a function, then search parameter map and return the mapped variable name
-			string param_value = parameter_map.find(node->getTValue())->second;
+			string param_value = "";
+			auto param_iter = parameter_map.find(node->getTValue());
+			if(param_iter == parameter_map.end()) {
+				cerr << "VARIABLE DOES NOT EXIST!\n";
+				exit(1);
+
+			}
+			
+			param_value = param_iter->second;
+
 			node->set_result_register(param_value);
 			QuantumVariable* qvar = table->search_qtable(param_value);
 			if(qvar) return qvar->get_num_qubits();
