@@ -47,7 +47,7 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 
 
 		// case where value is an identifier
-		else if (node->getTToken() == "IDENTIFIER") {
+		else if (node->getTToken() == "IDENTIFIER" && node->getTValue() != "pi") {
 			if (dependency != nullptr) {
 				QuantumVariable* qparam = table->search_qtable(node->getTValue()); 
 				if(qparam) qparam->set_dependency(dependency, expr_node);
@@ -62,7 +62,8 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 				return 0;
 			}
 
-
+	
+			
 			// if in a function, then search parameter map and return the mapped variable name
 			string param_value = parameter_map.find(node->getTValue())->second;
 			node->set_result_register(param_value);
