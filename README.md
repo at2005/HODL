@@ -6,7 +6,7 @@ A C-Style programming language for Quantum Computers designed for writing oracle
 
 Language description can be found: https://arxiv.org/abs/2110.12487
 
-To use the compiler, create a new "bin" directory from the root directory and run make. After compilation this should create an executable named "qc", which can be appended to PATH. To run the compiler, specify the --target system (qir/qasm) and the output file (-o).
+To use the compiler, create a new "bin" directory from the root directory and run make. After compilation this should create an executable named "hodl", which can be appended to PATH. To run the compiler, specify the --target system (qir/qasm) and the output file (-o).
 
 # QISKit integration
 
