@@ -384,6 +384,7 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 		else if (node->getTToken() == "ASSIGNMENT") {
 
 			SyntaxTree* tree_right = new SyntaxTree(node->getRightChild());
+			tree_right->alloc_self();
 			//for quantum assignment
 			string left = node->getLeftChild()->getTValue();
 			// check if quantum variable

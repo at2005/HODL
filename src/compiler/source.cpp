@@ -2,15 +2,9 @@
 #include "compiler.h"
 
 int main(int argc, char** argv) {
-	//try {
-		compile(argc,argv);
-	//}
-
-	//catch (...) {
-	//	cerr << "\nERROR\n";
-	//}
-	
+	compile(argc,argv);	
 	return 0;
 }
+
 
 

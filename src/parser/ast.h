@@ -6,6 +6,9 @@
 
 class SymbolTable;
 
+class SyntaxTree;
+void delete_ast(SyntaxTree*);
+
 class SyntaxTree {
 public:
 	string get_expr_type() {
@@ -17,11 +20,13 @@ public:
 		this->type = "NULL";
 		this->root_of_tree = node;
 		this->name = "ID";
+		this->is_alloc = false;
 		if (node->get_func_params().size()) {
 			vector<vector<Pair>> expressions = returnSep(node->get_func_params());
 			for (int i = 0; i < expressions.size(); i++) {
 				SyntaxTree* st = new SyntaxTree(expressions[i]);
 				this->function_parameters.push_back(*st);
+				delete st;
 			}
 				
 		}
@@ -36,7 +41,7 @@ public:
 		this->expression_type = rtnExprType(inputExpr);
 		//cout << expression_type;
 		this->root_of_tree = new Node();
-		
+		this->is_alloc = false;
 		if (inputExpr.size() == 1 ) {
 			*this->root_of_tree =  Node(inputExpr[0], inputExpr[0].getValue());
 			this->name = "ID";
@@ -71,20 +76,17 @@ public:
 		}
 
 		else if (expression_type == "KEYWORD_OPERATION") {
-			//cout << "hey2";
 			check = true;
 			this->root_of_tree = createKeywordTree(inputExpr);
 		}
 		
 		else if (expression_type == "FUNCTION_CALL") {
-			//cout << "hey3";
 			this->root_of_tree = createFCallTree(inputExpr);
 			//cout << root_of_tree->getTValue();
 			this->name = "FCALL";
 		}
 
 		else if (expression_type == "IF_STATEMENT" || expression_type == "ELSE_IF_STATEMENT") {
-			//cout << "if";
 			this->root_of_tree = createCndtlnTree(inputExpr);
 			this->name = "CONDITIONAL";
 		}
@@ -95,7 +97,6 @@ public:
 		}
 
 		else if (expression_type == "ORACLE_FUNCTION" || expression_type == "FUNCTION_DECLARATION") {
-			//cout << "func";
 			this->root_of_tree = createFuncDefTree(inputExpr);	
 			if(expression_type == "FUNCTION_DECLARATION" ) this->name = "FUNC";
 			if (expression_type == "ORACLE_FUNCTION") this->name = "ORACLE";
@@ -115,7 +116,6 @@ public:
 		else {
 			this->root_of_tree = NULL;
 			this->name = "";
-			//cout << "UNEXPECTED_SEMICOLON";
 		}
 
 
@@ -166,6 +166,15 @@ public:
 
 	}
 
+	void alloc_self() {
+		this->is_alloc = true;
+	}
+
+	bool isalloc() {
+		return this->is_alloc;
+
+	}
+
 	void set_table(SymbolTable* table) {
 		this->current_scope = table;
 	}
@@ -180,6 +189,7 @@ public:
 private:
 	bool check = false;
 	bool cond_flag;
+	bool is_alloc;
 	//expression type
 	string expression_type;
 	string name;
@@ -190,7 +200,7 @@ private:
 	vector<SyntaxTree> child_trees = {};
 	vector<SyntaxTree> function_parameters = {};
 	SyntaxTree* parent;
-	
+
 	
 	//parse body of code block
 	void parse_body(vector<Pair> inputExpr) {
@@ -202,6 +212,8 @@ private:
 			SyntaxTree* st = new SyntaxTree(vec[i]);
 			st->parent = this;
 			this->child_trees.push_back(*st);
+			delete st;
+			
 		}
 	}
 
@@ -376,4 +388,47 @@ private:
 
 };
 
+
+void delete_tree(Node* dead_node) {
+       if(dead_node) {
+		if(dead_node->getRightChild() &&  dead_node->getLeftChild()) {
+			delete_tree(dead_node->getRightChild());
+			delete_tree(dead_node->getLeftChild());	
+			delete dead_node;
+                	return;
+		}
+
+		delete dead_node;
+        }
+
+
+
+}
+
+
+SyntaxTree* alloc_ast(vector<Pair> inp) {
+	SyntaxTree* st = new SyntaxTree(inp);
+	st->alloc_self();
+	return st;
+}
+
+
+SyntaxTree* alloc_ast(Node* root) {	
+	SyntaxTree* st = new SyntaxTree(root);
+	st->alloc_self();
+	return st;
+}
+
+
+// function to delete AST
+void delete_ast(SyntaxTree* ast) {
+         Node* root = ast->getRoot();
+	delete_tree(root);
+	if(ast->isalloc()) delete ast;
+
+}
+
+
+
 #endif
+

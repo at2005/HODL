@@ -9,9 +9,9 @@
 #include "../operations/arithmetic.h"
 #include "../operations/comparison_operators.h"
 #include "../tables/ftable.h"
-#include "generate_instructions.h"
-#include "compile_instructions.h"
-
+#include "genops.h"
+#include "comops.h"
+#include <time.h>
 
 // command line options and their flag
 unordered_map<string, bool> options = {
@@ -31,7 +31,7 @@ unordered_map<string, bool> options = {
 int compile(int num_args, char** args) {
 	// get function table -> for storing function pointers
 	FunctionTable* function_table = FunctionTable::get_func_table();
-
+	
 	// get program source file from CL
 	const char* program_file = args[num_args-1];
 	target_file = "out";	
@@ -61,7 +61,7 @@ int compile(int num_args, char** args) {
 
 	}
 
-		
+	
 	//lexical analysis -> stored in vector of token-values
 	vector<Pair> TokenValues = execute_lex(program_file).get_lex().dict_output;
 	// get circuit object
@@ -81,7 +81,8 @@ int compile(int num_args, char** args) {
 	for (int individual_expressions = 0; individual_expressions < expressions.size(); individual_expressions++) {
 
 		// create AST
-		SyntaxTree* AST = new SyntaxTree(expressions[individual_expressions]);
+		SyntaxTree* AST = alloc_ast(expressions[individual_expressions]);
+		
 		//cout << expressions[individual_expressions][0].getValue() << endl;
 		//cout << AST->getRoot();
 		// if not main
@@ -94,12 +95,11 @@ int compile(int num_args, char** args) {
 
 			// add function to function table
 			function_table->push_func(func);
+			continue;
 		}
 
-		// assign AST to main
-		else {
-			MAIN = Function(AST);
-		}
+		
+		MAIN = Function(AST);
 
 	}
 

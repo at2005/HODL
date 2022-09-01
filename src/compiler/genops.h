@@ -10,6 +10,9 @@
 #include <sstream>
 
 
+
+
+
 struct oracle_data {
 	// holds pointer to function definition
 	Function* func_def;
@@ -24,6 +27,9 @@ struct oracle_data {
 
 static struct oracle_data* ptr_to_orac = nullptr;
 
+
+
+
 //create instructions
 string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, map<string, string> param_map = {}, SymbolTable* table = nullptr, vector<Conditional> controls = {}, bool invert = false) {
 	//cout << "hello";
@@ -34,8 +40,7 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 	left = root->getLeftChild();
 	Node* right = nullptr;
 	right = root->getRightChild();
-	
-	//cout << root->getTValue();
+
 	// base case for identifiers or numbers
 	if (root->getTToken() == "IDENTIFIER" || root->getTToken() == "NUMBER") {
 		// get value of node
@@ -50,10 +55,12 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 		if (table->is_searchable(value)) {
 			value =  table->get_qtable().find(value)->second->get_qreg();
 		}
-	
+			
+		delete_ast(tree);
 		return value;
-	
+
 	}
+
 
 	// case for loops
 	else if (root->getTToken() == "LOOP") {
@@ -79,14 +86,9 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 
 		// case for the filter function which performs the Diffusion operator
 		if (root->getTValue() == "diffuse") {
-
 			// apply diffusion operation
 			instructions.push_back(INSTRUCTION("DIFFUSE", tree->get_function_parameters()[0].getRoot()->getTValue()));
-	
-			
-			// delete root node
-			delete root;
-			
+			delete_ast(tree);
 			// return empty string
 			return "";
 		}
@@ -158,21 +160,17 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 			}
 		}
 		
-		// delete root
-		delete root;
 	} 
 
 
 	// case for instruction for operator 
-	else if (root->getTToken() == "OPERATOR" || root->getTToken() == "COMPARISON_OPERATOR" || root->getTToken() == "BOOL_EXPR") {
-		
+	else if (root->getTToken() == "OPERATOR" || root->getTToken() == "COMPARISON_OPERATOR" || root->getTToken() == "BOOL_EXPR") {	
 		// if left and right exists 
-		SyntaxTree left_tree = (SyntaxTree)left;
-		SyntaxTree right_tree = (SyntaxTree)right;
+		SyntaxTree left_tree = SyntaxTree(left);
+		SyntaxTree right_tree = SyntaxTree(right);
 		if (left && right) {
 			// get left register
 			string left_reg = create_instructions(instructions, &left_tree, param_map, table,controls);
-
 			// get right register
 			string right_reg = create_instructions(instructions, &right_tree, param_map, table, controls);
 
@@ -186,9 +184,7 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 
 		// result register
 		string result = root->get_result_register();
-	
-		// delete root
-		delete root;
+		delete_ast(tree);
 
 		// return result register
 		return result;
@@ -206,9 +202,7 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 				if (!controls.empty()) instructions.push_back(INSTRUCTION("0", right->getTValue(), ":", root->get_result_register(), controls));
 				else instructions.push_back(INSTRUCTION("0", right->getTValue(), ":", root->get_result_register()));
 
-				// delete root
-				delete root;
-
+				delete_ast(tree);
 				// return null string
 				return "";
 			}
@@ -226,13 +220,14 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 					create_instructions(instructions, &right_tree, param_map, table);
 				}
 				
+				string val = left->getTValue();
+				delete_ast(tree);
 				// return left value (variable name)
-				return left->getTValue();
+				return val;
 			}
 		}
 
-		// delete root
-		delete root;
+		delete_ast(tree);
 	}
 
 	// case for if statement
@@ -247,6 +242,7 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 
 			}
 			
+			delete_ast(tree);
 			return "";
 
 		}
@@ -305,9 +301,8 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 			// punch inverted instructions from temporary tape to instruction tape
 			instructions.push_back(*iter);
 		}
-		
-		// delete root
-		delete root;
+
+		delete_ast(tree);
 
 	}
 
@@ -333,8 +328,11 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 			
 			// punch X instruction on CMP
 			instructions.push_back(INSTRUCTION("X", cmp_result_reg));
+			delete_ast(tree);
 
 		}
+
+
 	}
 
 	// for custom function calls
@@ -384,15 +382,11 @@ string create_instructions(vector<INSTRUCTION>& instructions, SyntaxTree* tree, 
 		instructions.push_back(INSTRUCTION(func_tree->get_table(), "END"));
 		
 		// delete parameter map
-		delete parameter_map;
-		
-		
-	
-		// delete root	
-		delete root;
+		delete parameter_map;		
 	}
 
 	// return default null string
+	delete_ast(tree);
 	return "";
 }
 

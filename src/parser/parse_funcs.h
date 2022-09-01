@@ -52,36 +52,20 @@ vector<Pair> parse_between(string a, string b, vector<Pair> input) {
 	int count = 0;
 	for (int i = 0; i < input.size(); i++) {
 		if (input[i].getValue() == a) {
-
 			if (begin == -1) {
 				//cout << i << endl;
 				begin = i;
 			}
-
-
 			count++;
-
-
-
 		}
 
-
-
 		else if (input[i].getValue() == b) {
-
 			count--;
-
-
-
 			if (count == 0) {
 
 				end = i;
 				break;
 			}
-
-
-
-
 
 		}
 
@@ -187,7 +171,7 @@ inline Node* parse_maths(vector<Pair> input) {
 						currentParent->getRightChild()->set_classical();
 					}
 
-					if (!currentParent->hasLeftChild()) {
+					if (!currentParent->getLeftChild()) {
 						currentParent->createLeftChild(new Node(Pair("0", "NUMBER")));
 						currentParent->getLeftChild()->set_classical();
 
@@ -273,7 +257,7 @@ inline Node* parse_maths(vector<Pair> input) {
 						switchParent = true;
 					}
 
-					else if (!currentParent->hasRightChild()) {
+					else if (!currentParent->getRightChild()) {
 						currentParent->createRightChild(np);
 						tempParent = currentParent;
 						currentParent = np;
@@ -303,7 +287,7 @@ inline Node* parse_maths(vector<Pair> input) {
 			
 
 			//case for expression in parantheses
-			else if (input[i].getToken() == "COMMENCE_PARANTHESES") {
+			else if (input[i].getValue() == "(") {
 				if (has_seen_id) {
 					Node* nd = nullptr;
 					if (has_seen_op) nd = currentParent->getRightChild();
