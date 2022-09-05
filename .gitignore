@@ -4,5 +4,7 @@ bin
 *.qir
 *.out
 *.o
+.swp
+.DS_Store
 
 
