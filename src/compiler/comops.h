@@ -165,6 +165,7 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 					multiply_reg_by_reg(qc, *qvar1, *qvar2, *result_reg);
 				}
 
+
 				// compile addition-append
 				else if (type == "+=") {
 					add_append(qc, *qvar1, *qvar2, instruction.is_inverted(),instruction.get_controls());
@@ -290,6 +291,12 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 				// compile multiplication
 				else if (type == "*") {
 					multiply_by_int(qc, *qvar, stoll(num), *result_reg, instruction.is_inverted());
+				}
+
+
+				else if (type == "%") {
+					modulo_by_two_exp(qc, *qvar, stoll(num), *result_reg, instruction.is_inverted());
+					
 				}
 
 				// compile addition-append
@@ -492,12 +499,6 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 					}
 
-
-					// compile Quantum Fourier Transform
-					else if (func_name == "Fourier") {
-
-
-					}
 				}
 			}
 		}
