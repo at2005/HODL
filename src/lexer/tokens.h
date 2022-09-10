@@ -161,9 +161,7 @@ bool isNumeric(std::string input) {
 			return true;
 		}
 
-		else {
-			return false;
-		}
+		return false;
 	}
 
 
@@ -188,9 +186,7 @@ bool isInitBlock(std::string input) {
 		return true;
 	}
 
-	else {
 		return false;
-	}
 }
 
 
@@ -202,9 +198,7 @@ bool isTermBlock(std::string input) {
 		return true;
 	}
 
-	else {
-		return false;
-	}
+	return false;
 }
 
 
@@ -214,11 +208,8 @@ bool isTermBlock(std::string input) {
 bool isInitPar(std::string input) {
 	if (input == "(") {
 		return true;
-	}
 
-	else {
-		return false;
-	}
+	return false;
 
 }
 
@@ -229,10 +220,8 @@ bool isTermPar(std::string input) {
 	if (input == ")") {
 		return true;
 	}
-
-	else {
-		return false;
-	}
+	
+	return false;
 }
 
 bool isInitSquareBracket(std::string input) {
@@ -317,7 +306,8 @@ bool isComment(std::string input) {
 	if (input == "#") {
 		return true;
 	}
-	else { return false; }
+	
+	return false;
 
 }
 
@@ -330,7 +320,7 @@ bool is_semicolon(std::string input) {
 		return true;
 	}
 
-	else { return false; }
+	return false;
 }
 
 
@@ -338,7 +328,9 @@ bool isSeperator(std::string input) {
 	if (input == ",") {
 		return true;
 	}
-	else { return false; }
+	
+	return false;
+
 }
 
 bool isAssembly(std::string input) {

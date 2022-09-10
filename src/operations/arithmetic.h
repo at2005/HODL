@@ -310,4 +310,18 @@ void multiply_reg_by_reg(Circuit& qc, QuantumVariable qvar1, QuantumVariable qva
 
 }
 
+
+// this function is used to calculate the modulo of a quantum variable with a positive integer that is a power 
+// of two
+
+void modulo_by_two_exp(Circuit& qc, QuantumVariable& qvar, unsigned long long num,  QuantumVariable& output, bool is_inverted) {
+	assert(log2(num) - (int)log2(num) == 0);
+	int exp = log2(num);
+	for(int i = 0; i < exp; i++) {
+		qc.cx(qvar.get_qreg(), qvar.get_num_qubits() - (i+1), output.get_qreg(), i);
+	}
+
+}
+
+
 #endif

@@ -218,6 +218,11 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 						circ_equal_to(qc, *qvar1, *qvar2, *result_reg, *ancilla);
 					}
 
+/*					else if(type == "!=") {
+						circ_equal_to(qc, *qvar1, *qvar2, *result_reg, *ancilla);
+						qc.x(result_reg->get_qreg());
+					}
+*/
 					// compile greater-than operator
 					else if (type == ">") {
 						greater_than(qc, *qvar1, *qvar2, *result_reg, *ancilla);
@@ -343,11 +348,16 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 						qc.add_qregister(*ancilla);
 					
 					// compile equality operator
-					 if (type == "==") {
+					if (type == "==") {
 	
 						circ_equal_to(qc, *qvar, *qvar2, *result_reg, *ancilla);
 					 }
 
+					/*else if(type == "!=") {
+						circ_equal_to(qc, *qvar, *qvar2, *result_reg, *ancilla);
+						qc.x(result_reg->get_qreg());
+					}
+					*/
 					// compile greater-than operator
 					else if (type == ">") {
 						greater_than(qc, *qvar, *qvar2, *result_reg, *ancilla);

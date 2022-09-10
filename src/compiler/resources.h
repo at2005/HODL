@@ -365,6 +365,7 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 
 		// for relational operations, (e.g. > , < , == , !=) and logical operators (e.g. & , |)
 		else if (node->getTToken() == "COMPARISON_OPERATOR" || node->getTToken() == "BOOL_EXPR") {
+			cout << node->getTValue() << endl;
 			SyntaxTree tree_left(node->getLeftChild());
 			SyntaxTree tree_right(node->getRightChild());
 			// evaluate resources for left and right child

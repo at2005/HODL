@@ -103,6 +103,7 @@ vector<Pair> parse_between(string a, string b, vector<Pair> input) {
 	precedence_map.insert({ ">" , 5 });
 	precedence_map.insert({ "<" , 5 });
 	precedence_map.insert({ "==" , 5 });
+	precedence_map.insert({"!=", 5});
 	precedence_map.insert({ ">=" , 5 });
 	precedence_map.insert({ "<=" , 5 });
 	precedence_map.insert({ "+=" , 5 });
@@ -111,6 +112,7 @@ vector<Pair> parse_between(string a, string b, vector<Pair> input) {
 	precedence_map.insert({ "+" , 10 });
 	precedence_map.insert({ "-" , 10 });
 	precedence_map.insert({ "|" , 10 });
+	precedence_map.insert({ "%" , 20 });
 	precedence_map.insert({ "*" , 20 });
 	precedence_map.insert({ "/" , 20 });	
 

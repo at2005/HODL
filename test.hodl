@@ -1,0 +1,13 @@
+
+function even_or_odd(super qvar) {
+	if(qvar != 1) {
+		mark(qvar, pi);
+	}
+
+}
+
+
+function main() {
+	super a = 4;
+	even_or_odd(a);
+}

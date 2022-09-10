@@ -40,24 +40,6 @@
 	numbers.insert({ "90", "ninety" });
 	numbers.insert({ "100", "hundred" });
 	numbers.insert({ "1000", "thousand" });
-	numbers.insert({ "1000000", "million" });
-	numbers.insert({ "1000000000", "billion" });
-	numbers.insert({ "1000000000000", "trillion" });
-	numbers.insert({ "1000000000000000", "quadrillion" });
-	numbers.insert({ "1000000000000000000", "quintillion" });
-	numbers.insert({ "1000000000000000000000", "sextillion" });
-	numbers.insert({ "1000000000000000000000000", "septillion" });
-	numbers.insert({ "1000000000000000000000000000", "octillion" });
-	numbers.insert({ "1000000000000000000000000000000", "nonillion" });
-	numbers.insert({ "100000000000000000000000000000000", "decillion" });
-	numbers.insert({ "100000000000000000000000000000000000", "undecillion" });
-	numbers.insert({ "100000000000000000000000000000000000000", "duodecillion" });
-	numbers.insert({ "100000000000000000000000000000000000000000", "tredecillion" });
-	numbers.insert({ "100000000000000000000000000000000000000000000", "quattuordecillion" });
-	numbers.insert({ "100000000000000000000000000000000000000000000000", "quindecillion" });
-	numbers.insert({ "1000000000000000000000000000000000000000000000000", "sexdecillion" });
-	numbers.insert({ "100000000000000000000000000000000000000000000000000", "septendecillion" });
-
 	return numbers;
 }
 
@@ -197,6 +179,10 @@
 	return floor(log2(upper_bound - 1)) + 1;
 }
 
+int estimate_modulo(int size) {
+	return floor(log2(size));	
+}
+
 
 QuantumVariable* create_num_reg(Circuit& qc, unsigned int num, int padding, SymbolTable& table) {
 	QuantumVariable* number_register = new QuantumVariable(get_num_to_words(to_string(num)));
@@ -215,18 +201,6 @@ QuantumVariable* create_num_reg(Circuit& qc, unsigned int num, int padding, Symb
 
 	return number_register;
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -251,26 +225,27 @@ unsigned int long long eval_id_resources(Node* node, string left, string right, 
 	}
 
 	//estimate qubits for subtraction
-	else if (node->getTValue() == "-") {
+	if (node->getTValue() == "-") {
 		return estimate_subtraction(qvar1, qvar2);
 	}
 
 	//estimate qubits for multiplication
-	else if (node->getTValue() == "*") {
+	if (node->getTValue() == "*") {
 		return estimate_multiplication(qvar1, qvar2);
 	}
 
-	else if (node->getTValue() == "+=") {
+	if (node->getTValue() == "+=") {
 		estimate_addition_append(qvar1, qvar2);
 		qvar1.set_dependency(&qvar2, node);
 		return 0;
 	}
 
-	else if (node->getTValue() == "-=") {
+	if (node->getTValue() == "-=") {
 		estimate_subtraction_append(qvar1, qvar2);
 		qvar1.set_dependency(&qvar2, node);
 		return 0;
 	}
+
 
 	return 0;
 }
@@ -285,24 +260,27 @@ unsigned long long eval_id_num_resources(Node* node, string left, string right, 
 	}
 
 	//estimate number of qubits for subtraction
-	else if (node->getTValue() == "-") {
+	if (node->getTValue() == "-") {
 		return estimate_subtraction(qvar, number);
 	}
 
 	//estimate number of qubits for multiplication
-	else if (node->getTValue() == "*") {
+	if (node->getTValue() == "*") {
 		return estimate_int_mult(qvar, number);
 	}
 
-	else if (node->getTValue() == "+=") {
-		estimate_addition_append(qvar, number);
-		return 0;
+	if(node->getTValue() == "%") {
+		return estimate_modulo(number);
 	}
 
-	else if (node->getTValue() == "-=") {
-		estimate_subtraction_append(qvar, number);
-		return 0;
+	if (node->getTValue() == "+=") {
+		estimate_addition_append(qvar, number);
 	}
+
+	if (node->getTValue() == "-=") {
+		estimate_subtraction_append(qvar, number);
+	}
+
 
 	return 0;
 }
