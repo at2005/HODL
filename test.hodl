@@ -1,6 +1,6 @@
 
 function even_or_odd(super qvar) {
-	if(qvar != 1) {
+	if(qvar % 2 == 0 & qvar != 0) {
 		mark(qvar, pi);
 	}
 
@@ -8,6 +8,8 @@ function even_or_odd(super qvar) {
 
 
 function main() {
-	super a = 4;
+	super a = 8;
 	even_or_odd(a);
+	diffuse(a);
+	measure a;
 }

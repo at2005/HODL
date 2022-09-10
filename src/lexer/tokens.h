@@ -186,7 +186,7 @@ bool isInitBlock(std::string input) {
 		return true;
 	}
 
-		return false;
+	return false;
 }
 
 
@@ -208,6 +208,7 @@ bool isTermBlock(std::string input) {
 bool isInitPar(std::string input) {
 	if (input == "(") {
 		return true;
+}
 
 	return false;
 

@@ -65,14 +65,10 @@ int compile(int num_args, char** args) {
 	//lexical analysis -> stored in vector of token-values
 	vector<Pair> TokenValues = execute_lex(program_file).get_lex().dict_output;
 	
-	for(int i = 0; i < TokenValues.size(); i++) {
-		cout << TokenValues[i].getValue() << endl;
-
-	}
 
 
 	// get circuit object
-/*	Circuit* qc = Circuit::get_circuit(target_file, target_system);
+	Circuit* qc = Circuit::get_circuit(target_file, target_system);
 
 	//print_vector(TokenValues);
 	//breaks up into individual expressions
@@ -181,7 +177,7 @@ int compile(int num_args, char** args) {
 
 	return 0;
 
-*/}
+}
 
 
 #endif

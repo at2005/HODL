@@ -37,7 +37,7 @@ public:
 			}
 
 			//operator checks
-			else if (isOperator(tempString) || isCompOp(tempString) || isAssignment(tempString)) {
+			else if (isOperator(tempString) || isCompOp(tempString) || isAssignment(tempString) || tempString == "!") {
 				char nextStr;
 				if (line.size() > i + 1) {
 					nextStr = line[i + 1];
