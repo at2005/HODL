@@ -16,9 +16,10 @@ One can also use HODL within QISKit, provided that the executable is in PATH and
     oracle_instance = compile_oracle("""
 	function foo(a) {
         	if(a < 2) {
-            		mark(a,pi);
+                   mark(a,pi);
         	}
 	}
+
     """)
 	
 	qr = QuantumRegister(3)
