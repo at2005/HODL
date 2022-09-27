@@ -134,9 +134,7 @@ bool isNumeric(std::string input) {
 		return true;
 	}
 
-	else {
-		return false;
-	}
+		return false; 
 }
 
 	bool isFloat(std::string input) {
@@ -144,14 +142,14 @@ bool isNumeric(std::string input) {
 		bool has_point = false;
 		for (unsigned int i = 0; i <= input.size(); i++) {
 			
-				if (lex_states.digit.find(input[i]) != lex_states.digit.end()) {
-					counter++;
+			if (lex_states.digit.find(input[i]) != lex_states.digit.end()) {
+				counter++;
 
-				}
+			}
 
-				if (input[i] == '.') {
-					has_point = true;
-				}
+			if (input[i] == '.') {
+				has_point = true;
+			}
 
 		}
 
@@ -181,7 +179,7 @@ bool isCompOp(std::string input) {
 
 
 //The following functions check for braces, curly set-like, and parantheses.
-bool isInitBlock(std::string input) {
+inline bool isInitBlock(std::string input) {
 	if (input == "{") {
 		return true;
 	}
@@ -193,7 +191,7 @@ bool isInitBlock(std::string input) {
 
 
 
-bool isTermBlock(std::string input) {
+inline bool isTermBlock(std::string input) {
 	if (input == "}") {
 		return true;
 	}
@@ -205,7 +203,7 @@ bool isTermBlock(std::string input) {
 
 
 
-bool isInitPar(std::string input) {
+inline bool isInitPar(std::string input) {
 	if (input == "(") {
 		return true;
 }
@@ -217,7 +215,7 @@ bool isInitPar(std::string input) {
 
 
 
-bool isTermPar(std::string input) {
+inline bool isTermPar(std::string input) {
 	if (input == ")") {
 		return true;
 	}
@@ -225,14 +223,14 @@ bool isTermPar(std::string input) {
 	return false;
 }
 
-bool isInitSquareBracket(std::string input) {
+inline bool isInitSquareBracket(std::string input) {
 	if (input == "[") {
 		return true;
 	}
 	return false;
 }
 
-bool isTermSquareBracket(std::string input) {
+inline bool isTermSquareBracket(std::string input) {
 	if (input == "]") {
 		return true;
 	}
@@ -273,7 +271,7 @@ bool isUserFunction(std::string input) {
 
 
 
-bool isProgram(std::string input) {
+inline bool isProgram(std::string input) {
 	if (input == "main") {
 		return true;
 	}
@@ -303,7 +301,7 @@ bool isLoop(std::string input) {
 
 
 //Function below checks for comments
-bool isComment(std::string input) {
+inline bool isComment(std::string input) {
 	if (input == "#") {
 		return true;
 	}
@@ -316,7 +314,7 @@ bool isComment(std::string input) {
 
 //Function below checks for semicolon
 
-bool is_semicolon(std::string input) {
+inline bool is_semicolon(std::string input) {
 	if (input == ";") {
 		return true;
 	}
@@ -325,7 +323,7 @@ bool is_semicolon(std::string input) {
 }
 
 
-bool isSeperator(std::string input) {
+inline bool isSeperator(std::string input) {
 	if (input == ",") {
 		return true;
 	}
@@ -334,7 +332,7 @@ bool isSeperator(std::string input) {
 
 }
 
-bool isAssembly(std::string input) {
+inline bool isAssembly(std::string input) {
 	if (lex_states.inline_asm.find(input) != lex_states.inline_asm.end()) {
 		return true;
 	}
@@ -345,116 +343,38 @@ bool isAssembly(std::string input) {
 
 //Function below returns accurate token
 std::string getToken(std::string input) {
+	
 	try {
 
-		if (is_semicolon(input)) {
-			return "TERMINATE";
-		}
-
-		else if (isProgram(input)) {
-			return "INITIATE PROGRAM";
-		}
-
-
-		else if (isSeperator(input)) {
-			return "SEPERATOR";
-		}
-
-		else if (isType(input)) {
-			return "TYPE";
-		}
-
-		else if (isKeyword(input)) {
-			return "KEYWORD";
-
-		}
-
-		else if (isAssembly(input)) {
-			return "ASSEMBLY_INSTRUCTION";
-		}
-
-		else if (isBuiltInFunction(input)) {
-			return "BUILT_IN_FUNCTION";
-		}
-
-		else if (isUserFunction(input)) {
-			return "USER_DEF_FUNCTION";
-		}
-
-
-		else if (isConditional(input)) {
-			return "CONDITIONAL";
-		}
-		else if (isLoop(input)) {
-			return "LOOP";
-		}
-
-		else if (isOperator(input)) {
-			return "OPERATOR";
-		}
-
-		else if (isAssignment(input)) {
-			return "ASSIGNMENT";
-		}
-
-		else if (isBoolExpr(input)) {
-			return "BOOL_EXPR";
-		}
-
-		else if (isIdentifier(input)) {
-			return "IDENTIFIER";
-		}
-
-		else if (isNumeric(input)) {
-			return "NUMBER";
-		}
-
-		else if (isFloat(input)) {
-			return "FLOAT";
-		}
-
-		else if (isCompOp(input)) {
-			return "COMPARISON_OPERATOR";
-		}
-
-		else if (isInitBlock(input)) {
-			return "COMMENCE_BLOCK";
-		}
-
-		else if (isTermBlock(input)) {
-			return "TERMINATE_BLOCK";
-		}
-
-		else if (isInitPar(input)) {
-			return "COMMENCE_PARANTHESES";
-		}
-		else if (isTermPar(input)) {
-			return "TERMINATE_PARANTHESES";
-		}
-
-		else if (isInitSquareBracket(input)) {
-			return "INITIATE_SQUARE_BRACKETS";
-		}
-		else if (isTermSquareBracket(input)) {
-			return "TERMINATE_SQUARE_BRACKET";
-		}
-
-
-		else if (isComment(input)) {
-			return "COMMENT";
-		}
-
-
-
-
-		else {
-
-			return "INVALID_TOKEN_ERROR";
-		}
+		if (is_semicolon(input)) return "TERMINATE";
+		if (isProgram(input)) return "INITIATE PROGRAM";
+		if (isSeperator(input)) return "SEPERATOR";
+		if (isType(input)) return "TYPE";
+		if (isKeyword(input)) return "KEYWORD";
+		if (isAssembly(input)) return "ASSEMBLY_INSTRUCTION";
+		if (isBuiltInFunction(input)) return "BUILT_IN_FUNCTION";
+		if (isUserFunction(input)) return "USER_DEF_FUNCTION";
+		if (isConditional(input)) return "CONDITIONAL";
+		if (isLoop(input)) return "LOOP";
+		if (isOperator(input)) return "OPERATOR";
+		if (isAssignment(input)) return "ASSIGNMENT";
+		if (isBoolExpr(input)) return "BOOL_EXPR";
+		if (isIdentifier(input)) return "IDENTIFIER";
+		if (isNumeric(input)) return "NUMBER";
+		if (isFloat(input)) return "FLOAT";
+		if (isCompOp(input)) return "COMPARISON_OPERATOR";
+		if (isInitBlock(input)) return "COMMENCE_BLOCK";
+		if (isTermBlock(input)) return "TERMINATE_BLOCK";
+		if (isInitPar(input)) return "COMMENCE_PARANTHESES";
+		if (isTermPar(input)) return "TERMINATE_PARANTHESES";
+		if (isInitSquareBracket(input)) return "INITIATE_SQUARE_BRACKETS";
+		if (isTermSquareBracket(input)) return "TERMINATE_SQUARE_BRACKET";
+		if (isComment(input)) return "COMMENT";
+		return "INVALID_TOKEN_ERROR";
 	}
 
 	catch (std::string exception) {
-		return "INVALID SYNTAX";
+		return "INVALID_TOKEN_ERROR";
 
 	}
 
