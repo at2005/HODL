@@ -184,6 +184,20 @@ public:
 		return this->current_scope;
 	}
 
+	void print_self() {
+		cout << this->name << endl;
+		if(this->child_trees.size() == 0) {
+			this->root_of_tree->print_self();
+			return;
+		}
+
+		for(int i = 0; i < this->child_trees.size(); i ++) {
+			this->child_trees[i].print_self();
+
+		}
+
+
+	}
 
 
 private:
@@ -389,6 +403,7 @@ private:
 };
 
 
+// method for recursively freeing up tree memory
 void delete_tree(Node* dead_node) {
        if(dead_node) {
 		if(dead_node->getRightChild() &&  dead_node->getLeftChild()) {
@@ -405,7 +420,7 @@ void delete_tree(Node* dead_node) {
 
 }
 
-
+// allocate 
 SyntaxTree* alloc_ast(vector<Pair> inp) {
 	SyntaxTree* st = new SyntaxTree(inp);
 	st->alloc_self();

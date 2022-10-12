@@ -300,7 +300,7 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 
 				else if (type == "%") {
-					modulo_by_two_exp(qc, *qvar, stoll(num), *result_reg, instruction.is_inverted());
+					modulo_by_two_exp(qc, *qvar, stoll(num), *result_reg);
 					
 				}
 

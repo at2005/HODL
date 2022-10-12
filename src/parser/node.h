@@ -273,6 +273,18 @@ public:
 
 	}
 
+	bool is_leaf() {
+		if(!has_right_child && !has_left_child) return true;
+		return false;
+	
+	}
+
+	void print_self() {
+		if(this->LeftChild) this->LeftChild->print_self();
+		cout << this->TokenValue.getValue() << endl;		
+		if(this->RightChild) this->RightChild->print_self();
+	}
+
 
 	void* operator new(size_t size) {
 		void* mem = ::operator new(size);

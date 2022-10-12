@@ -110,7 +110,9 @@ int compile(int num_args, char** args) {
 
 	// vector of child trees for main function
 	vector<SyntaxTree> statements = MAIN.get_syntax_tree()->get_child_trees();
+	//for(int i = 0; i < statements.size(); i++) statements[i].print_self();
 
+/*
 	// vector of INSTRUCTION objects
 	vector<INSTRUCTION> instructions = {};
 
@@ -166,7 +168,7 @@ int compile(int num_args, char** args) {
 
 	}
 
-
+*/
 
 	if(options["-n"]) {
 		cout << "logical qubit count: " << qc->total_qubits << endl;

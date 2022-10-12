@@ -5,14 +5,14 @@ on: [push]
 
 jobs:
    build-and-test:
-      runs-on: ubuntu-latest
-      steps:
-         - uses: actions/checkout@v3
-         - name: mkdir
-         run: mkdir bin
-         - name: make
-         run: make
-         - name: testbuild 
-         run: bin/hodl --target qasm -o out.qasm data/grover.hodl
+     runs-on: ubuntu-latest
+     steps:
+       - uses: actions/checkout@v3
+       - name: mkdir
+       run: mkdir bin
+       - name: make
+       run: make
+       - name: testbuild 
+       run: bin/hodl --target qasm -o out.qasm data/grover.hodl
 
 
