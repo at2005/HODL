@@ -5,7 +5,7 @@
 #include "../tables/data.h"
 #include "../general/base_conversion.h"
 #include <math.h>
-
+#include <cassert.h>
 
 
 //ADDITION UNIT
