@@ -12,6 +12,7 @@
 #include "genops.h"
 #include "comops.h"
 #include <time.h>
+#include "../validator/validate.h"
 
 // command line options and their flag
 unordered_map<string, bool> options = {
@@ -110,9 +111,16 @@ int compile(int num_args, char** args) {
 
 	// vector of child trees for main function
 	vector<SyntaxTree> statements = MAIN.get_syntax_tree()->get_child_trees();
-	//for(int i = 0; i < statements.size(); i++) statements[i].print_self();
+	//for(int i = 0; i < statements.size(); i++) cout << i;
+	SyntaxTree bug_st = statements[0];
+	Node* bug_root = bug_st.getRoot();
+	if(!validate_tree(bug_root)) {
+		cout << "SYNTAX_ERROR\n";
+		
+		exit(0);
+	}
+	
 
-/*
 	// vector of INSTRUCTION objects
 	vector<INSTRUCTION> instructions = {};
 
@@ -168,7 +176,7 @@ int compile(int num_args, char** args) {
 
 	}
 
-*/
+
 
 	if(options["-n"]) {
 		cout << "logical qubit count: " << qc->total_qubits << endl;

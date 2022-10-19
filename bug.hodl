@@ -1,5 +1,5 @@
 function main() {
-	super var = 2
+	super var = 2;
 	var += 2;
 
 

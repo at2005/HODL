@@ -6,5 +6,5 @@ bin
 *.o
 .swp
 .DS_Store
-
-
+test.hodl
+bug.hodl
