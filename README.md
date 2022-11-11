@@ -6,26 +6,74 @@ A C-Style programming language for Quantum Computers designed for writing oracle
 
 Language description can be found: https://arxiv.org/abs/2110.12487
 
-To use the compiler, create a new "bin" directory from the root directory and run make. After compilation this should create an executable named "hodl", which can be appended to PATH. To run the compiler, specify the --target system (qir/qasm) and the output file (-o).
+# Usage
+
+```
+hodl --target qasm/qir -o your_output_file your_source_file.hodl
+```
+
+# Anaconda Installation
+
+```
+$ conda install -c at2005 hodl
+```
+
+# Installation from Source
+
+Run the following commands in the terminal:
+
+1. Clone repository
+
+```
+$ git clone https://github.com/at2005/HODL
+```
+
+2. Navigate to the HODL directory
+
+```
+$ cd HODL
+```
+
+3. Create an empty "bin" directory
+
+```
+$ mkdir bin
+```
+
+4. Run the makefile
+
+```
+$ make
+```
+
+If you would like not to constantly have to refer back to the absolute path of the program, then add the "hodl" executable in the "bin" directory to the $PATH environment variable.
+
 
 # QISKit integration
 
-One can also use HODL within QISKit, provided that the executable is in PATH and the necessary library (in "modules" sub-directory) has been imported: 
+HODL can be used within QISKit, provided that the executable is in $PATH and the HODL Python library has been installed and imported: 
 
-     
-    oracle_instance = compile_oracle("""
-	function foo(a) {
-        	if(a < 2) {
-                   mark(a,pi);
-        	}
-	}
+```$ conda install -c at2005 hodl_qiskit```
 
-    """)
-	
-	qr = QuantumRegister(3)
-	circ = oracle_instance.to_circ([qr])
-	circ.draw(output="mlp")
-	
+```     
+from qiskit import *
+from src.hodl_qiskit import *
+
+
+oracle_instance = init_oracle("""
+   function hodl_oracle(super a) {
+       if(a > 5) {
+           mark(a,pi);
+       }
+   }
+""")
+
+
+qr = QuantumRegister(name="reg0", size=3)
+circ = oracle_instance.to_circ([qr])
+```	
+
+
 
 
 
