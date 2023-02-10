@@ -30,6 +30,7 @@ unordered_map<string, bool> options = {
 // this function compiles the instructions and generates the output file
 // compile main function
 int compile(int num_args, char** args) {
+
 	// get function table -> for storing function pointers
 	FunctionTable* function_table = FunctionTable::get_func_table();
 	
@@ -62,11 +63,17 @@ int compile(int num_args, char** args) {
 
 	}
 
-	
+//	cout << "dfdsdfs";	
 	//lexical analysis -> stored in vector of token-values
 	vector<Pair> TokenValues = execute_lex(program_file).get_lex().dict_output;
-	
 
+/*	for(int i = 0; i < TokenValues.size(); i++) {
+		cout << TokenValues[i].getToken() << endl;
+
+
+	}	
+*/	
+//	exit(0);
 
 	// get circuit object
 	Circuit* qc = Circuit::get_circuit(target_file, target_system);
@@ -184,7 +191,7 @@ int compile(int num_args, char** args) {
 	// delete circuit object
 	qc->~Circuit();
 		
-
+		
 	return 0;
 
 }

@@ -258,6 +258,12 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 				// compile OR operator
 				else if (type == "|") {
+					if(qvar1->get_num_qubits() > 1 || qvar2->get_num_qubits() > 1) {
+						QuantumVariable* least_var = qvar1->get_num_qubits() > qvar2->get_num_qubits() ? qvar1 : qvar2;
+						//cout << least_var->get_qreg() << endl;
+					
+					}
+
 					qc.ccx(qvar1->get_qreg(), 0, qvar2->get_qreg(), 0, result_reg->get_qreg(), 0);
 					qc.cx(qvar1->get_qreg(), 0, result_reg->get_qreg(), 0);
 					qc.cx(qvar2->get_qreg(), 0, result_reg->get_qreg(), 0);

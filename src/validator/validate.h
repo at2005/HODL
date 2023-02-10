@@ -1,7 +1,6 @@
 #ifndef VALIDATE_H
 #define VALIDATE_H
 
-
 #define ID "IDENTIFIER"
 #define NUM "NUMBER"
 #define ERROR "ERROR"
@@ -36,8 +35,6 @@ string get_recursive_type(Node* root) {
 	if((ltype == ID || rtype == ID) && (ltype != NONE && rtype != NONE)) return ID;
 	return NONE;
 }
-
-
 
 
 bool validate_tree(Node* root) {

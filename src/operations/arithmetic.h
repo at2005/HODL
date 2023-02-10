@@ -180,10 +180,6 @@ void add(Circuit& qc, QuantumVariable qvar, unsigned long long num, QuantumVaria
 }
 
 
-
-
-
-
 //SUBTRACTION UNIT
 
 void subtract(Circuit& qc, QuantumVariable qvar1, QuantumVariable qvar2, QuantumVariable output, vector<Conditional> controls = {}) {
@@ -196,8 +192,6 @@ void subtract(Circuit& qc, QuantumVariable qvar1, QuantumVariable qvar2, Quantum
 }
 
 
-
-
 void subtract(Circuit& qc, QuantumVariable qvar, unsigned long long num, QuantumVariable output, vector<Conditional> controls = {}) {
 	qc.h(output.get_qreg());
 
@@ -208,9 +202,6 @@ void subtract(Circuit& qc, QuantumVariable qvar, unsigned long long num, Quantum
 
 	InvQFT(qc, output, false);
 }
-
-
-
 
 
 void subtract_append(Circuit& qc, QuantumVariable qvar1, QuantumVariable qvar2, vector<Conditional> controls = {}) {
