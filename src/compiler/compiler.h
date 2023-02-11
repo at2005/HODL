@@ -63,7 +63,7 @@ int compile(int num_args, char** args) {
 
 	}
 
-/*
+
 //	cout << "dfdsdfs";	
 	//lexical analysis -> stored in vector of token-values
 	vector<Pair> TokenValues = execute_lex(program_file).get_lex().dict_output;
@@ -192,7 +192,7 @@ int compile(int num_args, char** args) {
 	// delete circuit object
 	qc->~Circuit();
 		
-	*/	
+		
 	return 0;
 
 }
