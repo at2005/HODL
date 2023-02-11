@@ -63,17 +63,18 @@ int compile(int num_args, char** args) {
 
 	}
 
+/*
 //	cout << "dfdsdfs";	
 	//lexical analysis -> stored in vector of token-values
 	vector<Pair> TokenValues = execute_lex(program_file).get_lex().dict_output;
 
-/*	for(int i = 0; i < TokenValues.size(); i++) {
+	for(int i = 0; i < TokenValues.size(); i++) {
 		cout << TokenValues[i].getToken() << endl;
 
 
 	}	
-*/	
-	/*
+	
+	
 
 	// get circuit object
 	Circuit* qc = Circuit::get_circuit(target_file, target_system);
