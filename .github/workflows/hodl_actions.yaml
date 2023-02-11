@@ -66,8 +66,7 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
 
       - name: Compile a release build of HODL
-        run: mkdir bin
-        run: ${{ matrix.compiler }} -std=c++11 -o bin/hodl src/compiler/*.cpp src/circuit/*.cpp
+        run: mkdir bin; ${{ matrix.compiler }} -std=c++11 -o bin/hodl src/compiler/*.cpp src/circuit/*.cpp
          # run: bin/hodl --target qasm -o out.qasm data/grover.hodl
  
       # - name: Run HODL tests
