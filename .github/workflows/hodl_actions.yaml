@@ -1,77 +1,75 @@
 
+# name: HODL-build
+
+# on: [push]
+
+# jobs:
+# #linux build
+#    build-and-test-linux:
+#       runs-on: ubuntu-latest
+#       steps:
+#          - uses: actions/checkout@v3
+#          - run: mkdir bin
+#          - run: make
+#          - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
+#    build-and-test-macos:
+#       runs-on: macos-latest
+#       steps:
+#          - uses: actions/checkout@v3
+#          - run: mkdir bin
+#          - run: make
+#          - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
+
+
 name: HODL-build
 
-on: [push]
+on:
+  push:
+    branches: [ master ]
+
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
-#linux build
-   build-and-test-linux:
-      runs-on: ubuntu-latest
-      steps:
-         - uses: actions/checkout@v3
-         - run: mkdir bin
-         - run: make
-         - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
-   build-and-test-macos:
-      runs-on: macos-latest
-      steps:
-         - uses: actions/checkout@v3
-         - run: mkdir bin
-         - run: make
-         - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
-   # build-and-test-windows:
-   #    runs-on: windows-latest
-   #    steps:
-   #       - uses: actions/checkout@v3
-   #       - run: conda/build.bat
+  build_and_test:
+    name: Build & test HODL on ${{ matrix.os }} with ${{ matrix.compiler }}.
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        compiler: [ g++-11 ]
+        include:
+          - os: ubuntu-latest
+            compiler: g++-11
+            target: Linux
 
-   # # next create conda package for linux
-   # build-conda-package:
-   #    runs-on: ubuntu-latest
-   #    steps:
-   #       - uses: actions/checkout@v3
-   #       - uses: conda-incubator/setup-miniconda@v2
-   #         with:
-   #           activate-environment: hodl
-   #           environment-file: environment.yml
-   #           python-version: 3.8
-   #       - run: conda install conda-build
-   #       - run: conda build conda-recipe
-   #       - uses: actions/upload-artifact@v2
-   #         with:
-   #           name: conda-package
-   #           path: /home/runner/miniconda3/conda-bld/linux-64/hodl-0.1.0-py38h32f6830_0.tar.bz2
+          - os: macos-latest
+            compiler: g++-11
+            target: Macos
 
-   # # next create conda package for macos
-   # build-conda-package-mac:
-   #    runs-on: macos-latest
-   #    steps:
-   #       - uses: actions/checkout@v3
-   #       - uses: conda-incubator/setup-miniconda@v2
-   #         with:
-   #           activate-environment: hodl
-   #           environment-file: environment.yml
-   #           python-version: 3.8
-   #       - run: conda install conda-build
-   #       - run: conda build conda-recipe
-   #       - uses: actions/upload-artifact@v2
-   #         with:
-   #           name: conda-package
-   #           path: /Users/runner/miniconda3/conda-bld/osx-64/hodl-0.1.0-py38h32f6830_0.tar.bz2
+          - os: windows-latest
+            compiler: cl
+            target: Windows
 
-   # # next create conda package for windows
-   # build-conda-package-windows:
-   #    runs-on: windows-latest
-   #    steps:
-   #       - uses: actions/checkout@v3
-   #       - uses: conda-incubator/setup-miniconda@v2
-   #         with:
-   #           activate-environment: hodl
-   #           environment-file: environment.yml
-   #           python-version: 3.8
-   #       - run: conda install conda-build
-   #       - run: conda build conda-recipe
-   #       - uses: actions/upload-artifact@v2
-   #         with:
-   #           name: conda-package
-   #           path: C:\Miniconda\conda-bld\win-64\hodl-0.1.0-py38h32f6830_0.tar.bz2
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Add msbuild to PATH
+        if: ${{ matrix.os == 'windows-latest' }}
+        uses: microsoft/setup-msbuild@v1.0.2
+
+      - name: Compile a release build of HODL
+         run: mkdir bin
+         run: ${{ matrix.compiler }} -std=c++11 -o bin/hodl src/compiler/*.cpp src/circuit/*.cpp
+         # run: bin/hodl --target qasm -o out.qasm data/grover.hodl
+ 
+      # - name: Run HODL tests
+      #   run: ./scripts/run_all_tests.sh --build Release --os ${{ matrix.target }}
+
