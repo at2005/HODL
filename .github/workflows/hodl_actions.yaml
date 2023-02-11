@@ -4,6 +4,7 @@ name: HODL-build
 on: [push]
 
 jobs:
+# linux build
    build-and-test-linux:
       runs-on: ubuntu-latest
       steps:
@@ -18,8 +19,13 @@ jobs:
          - run: mkdir bin
          - run: make
          - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
+   build-and-test-windows:
+      runs-on: windows-latest
+      steps:
+         - uses: actions/checkout@v3
+         - run: mkdir bin
+         - run: make
+         - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
          
 
    
-
-
