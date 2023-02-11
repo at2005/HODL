@@ -161,6 +161,7 @@ void multi_ctrl_gate(Circuit& qc, void(Circuit::* gate)(string, unsigned int, st
 void AmplitudeAmplify(Circuit& qc, QuantumVariable* qvar, QuantumVariable* target, QuantumVariable* ancilla) {
 	if (qvar->get_num_qubits() == 1) {
 		std::cerr << "SEARCH CANNOT BE PERFORMED ON SMALL SEARCH SPACES";
+		exit(1);
 	}
 
 	else {

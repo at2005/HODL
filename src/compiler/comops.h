@@ -12,6 +12,30 @@
 #include "garbage.h"
 
 
+QuantumVariable* alloc_ancilla(Circuit& qc, unsigned int size, SymbolTable* table) {
+
+	QuantumVariable* ancilla = Garbage::get_garbage()->get_recycled(size, table);
+	if(ancilla == nullptr) {
+		// create ancillary register
+		table->ADD_ANCILLA_REGISTER(size);
+		// get ancillary register
+		ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());				
+	
+	}
+
+	qc.add_qregister(*ancilla);
+	return ancilla;
+
+}
+
+
+void bitwise_or(Circuit& qc, QuantumVariable* qreg1, unsigned int index1, QuantumVariable* qreg2, unsigned int index2, QuantumVariable* result, unsigned int result_index) {
+	qc.ccx(qreg1->get_qreg(), index1, qreg2->get_qreg(), index2, result->get_qreg(), result_index);
+	qc.cx(qreg1->get_qreg(), index1, result->get_qreg(), result_index);
+	qc.cx(qreg2->get_qreg(), index2, result->get_qreg(), result_index);
+
+}
+
 
 // FUNCTIONS TO PARSE INSTRUCTION TAPE AND COMPILE THE INSTRUCTIONS LISTED ON EACH CELL
 
@@ -259,9 +283,52 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 				// compile OR operator
 				else if (type == "|") {
 					if(qvar1->get_num_qubits() > 1 || qvar2->get_num_qubits() > 1) {
-						QuantumVariable* least_var = qvar1->get_num_qubits() > qvar2->get_num_qubits() ? qvar1 : qvar2;
-						//cout << least_var->get_qreg() << endl;
-					
+						// n qubit OR gate, loop through all qubit pairs, eval or on ancilla, then X all of them, multi-controlled gate
+						
+						QuantumVariable* max_reg_or = qvar1;
+						// get min and max qubits
+						unsigned int max_qubits_or = qvar1->get_num_qubits();
+						unsigned int min_qubits_or = qvar2->get_num_qubits();
+						if(max_qubits_or < min_qubits_or) {
+							swap(max_qubits_or, min_qubits_or);
+							max_reg_or = qvar2;
+						}
+
+						QuantumVariable* ancilla_nbit_or = alloc_ancilla(qc, max_qubits_or, table);
+						
+						// OR common bits
+						for(int qbit_pair = max_qubits_or - min_qubits_or; qbit_pair < max_qubits_or; qbit_pair++) {
+							bitwise_or(qc, qvar1, qbit_pair, qvar2, qbit_pair, ancilla_nbit_or, qbit_pair);
+						}
+
+						// OR uncommon bits (case where one register is larger than the other, then OR with zero is simply copying the bit value
+						for(int qbit_cutoff = 0; qbit_cutoff < max_qubits_or - min_qubits_or; qbit_cutoff++) {
+							qc.cx(max_reg_or->get_qreg(), qbit_cutoff, ancilla_nbit_or->get_qreg(), qbit_cutoff); 
+						}
+						
+						// NOT entire register
+						qc.x(ancilla_nbit_or->get_qreg());
+
+						QuantumVariable* ancilla_mcgate = alloc_ancilla(qc, ancilla_nbit_or->get_num_qubits()-1, table);
+						multi_ctrl_gate(qc, &Circuit::cx, ancilla_nbit_or, result_reg, ancilla_mcgate);
+						
+						// Uncompute NOT
+						qc.x(ancilla_nbit_or->get_qreg());
+
+						// Uncompute OR operation on ancilla
+
+						// OR common bits
+						for(int qbit_pair = max_qubits_or - min_qubits_or; qbit_pair < max_qubits_or; qbit_pair++) {
+							bitwise_or(qc, qvar1, qbit_pair, qvar2, qbit_pair, ancilla_nbit_or, qbit_pair);
+						}
+
+						// OR uncommon bits (case where one register is larger than the other, then OR with zero is simply copying the bit value
+						for(int qbit_cutoff = 0; qbit_cutoff < max_qubits_or - min_qubits_or; qbit_cutoff++) {
+							qc.cx(max_reg_or->get_qreg(), qbit_cutoff, ancilla_nbit_or->get_qreg(), qbit_cutoff); 
+						}
+
+						continue;
+
 					}
 
 					qc.ccx(qvar1->get_qreg(), 0, qvar2->get_qreg(), 0, result_reg->get_qreg(), 0);
@@ -392,37 +459,6 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 				}
 
-				// compile range operator
-				else if (type == ":") {
-					// get number or right operand
-					long long number = stoll(reg1);
-
-					// initialize number of qubits to zero
-					int num_qubits = 0;
-					
-					// check if range is a power-of-two
-					// in other words, check if log2(number) is an element of the set consisting natural numbers
-					if (reg0 == "0" && ceil(log2(number)) == floor(log2(number))) {
-						// set number of qubits
-						// the reason for this is to only create a superposition of the range desired.
-						// e.g., a register of 5 qubits but we want a superposition of 0:4
-						// Therefore, we have to only put the last 2 qubits into superposition
-						int num_qubits = floor(log2(number));
-
-						// Apply HADAMARD Gate to each qubit we want to be in superpositon
-						for (int i = (result_reg->get_num_qubits() - num_qubits); i < result_reg->get_num_qubits(); i++) {
-							qc.h(result_reg->get_qreg(), i);
-						}
-						
-					}
-
-					// this should be implemented in later versions
-					// to allow programmer to specify custom range, e.g. (1:100)
-					else {
-						int num_qubits = floor(log2(number)) + 1;
-						//apply operation to procure such a state
-					}
-				}
 
 			}
 		}
