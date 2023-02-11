@@ -23,9 +23,55 @@ jobs:
       runs-on: windows-latest
       steps:
          - uses: actions/checkout@v3
-         - run: mkdir bin
-         - run: make
-         - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
+         - run: conda/build.bat
          
+   # # next create conda package for linux
+   # build-conda-package:
+   #    runs-on: ubuntu-latest
+   #    steps:
+   #       - uses: actions/checkout@v3
+   #       - uses: conda-incubator/setup-miniconda@v2
+   #         with:
+   #           activate-environment: hodl
+   #           environment-file: environment.yml
+   #           python-version: 3.8
+   #       - run: conda install conda-build
+   #       - run: conda build conda-recipe
+   #       - uses: actions/upload-artifact@v2
+   #         with:
+   #           name: conda-package
+   #           path: /home/runner/miniconda3/conda-bld/linux-64/hodl-0.1.0-py38h32f6830_0.tar.bz2
 
-   
+   # # next create conda package for macos
+   # build-conda-package-mac:
+   #    runs-on: macos-latest
+   #    steps:
+   #       - uses: actions/checkout@v3
+   #       - uses: conda-incubator/setup-miniconda@v2
+   #         with:
+   #           activate-environment: hodl
+   #           environment-file: environment.yml
+   #           python-version: 3.8
+   #       - run: conda install conda-build
+   #       - run: conda build conda-recipe
+   #       - uses: actions/upload-artifact@v2
+   #         with:
+   #           name: conda-package
+   #           path: /Users/runner/miniconda3/conda-bld/osx-64/hodl-0.1.0-py38h32f6830_0.tar.bz2
+
+   # # next create conda package for windows
+   # build-conda-package-windows:
+   #    runs-on: windows-latest
+   #    steps:
+   #       - uses: actions/checkout@v3
+   #       - uses: conda-incubator/setup-miniconda@v2
+   #         with:
+   #           activate-environment: hodl
+   #           environment-file: environment.yml
+   #           python-version: 3.8
+   #       - run: conda install conda-build
+   #       - run: conda build conda-recipe
+   #       - uses: actions/upload-artifact@v2
+   #         with:
+   #           name: conda-package
+   #           path: C:\Miniconda\conda-bld\win-64\hodl-0.1.0-py38h32f6830_0.tar.bz2
