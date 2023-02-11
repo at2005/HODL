@@ -2,7 +2,8 @@
 #include "compiler.h"
 
 int main(int argc, char** argv) {
-	compile(argc,argv);	
+	cout << "HELLO WORLD\n";
+//	compile(argc,argv);	
 	return 0;
 }
 
