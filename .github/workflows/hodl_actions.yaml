@@ -4,7 +4,7 @@ name: HODL-build
 on: [push]
 
 jobs:
-linux build
+#linux build
    build-and-test-linux:
       runs-on: ubuntu-latest
       steps:
