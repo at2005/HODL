@@ -73,7 +73,7 @@ int compile(int num_args, char** args) {
 
 	}	
 */	
-	exit(5);
+	/*
 
 	// get circuit object
 	Circuit* qc = Circuit::get_circuit(target_file, target_system);
@@ -191,7 +191,7 @@ int compile(int num_args, char** args) {
 	// delete circuit object
 	qc->~Circuit();
 		
-		
+	*/	
 	return 0;
 
 }
