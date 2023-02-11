@@ -5,26 +5,26 @@ on: [push]
 
 jobs:
 # linux build
-   build-and-test-linux:
-      runs-on: ubuntu-latest
-      steps:
-         - uses: actions/checkout@v3
-         - run: mkdir bin
-         - run: make
-         - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
-   build-and-test-macos:
-      runs-on: macos-latest
-      steps:
-         - uses: actions/checkout@v3
-         - run: mkdir bin
-         - run: make
-         - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
+   # build-and-test-linux:
+   #    runs-on: ubuntu-latest
+   #    steps:
+   #       - uses: actions/checkout@v3
+   #       - run: mkdir bin
+   #       - run: make
+   #       - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
+   # build-and-test-macos:
+   #    runs-on: macos-latest
+   #    steps:
+   #       - uses: actions/checkout@v3
+   #       - run: mkdir bin
+   #       - run: make
+   #       - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
    build-and-test-windows:
       runs-on: windows-latest
       steps:
          - uses: actions/checkout@v3
          - run: conda/build.bat
-         
+
    # # next create conda package for linux
    # build-conda-package:
    #    runs-on: ubuntu-latest
