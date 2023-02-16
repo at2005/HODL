@@ -3,6 +3,9 @@
 
 # on: [push]
 
+# env:
+#   GITHUB_ACTIONS: true
+
 # jobs:
 # #linux build
 #    build-and-test-linux:
@@ -20,55 +23,37 @@
 #          - run: make
 #          - run: bin/hodl --target qasm -o out.qasm data/grover.hodl
 
-
-name: HODL-build
-
+name: HODL Compile and Run
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
 
-  pull_request:
-    branches: [ master ]
-
-  workflow_dispatch:
-
-defaults:
-  run:
-    shell: bash
+env:
+  GITHUB_ACTIONS: true
 
 jobs:
-  build_and_test:
-    name: Build & test HODL on ${{ matrix.os }} with ${{ matrix.compiler }}.
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-        compiler: [ g++-11 ]
-        include:
-          - os: ubuntu-latest
-            compiler: g++-11
-            target: Linux
-
-          - os: macos-latest
-            compiler: g++-11
-            target: Macos
-
-          - os: windows-latest
-            compiler: cl
-            target: Windows
+  build:
+    runs-on: windows-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Add msbuild to PATH
-        if: ${{ matrix.os == 'windows-latest' }}
-        uses: microsoft/setup-msbuild@v1.0.2
+    - name: Setup GCC
+      uses: actions/setup-mingw@v1
+      with:
+        version: '9.3.0'
 
-      - name: Compile a release build of HODL
-        run: mkdir bin; ${{ matrix.compiler }} -std=c++11 -o bin/hodl src/compiler/*.cpp src/circuit/*.cpp
-         # run: bin/hodl --target qasm -o out.qasm data/grover.hodl
- 
-      # - name: Run HODL tests
-      #   run: ./scripts/run_all_tests.sh --build Release --os ${{ matrix.target }}
+    - name: Create bin directory
+      run: |
+        mkdir bin
 
+    - name: Compile C++ file
+      run: |
+        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl.exe
+
+    - name: Run compiled binary
+      run: |
+        ./bin/hodl.exe --target qasm -o out.qasm data/grover.hodl
+        
