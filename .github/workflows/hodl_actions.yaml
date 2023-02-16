@@ -109,7 +109,7 @@ jobs:
         prerelease: false
 
     - name: Upload Release Asset Windows
-      id: upload-release-asset
+      id: upload-release-asset-windows
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -120,7 +120,7 @@ jobs:
         asset_content_type: application/octet-stream
 
     - name: Upload Release Asset Linux
-      id: upload-release-asset
+      id: upload-release-asset-linux
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -131,7 +131,7 @@ jobs:
         asset_content_type: application/octet-stream
 
     - name: Upload Release Asset MacOS
-      id: upload-release-asset
+      id: upload-release-asset-macos
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
