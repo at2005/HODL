@@ -153,7 +153,6 @@ jobs:
             asset_path: ./bin/hodl
             asset_name: hodl
             asset_content_type: application/octet-stream
-            
         - name: Upload MacOS Artifact
           uses: actions/upload-release-asset@v1
           env:
