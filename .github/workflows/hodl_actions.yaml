@@ -8,34 +8,34 @@ env:
 
 jobs:
 
-  build-windows:
+  # build-windows:
 
-    runs-on: windows-latest
+  #   runs-on: windows-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+  #   steps:
+  #   - name: Checkout code
+  #     uses: actions/checkout@v2
 
-    - name: Install MinGW
-      uses: egor-tensin/setup-mingw@v2.2.0
+  #   - name: Install MinGW
+  #     uses: egor-tensin/setup-mingw@v2.2.0
       
-    - name: Create bin directory
-      run: |
-        mkdir bin
+  #   - name: Create bin directory
+  #     run: |
+  #       mkdir bin
 
-    - name: Compile C++ file
-      run: |
-        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl.exe
+  #   - name: Compile C++ file
+  #     run: |
+  #       g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl.exe
 
-    - name: Run compiled binary
-      run: |
-        ./bin/hodl.exe --target qasm -o out.qasm data/grover.hodl
+  #   - name: Run compiled binary
+  #     run: |
+  #       ./bin/hodl.exe --target qasm -o out.qasm data/grover.hodl
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: hodl-windows
-        path: bin/hodl.exe  
+  #   - name: Upload artifact
+  #     uses: actions/upload-artifact@v2
+  #     with:
+  #       name: hodl-windows
+  #       path: bin/hodl.exe  
 
   build-linux:
 
