@@ -61,7 +61,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: hodl-linux
-        path: bin/hodl
+        path: bin/
 
   build-macos:
 
@@ -87,7 +87,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: hodl-macos
-        path: bin/hodl
+        path: bin/
 
   #  create-release:
   create-release-and-publish-artifacts:
@@ -137,24 +137,24 @@ jobs:
       #     asset_name: hodl-windows.exe
       #     asset_content_type: application/octet-stream
   
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Release Asset Linux
+        id: upload-release-asset-linux
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/hodl
+          asset_path: ./bin/hodl-linux
           asset_name: hodl-linux
           asset_content_type: application/octet-stream
   
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Release Asset MacOS
+        id: upload-release-asset-macos
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/hodl
+          asset_path: ./bin/hodl-macos
           asset_name: hodl-macos
           asset_content_type: application/octet-stream
