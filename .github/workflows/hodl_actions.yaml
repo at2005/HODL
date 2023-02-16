@@ -64,8 +64,7 @@ jobs:
   #     uses: actions/upload-artifact@v2
   #     with:
   #       name: hodl-windows
-  #       path: bin/hodl.exe
-        
+  #       path: bin/hodl.exe     
   build-linux:
     runs-on: ubuntu-latest
 
