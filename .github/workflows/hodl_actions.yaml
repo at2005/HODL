@@ -33,38 +33,39 @@ env:
   GITHUB_ACTIONS: true
 
 jobs:
-  # build-windows:
-  #   runs-on: windows-latest
+  build-windows:
+    runs-on: windows-latest
 
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-  #   # - name: Setup GCC
-  #   #   uses: actions/setup-mingw@v1
-  #   #   with:
-  #   #     version: '9.3.0'
-  #   - name: Install MinGW
-  #     uses: egor-tensin/setup-mingw@v2.2.0
+    # - name: Setup GCC
+    #   uses: actions/setup-mingw@v1
+    #   with:
+    #     version: '9.3.0'
+    - name: Install MinGW
+      uses: egor-tensin/setup-mingw@v2.2.0
 
 
-  #   - name: Create bin directory
-  #     run: |
-  #       mkdir bin
+    - name: Create bin directory
+      run: |
+        mkdir bin
 
-  #   - name: Compile C++ file
-  #     run: |
-  #       g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl.exe
+    - name: Compile C++ file
+      run: |
+        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl.exe
 
-  #   - name: Run compiled binary
-  #     run: |
-  #       ./bin/hodl.exe --target qasm -o out.qasm data/grover.hodl
+    - name: Run compiled binary
+      run: |
+        ./bin/hodl.exe --target qasm -o out.qasm data/grover.hodl
 
-  #   - name: Upload artifact
-  #     uses: actions/upload-artifact@v2
-  #     with:
-  #       name: hodl-windows
-  #       path: bin/hodl.exe
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: hodl-windows
+        path: bin/hodl.exe
+  
   build-linux:
     runs-on: ubuntu-latest
 
@@ -118,8 +119,7 @@ jobs:
 
    # create-release:
    create-release:
-      #needs: [build-windows, build-linux, build-macos]
-      needs: [build-linux, build-macos]
+      needs: [build-windows, build-linux, build-macos]
       runs-on: ubuntu-latest
       steps:
         - name: Checkout code
@@ -134,15 +134,15 @@ jobs:
             release_name: Release ${{ github.ref }}
             draft: false
             prerelease: false
-        # - name: Upload Windows Artifact
-        #   uses: actions/upload-release-asset@v1
-        #   env:
-        #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        #   with:
-        #     upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
-        #     asset_path: ./bin/hodl.exe
-        #     asset_name: hodl.exe
-        #     asset_content_type: application/octet-stream
+        - name: Upload Windows Artifact
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+            asset_path: ./bin/hodl.exe
+            asset_name: hodl.exe
+            asset_content_type: application/octet-stream
         - name: Upload Linux Artifact
           uses: actions/upload-release-asset@v1
           env:
