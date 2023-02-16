@@ -33,7 +33,7 @@ env:
   GITHUB_ACTIONS: true
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
 
     steps:
@@ -59,7 +59,79 @@ jobs:
     - name: Run compiled binary
       run: |
         ./bin/hodl.exe --target qasm -o out.qasm data/grover.hodl
-    - name: Test QASM File
-      run: |
-        cat out.qasm
 
+
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Create bin directory
+      run: |
+        mkdir bin
+
+    - name: Compile C++ file
+      run: |
+        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl
+
+    - name: Run compiled binary
+      run: |
+        ./bin/hodl --target qasm -o out.qasm data/grover.hodl
+
+  build-macos:
+
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Create bin directory
+      run: |
+        mkdir bin
+
+    - name: Compile C++ file
+      run: |
+        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl
+
+    - name: Run compiled binary
+      run: |
+        ./bin/hodl --target qasm -o out.qasm data/grover.hodl
+
+  # job to publish binaries for all systems
+  publish-binaries:
+    runs-on: ubuntu-latest
+    needs: [build-windows, build-linux, build-macos]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download Windows binary
+        uses: actions/download-artifact@v2
+        with:
+          name: windows-binary
+          path: bin
+
+      - name: Download Linux binary
+        uses: actions/download-artifact@v2
+        with:
+          name: linux-binary
+          path: bin
+
+      - name: Download MacOS binary
+        uses: actions/download-artifact@v2
+        with:
+          name: macos-binary
+          path: bin
+
+      - name: Upload binaries
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./bin
+          asset_name: ${{ github.event.release.tag_name }}
+          asset_content_type: application/octet-stream
