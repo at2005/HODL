@@ -65,30 +65,31 @@ jobs:
   #       name: hodl-windows
   #       path: bin/hodl.exe
   
-  # build-linux:
-  #   runs-on: ubuntu-latest
+  build-linux:
 
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v2
+    runs-on: ubuntu-latest
 
-  #   - name: Create bin directory
-  #     run: |
-  #       mkdir bin
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-  #   - name: Compile C++ file
-  #     run: |
-  #       g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl
+    - name: Create bin directory
+      run: |
+        mkdir bin
 
-  #   - name: Run compiled binary
-  #     run: |
-  #       ./bin/hodl --target qasm -o out.qasm data/grover.hodl
+    - name: Compile C++ file
+      run: |
+        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl
 
-  #   - name: Upload artifact
-  #     uses: actions/upload-artifact@v2
-  #     with:
-  #       name: hodl-linux
-  #       path: bin/hodl
+    - name: Run compiled binary
+      run: |
+        ./bin/hodl --target qasm -o out.qasm data/grover.hodl
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: hodl-linux
+        path: bin/hodl
 
   build-macos:
 
