@@ -137,6 +137,10 @@ jobs:
       #     asset_name: hodl-windows.exe
       #     asset_content_type: application/octet-stream
 
+      - name: Create bin directory
+        run: |
+          mkdir bin
+
       - name: Compile for Linux
         run: |
           g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl
@@ -151,7 +155,6 @@ jobs:
           asset_path: ./bin/hodl
           asset_name: hodl-linux
           asset_content_type: application/octet-stream
-
 
       - name: Compile for MacOS
         run: |
