@@ -137,6 +137,8 @@ jobs:
       #     g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl
       
       - name: Upload Release Asset Linux
+        run: |
+          ls -la
         id: upload-release-asset-linux
         uses: actions/upload-release-asset@v1
         env:
