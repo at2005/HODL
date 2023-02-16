@@ -59,3 +59,7 @@ jobs:
     - name: Run compiled binary
       run: |
         ./bin/hodl.exe --target qasm -o out.qasm data/grover.hodl
+    - name: Test QASM File
+      run: |
+        cat out.qasm
+
