@@ -51,17 +51,17 @@ jobs:
 
     - name: Compile C++ file
       run: |
-        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl
+        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl-linux
 
     - name: Run compiled binary
       run: |
-        ./bin/hodl --target qasm -o out.qasm data/grover.hodl
+        ./bin/hodl-linux --target qasm -o out.qasm data/grover.hodl
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: hodl-linux
-        path: bin/hodl
+        path: bin/hodl-linux
 
   build-macos:
 
@@ -77,17 +77,17 @@ jobs:
 
     - name: Compile C++ file
       run: |
-        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl
+        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl-macos
 
     - name: Run compiled binary
       run: |
-        ./bin/hodl --target qasm -o out.qasm data/grover.hodl
+        ./bin/hodl-macos --target qasm -o out.qasm data/grover.hodl
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
         name: hodl-macos
-        path: bin/hodl
+        path: bin/hodl-macos
 
   #  create-release:
   create-release-and-publish-artifacts:
