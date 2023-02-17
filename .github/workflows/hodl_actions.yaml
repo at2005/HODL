@@ -58,7 +58,7 @@ jobs:
         ./bin/hodl --target qasm -o out.qasm data/grover.hodl
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: hodl-linux
         path: bin/hodl
@@ -84,7 +84,7 @@ jobs:
         ./bin/hodl --target qasm -o out.qasm data/grover.hodl
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: hodl-macos
         path: bin/hodl
