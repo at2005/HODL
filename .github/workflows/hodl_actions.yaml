@@ -143,7 +143,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: hodl-linux
+          asset_path: hodl-linux/hodl
           asset_name: hodl-linux
           asset_content_type: application/octet-stream
 
@@ -158,6 +158,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: hodl-macos
+          asset_path: hodl-macos/hodl
           asset_name: hodl-macos
           asset_content_type: application/octet-stream
