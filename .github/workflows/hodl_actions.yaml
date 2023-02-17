@@ -8,34 +8,38 @@ env:
 
 jobs:
 
-  # build-windows:
+  build-windows:
 
-  #   runs-on: windows-latest
+    runs-on: windows-latest
 
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-  #   - name: Install MinGW
-  #     uses: egor-tensin/setup-mingw@v2.2.0
+    - name: Install MinGW
+      uses: egor-tensin/setup-mingw@v2.2.0
       
-  #   - name: Create bin directory
-  #     run: |
-  #       mkdir bin
+    - name: Create bin directory
+      run: |
+        mkdir bin
 
-  #   - name: Compile C++ file
-  #     run: |
-  #       g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl.exe
+    - name: Compile C++ file
+      run: |
+        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl.exe
 
-  #   - name: Run compiled binary
-  #     run: |
-  #       ./bin/hodl.exe --target qasm -o out.qasm data/grover.hodl
+    - name: Run compiled binary
+      run: |
+        ./bin/hodl.exe --target qasm -o out.qasm data/grover.hodl
 
-  #   - name: Upload artifact
-  #     uses: actions/upload-artifact@v2
-  #     with:
-  #       name: hodl-windows
-  #       path: bin/hodl.exe  
+    - name: Zip Binary
+      run: |
+        7z a bin/hodl.zip bin/hodl.exe
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: hodl-windows
+        path: bin/hodl-windows.zip
 
   build-linux:
 
@@ -101,18 +105,19 @@ jobs:
   create-release-and-publish-artifacts:
 
   
-      # needs: [build-windows, build-linux, build-macos]
-      needs: [build-linux, build-macos]
+      needs: [build-windows, build-linux, build-macos]
+      # needs: [build-linux, build-macos]
       runs-on: ubuntu-latest
   
       steps:
       - name: Checkout code
         uses: actions/checkout@v2
   
-      # - name: Download artifact
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     name: hodl-windows
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: hodl-windows
+          path: ./bin/
 
       - name: Make bin directory
         run: |
@@ -140,17 +145,8 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-  
 
-      # - name: Create bin directory
-      #   run: |
-      #     mkdir bin
-      
 
-      # - name: Compile for Linux
-      #   run: |
-      #     g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl
-      
       - name: Upload Release Asset Linux
         id: upload-release-asset-linux
         uses: actions/upload-release-asset@v1
@@ -162,9 +158,6 @@ jobs:
           asset_name: hodl-linux
           asset_content_type: application/octet-stream
 
-      # - name: Compile for MacOS
-      #   run: |
-      #     g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl
 
       - name: Upload Release Asset MacOS
         id: upload-release-asset-macos
@@ -175,4 +168,15 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ./bin/hodl-macos.tar.gz
           asset_name: hodl-macos
+          asset_content_type: application/octet-stream
+
+      - name: Upload Release Asset Windows
+        id: upload-release-asset-windows
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./bin/hodl-windows.zip
+          asset_name: hodl-windows
           asset_content_type: application/octet-stream
