@@ -24,21 +24,9 @@ jobs:
       run: |
         mkdir bin
 
-    # - name: Setup MSVC Build Tools
-    #   uses: microsoft/setup-msbuild@v1.0.2
-
-    # - name: Add cl.exe to PATH
-    #   run: |
-    #     $env:Path += ";${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
-    #     $env:Path += ";${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x86"
-
     - name: Compile C++ file
       run: |
         g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl.exe
-
-    # - name: Compile C++ file using cl.exe 
-    #   run: |
-    #     cl.exe /EHsc /Fe:bin/hodl.exe src/compiler/source.cpp src/circuit/circuit.cpp
 
     - name: Run compiled binary
       run: |
@@ -46,7 +34,7 @@ jobs:
 
     - name: Zip Binary
       run: |
-        7z a bin/hodl.zip bin/hodl.exe
+        7z a bin/hodl-windows.zip bin/hodl.exe
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
