@@ -16,29 +16,29 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    # - name: Install MinGW
-    #   uses: egor-tensin/setup-mingw@v2.2.0
+    - name: Install MinGW
+      uses: egor-tensin/setup-mingw@v2.2.0
 
   
     - name: Create bin directory
       run: |
         mkdir bin
 
-    - name: Setup MSVC Build Tools
-      uses: microsoft/setup-msbuild@v1.0.2
+    # - name: Setup MSVC Build Tools
+    #   uses: microsoft/setup-msbuild@v1.0.2
 
-    - name: Add cl.exe to PATH
-      run: |
-        $env:Path += ";${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
-        $env:Path += ";${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x86"
-
-    # - name: Compile C++ file
+    # - name: Add cl.exe to PATH
     #   run: |
-    #     g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl.exe
+    #     $env:Path += ";${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
+    #     $env:Path += ";${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x86"
 
-    - name: Compile C++ file using cl.exe 
+    - name: Compile C++ file
       run: |
-        cl.exe /EHsc /Fe:bin/hodl.exe src/compiler/source.cpp src/circuit/circuit.cpp
+        g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl.exe
+
+    # - name: Compile C++ file using cl.exe 
+    #   run: |
+    #     cl.exe /EHsc /Fe:bin/hodl.exe src/compiler/source.cpp src/circuit/circuit.cpp
 
     - name: Run compiled binary
       run: |
