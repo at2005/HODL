@@ -113,15 +113,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
   
+      - name: Make bin directory
+        run: |
+          mkdir bin
+
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: hodl-windows
           path: ./bin/
-
-      - name: Make bin directory
-        run: |
-          mkdir bin
   
       - name: Download artifact
         uses: actions/download-artifact@v2
