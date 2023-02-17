@@ -27,6 +27,11 @@ jobs:
     - name: Setup MSVC Build Tools
       uses: microsoft/setup-msbuild@v1.0.2
 
+    - name: Add cl.exe to PATH
+      run: |
+        $env:Path += ";${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x64"
+        $env:Path += ";${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\Hostx64\x86"
+
     # - name: Compile C++ file
     #   run: |
     #     g++ -std=c++11 src/compiler/source.cpp src/circuit/circuit.cpp -o bin/hodl.exe
