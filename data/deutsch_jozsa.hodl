@@ -26,9 +26,9 @@ function deutsch_josza(super inputs) {
 # main function, i.e., body of program
 
 function main() {
-	# initialize superposition to 5 qubits
+	# initialize superposition to 2 qubits
 	# this should serve as the input for our function
-	super stuff = 4;
+	super stuff = 16;
 
 	# apply deutsch-josza function
 	# if the function is balanced, i.e, half of all inputs return 1 and the other half return 0,

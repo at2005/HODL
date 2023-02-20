@@ -7,7 +7,8 @@
 // THIS FUNCTION COMPUTES SIZE OF EACH REGISTER REQUIRED AND CREATES THEM
 
 
-unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumVariable* dependency, Node* expr_node, bool is_right_child, map<string, string> parameter_map) {
+
+unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumVariable* dependency, Node* expr_node, bool is_right_child, map<string, string> parameter_map, bool is_if_statement) {
 	// Root node for expression parsing
 	//cout << tree;
 	Node* node = tree->getRoot();
@@ -162,7 +163,7 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 
 
 		//case for operators
-		else if (node->getTToken() == "OPERATOR") {
+		else if (node->getTToken() == "OPERATOR" || (node->getTToken() == "BOOL_EXPR" && !is_if_statement)) {
 			// get left value
 			string left = node->getLeftChild()->getTValue();
 
@@ -350,7 +351,7 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 			SyntaxTree tree_left(node->getLeftChild());
 
 			// evaluate resources for condition
-			eval_resources(&tree_left, table, nullptr, nullptr, false, parameter_map);
+			eval_resources(&tree_left, table, nullptr, nullptr, false, parameter_map, true);
 			// add CMP register
 			table->ADD_CMP_REGISTER();
 
@@ -370,7 +371,7 @@ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumV
 			// evaluate resources for left and right child
 			eval_resources(&tree_left, table, nullptr, nullptr, false, parameter_map);
 			eval_resources(&tree_right, table, nullptr, nullptr, false, parameter_map);
-
+				
 			// create a CMP register to store boolean result
 			table->ADD_CMP_REGISTER();
 

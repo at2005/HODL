@@ -6,7 +6,7 @@
 #include <map>
 
 
- unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumVariable* dependency = nullptr, Node* expr_node = nullptr, bool is_right_child = false, map<string, string> parameter_map = {});
+ unsigned long long eval_resources(SyntaxTree* tree, SymbolTable* table, QuantumVariable* dependency = nullptr, Node* expr_node = nullptr, bool is_right_child = false, map<string, string> parameter_map = {}, bool is_if_statement=false);
 
  std::map<string, string> number_to_word() {
 	std::map<std::string, std::string> numbers;
@@ -246,6 +246,16 @@ unsigned int long long eval_id_resources(Node* node, string left, string right, 
 		return 0;
 	}
 
+	if(node->getTValue() == "|") {
+		return max(qvar1.get_num_qubits(), qvar2.get_num_qubits());
+
+	}
+
+	if(node->getTValue() == "&") {
+		return min(qvar1.get_num_qubits(), qvar2.get_num_qubits());
+
+	}
+
 
 	return 0;
 }
@@ -281,7 +291,6 @@ unsigned long long eval_id_num_resources(Node* node, string left, string right, 
 		estimate_subtraction_append(qvar, number);
 	}
 
-
 	return 0;
 }
 
@@ -290,7 +299,7 @@ unsigned long long eval_id_num_resources(Node* node, string left, string right, 
 
 void eval_operator_child(Node* node, SymbolTable* table, int& total_resources, Node* expr_node, QuantumVariable* dependency, map<string, string> parameter_map = {}) {
 	int value;
-	//dependency = nullptr;
+	//dependency = nullptr;	
 
 	SyntaxTree left_tree(node->getLeftChild());
 	SyntaxTree right_tree(node->getRightChild());
@@ -310,12 +319,21 @@ void eval_operator_child(Node* node, SymbolTable* table, int& total_resources, N
 		total_resources += value;
 	}
 
+	else if (node->getTValue() == "|") {
+		value = max(eval_resources(&left_tree, table, dependency, expr_node, false, parameter_map), eval_resources(&right_tree, table, dependency, expr_node, true, parameter_map));
+		total_resources += value;
+	}
 
+	else if (node->getTValue() == "&") {
+		value = min(eval_resources(&left_tree, table, dependency, expr_node, false, parameter_map), eval_resources(&right_tree, table, dependency, expr_node, true, parameter_map));
+		total_resources += value;
+	}
 
 	else if (node->getTValue() == ":") {
 		total_resources += estimate_range(eval_resources(&right_tree, table, dependency, expr_node, false, parameter_map));
 
 	}
+
 
 	table->search_qtable(node->get_result_register())->set_num_qubits(value);
 

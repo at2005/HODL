@@ -200,9 +200,7 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 				else if (type == "-=") {
 					subtract_append(qc, *qvar1, *qvar2, instruction.get_controls());
 					
-				}
-
-			
+				}	
 
 				// check if our operation is relational (comparison)
 				if (isCompOp(type)) {
@@ -221,21 +219,6 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 					qc.add_qregister(*ancilla);
 					
-
-				/*	
-					// reuse garbage register
-					QuantumVariable* ancilla = Garbage::get_garbage()->get_garbage_register(num_qubits_ancilla);
-
-					if(ancilla == nullptr) {
-						// create ancillary register
-						table->ADD_ANCILLA_REGISTER(num_qubits_ancilla);
-						// get ancillary register
-						QuantumVariable* ancilla = table->search_qtable(table->GET_ANCILLA_REGISTER());
-					}
-
-*/
-
-					// add ancillary register to circuit
 					
 					// compile equality operator
 					if (type == "==") {
@@ -276,9 +259,65 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 				}
 
 				// compile AND operator
+
 				else if (type == "&") {
+					if (qvar1->get_num_qubits() > 1 || qvar2->get_num_qubits() > 1) {
+						// n qubit OR gate, loop through all qubit pairs, eval or on ancilla, then X all of them, multi-controlled gate
+						QuantumVariable* max_reg_and = qvar1;
+						QuantumVariable* min_reg_and = qvar2;
+						// get min and max qubits
+						unsigned int max_qubits_and = qvar1->get_num_qubits();
+						unsigned int min_qubits_and = qvar2->get_num_qubits();
+						if(max_qubits_and < min_qubits_and) {
+							swap(max_qubits_and, min_qubits_and);
+							swap(max_reg_and, min_reg_and);
+						}
+
+						// check if single qubit OR required or register-wide or
+						QuantumVariable* ancilla_nbit_and = result_reg;
+						
+						if(result_reg->get_num_qubits() == 1) {
+							ancilla_nbit_and = alloc_ancilla(qc, max_qubits_and, table);
+						
+						}	
+				
+						unsigned int diff = max_qubits_and - min_qubits_and;
+						// and all common qubits
+						for(int qbit_pair = diff; qbit_pair < max_qubits_and; qbit_pair++) {
+							qc.ccx(max_reg_and->get_qreg(), qbit_pair, min_reg_and->get_qreg(), qbit_pair-diff, ancilla_nbit_and->get_qreg(), qbit_pair-diff);
+						}
+						
+						
+						// continue if not in if statement						
+						if(result_reg->get_num_qubits() > 1) continue;
+					
+
+						// ELSE multi-controlled NOT onto single qubit
+
+						qc.x(ancilla_nbit_and->get_qreg());
+						qc.x(result_reg->get_qreg());
+						
+
+						QuantumVariable* ancilla_mcgate = alloc_ancilla(qc, ancilla_nbit_and->get_num_qubits()-1, table);
+						multi_ctrl_gate(qc, &Circuit::cx, ancilla_nbit_and, result_reg, ancilla_mcgate);
+						
+
+						// uncomputation
+						qc.x(ancilla_nbit_and->get_qreg());
+							
+						for(int qbit_pair = max_qubits_and - min_qubits_and; qbit_pair < max_qubits_and; qbit_pair++) {
+							qc.ccx(qvar1->get_qreg(), qbit_pair, qvar2->get_qreg(), qbit_pair, ancilla_nbit_and->get_qreg(), qbit_pair);
+						}
+						
+						Garbage::get_garbage()->add_garbage(ancilla_mcgate);		
+						Garbage::get_garbage()->add_garbage(ancilla_nbit_and);						
+						continue;
+					}
+
+
+					
 					qc.ccx(qvar1->get_qreg(), 0, qvar2->get_qreg(), 0, result_reg->get_qreg(), 0);
-				}
+				}	
 
 				// compile OR operator
 				else if (type == "|") {
@@ -286,28 +325,46 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 						// n qubit OR gate, loop through all qubit pairs, eval or on ancilla, then X all of them, multi-controlled gate
 						
 						QuantumVariable* max_reg_or = qvar1;
+						QuantumVariable* min_reg_or = qvar2;
 						// get min and max qubits
 						unsigned int max_qubits_or = qvar1->get_num_qubits();
 						unsigned int min_qubits_or = qvar2->get_num_qubits();
 						if(max_qubits_or < min_qubits_or) {
 							swap(max_qubits_or, min_qubits_or);
-							max_reg_or = qvar2;
+							swap(max_reg_or, min_reg_or);
 						}
 
-						QuantumVariable* ancilla_nbit_or = alloc_ancilla(qc, max_qubits_or, table);
+						// check if single qubit OR required or register-wide or
+						QuantumVariable* ancilla_nbit_or = result_reg;
 						
+						if(result_reg->get_num_qubits() == 1) {
+							ancilla_nbit_or = alloc_ancilla(qc, max_qubits_or, table);
+						
+						}	
+	
+						unsigned int diff = max_qubits_or - min_qubits_or;	
 						// OR common bits
-						for(int qbit_pair = max_qubits_or - min_qubits_or; qbit_pair < max_qubits_or; qbit_pair++) {
-							bitwise_or(qc, qvar1, qbit_pair, qvar2, qbit_pair, ancilla_nbit_or, qbit_pair);
+						for(int qbit_pair = max_qubits_or - 1; qbit_pair >= diff; qbit_pair--) {
+							bitwise_or(qc, max_reg_or, qbit_pair, min_reg_or, qbit_pair-diff, ancilla_nbit_or, qbit_pair);
 						}
 
 						// OR uncommon bits (case where one register is larger than the other, then OR with zero is simply copying the bit value
-						for(int qbit_cutoff = 0; qbit_cutoff < max_qubits_or - min_qubits_or; qbit_cutoff++) {
+						for(int qbit_cutoff = 0; qbit_cutoff < diff; qbit_cutoff++) {
 							qc.cx(max_reg_or->get_qreg(), qbit_cutoff, ancilla_nbit_or->get_qreg(), qbit_cutoff); 
 						}
 						
+
+						// continue if not in if statement						
+						if(result_reg->get_num_qubits() > 1) continue;
+						
+
+						// Following block only for if statement bool
+
 						// NOT entire register
 						qc.x(ancilla_nbit_or->get_qreg());
+
+						// NOT result register
+						qc.x(result_reg->get_qreg());
 
 						QuantumVariable* ancilla_mcgate = alloc_ancilla(qc, ancilla_nbit_or->get_num_qubits()-1, table);
 						multi_ctrl_gate(qc, &Circuit::cx, ancilla_nbit_or, result_reg, ancilla_mcgate);
@@ -315,18 +372,21 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 						// Uncompute NOT
 						qc.x(ancilla_nbit_or->get_qreg());
 
-						// Uncompute OR operation on ancilla
-
+						// Uncompute OR operation on ancilla - START	
 						// OR common bits
-						for(int qbit_pair = max_qubits_or - min_qubits_or; qbit_pair < max_qubits_or; qbit_pair++) {
-							bitwise_or(qc, qvar1, qbit_pair, qvar2, qbit_pair, ancilla_nbit_or, qbit_pair);
+						for(int qbit_pair = max_qubits_or - 1; qbit_pair >= diff; qbit_pair--) {
+							bitwise_or(qc, max_reg_or, qbit_pair, min_reg_or, qbit_pair-diff, ancilla_nbit_or, qbit_pair);
 						}
 
 						// OR uncommon bits (case where one register is larger than the other, then OR with zero is simply copying the bit value
-						for(int qbit_cutoff = 0; qbit_cutoff < max_qubits_or - min_qubits_or; qbit_cutoff++) {
+						for(int qbit_cutoff = 0; qbit_cutoff < diff; qbit_cutoff++) {
 							qc.cx(max_reg_or->get_qreg(), qbit_cutoff, ancilla_nbit_or->get_qreg(), qbit_cutoff); 
 						}
+						// END UNCOMPUTATION
 
+//						Garbage::get_garbage()->add_garbage(ancilla_mcgate);		
+//						Garbage::get_garbage()->add_garbage(ancilla_nbit_or);						
+						
 						continue;
 
 					}
@@ -341,7 +401,6 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 					qc.cx(qvar2->get_qreg(), 0, result_reg->get_qreg(),0);
 
 				}
-
 
 			}
 
@@ -459,7 +518,37 @@ void compile_instructions(Circuit& qc, vector<INSTRUCTION> instructions, SymbolT
 
 				}
 
+				// compile range operator
+				else if (type == ":") {
+					// get number or right operand
+					long long number = stoll(reg1);
 
+					// initialize number of qubits to zero
+					int num_qubits = 0;
+
+					// check if range is a power-of-two
+					// in other words, check if log2(number) is an element of the set consisting natural numbers
+					if (reg0 == "0" && ceil(log2(number)) == floor(log2(number))) {
+						// set number of qubits
+						// the reason for this is to only create a superposition of the range desired.
+						// e.g., a register of 5 qubits but we want a superposition of 0:4
+						// Therefore, we have to only put the last 2 qubits into superposition
+						int num_qubits = floor(log2(number));
+
+						// Apply HADAMARD Gate to each qubit we want to be in superpositon
+						for (int i = (result_reg->get_num_qubits() - num_qubits); i < result_reg->get_num_qubits(); i++) {
+							qc.h(result_reg->get_qreg(), i);
+						}
+
+					}
+
+					// this should be implemented in later versions
+					// to allow programmer to specify custom range, e.g. (1:100)
+					else {
+						int num_qubits = floor(log2(number)) + 1;
+						//apply operation to procure such a state
+					}
+				}
 			}
 		}
 
