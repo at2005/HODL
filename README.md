@@ -12,11 +12,9 @@ Language description can be found: https://arxiv.org/abs/2110.12487
 hodl --target qasm/qir -o your_output_file your_source_file.hodl
 ```
 
-# Anaconda Installation
+# Installation
 
-```
-$ conda install -c at2005 hodl
-```
+Pre-compiled executables are included in the latest Release.
 
 # Installation from Source
 
